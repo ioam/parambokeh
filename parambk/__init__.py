@@ -10,8 +10,9 @@ import functools
 
 import param
 
+from bokeh.io import curdoc
 from bokeh.layouts import row, column, widgetbox
-from bokeh.models.widgets import Div, Button, Toggle
+from bokeh.models.widgets import Div, Button, Toggle, TextInput
 
 from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
@@ -74,13 +75,15 @@ class Widgets(param.ParameterizedFunction):
         If true, will continuously update the next_n and/or callback,
         if any, as a slider widget is dragged.""")
 
-    def __call__(self, parameterized, **params):
+    def __call__(self, parameterized, doc=None, **params):
         self.p = param.ParamOverrides(self, params)
         if self.p.initializer:
             self.p.initializer(parameterized)
 
         self._widgets = {}
         self.parameterized = parameterized
+        self.document = curdoc() if doc is None else doc
+        self._queue = []
 
         widgets, views = self.widgets()
         container = widgetbox(widgets)
@@ -108,6 +111,38 @@ class Widgets(param.ParameterizedFunction):
         return container
 
 
+    def on_change(self, w, p_obj, p_name, attr, old, new):
+        self._queue.append((w, p_obj, p_name, attr, old, new))
+        if self.change_event not in self.document._session_callbacks:
+            self.document.add_timeout_callback(self.change_event, 50)
+
+
+    def change_event(self):
+        w, p_obj, p_name, attr, old, new_values = self._queue[-1]
+        error = False
+        # Apply literal evaluation to values
+        if (isinstance(w, TextInput) and isinstance(p_obj, literal_params)):
+            try:
+                new_values = ast.literal_eval(new_values)
+            except:
+                error = 'eval'
+
+        # If no error during evaluation try to set parameter
+        if not error:
+            try:
+                setattr(self.parameterized, p_name, new_values)
+            except ValueError:
+                error = 'validation'
+
+        # Style widget to denote error state
+        # apply_error_style(w, error)
+
+        if not error and not self.p.button:
+            self.execute({p_name: new_values})
+        else:
+            self._changed[p_name] = new_values
+
+
     def _update_trait(self, p_name, p_value, widget=None):
         p_obj = self.parameterized.params(p_name)
         widget = self._widgets[p_name] if widget is None else widget
@@ -116,7 +151,9 @@ class Widgets(param.ParameterizedFunction):
         if isinstance(widget, Div):
             widget.text = p_value
         else:
-            widget.children[:] = [p_value]
+            if widget.children:
+                widget.children.remove(widget.children[0])
+            widget.children.append(p_value)
 
 
     def _make_widget(self, p_name):
@@ -147,36 +184,12 @@ class Widgets(param.ParameterizedFunction):
         if hasattr(p_obj, 'callbacks') and value is not None:
             self._update_trait(p_name, p_obj.renderer(value), w)
 
-        def change_event(attr, old, new_values):
-            error = False
-            # Apply literal evaluation to values
-            if (isinstance(w, TextInput) and isinstance(p_obj, literal_params)):
-                try:
-                    new_values = ast.literal_eval(new_values)
-                except:
-                    error = 'eval'
-
-            # If no error during evaluation try to set parameter
-            if not error:
-                try:
-                    setattr(self.parameterized, p_name, new_values)
-                except ValueError:
-                    error = 'validation'
-
-            # Style widget to denote error state
-            # apply_error_style(w, error)
-
-            if not error and not self.p.button:
-                self.execute({p_name: new_values})
-            else:
-                self._changed[p_name] = new_values
-
         if hasattr(p_obj, 'callbacks'):
             p_obj.callbacks[id(self.parameterized)] = functools.partial(self._update_trait, p_name)
         elif isinstance(w, (Button, Toggle)):
-            w.on_click(change_event)
+            w.on_change('active', functools.partial(self.on_change, w, p_obj, p_name))
         elif not p_obj.constant:
-            w.on_change('value', change_event)
+            w.on_change('value', functools.partial(self.on_change, w, p_obj, p_name))
 
         return w
 
