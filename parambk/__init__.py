@@ -1,0 +1,241 @@
+from __future__ import absolute_import
+
+import sys
+import os
+import ast
+import types
+import itertools
+import json
+import functools
+
+import param
+
+from bokeh.layouts import row, column, widgetbox
+from bokeh.models.widgets import Div, Button, Toggle
+
+from .widgets import wtype, literal_params
+from .util import named_objs, get_method_owner
+from .view import _View
+
+try:
+    __version__ = param.Version(release=(0,0,1), fpath=__file__,
+                                commit="$Format:%h$", reponame='parambk')
+except:
+    __version__ = '0.0.1-unknown'
+
+
+class Widgets(param.ParameterizedFunction):
+
+    callback = param.Callable(default=None, doc="""
+        Custom callable to execute on button press
+        (if `button`) else whenever a widget is changed,
+        Should accept a Parameterized object argument.""")
+
+    view_position = param.ObjectSelector(default='below',
+                                         objects=['below', 'right', 'left', 'above'],
+                                         doc="""
+        Layout position of any View parameter widgets.""")
+
+    next_n = param.Parameter(default=0, doc="""
+        When executing cells, integer number to execute (or 'all').
+        A value of zero means not to control cell execution.""")
+
+    on_init = param.Boolean(default=False, doc="""
+        Whether to do the action normally taken (executing cells
+        and/or calling a callable) when first instantiating this
+        object.""")
+
+    button = param.Boolean(default=False, doc="""
+        Whether to show a button to control cell execution.
+        If false, will execute `next` cells on any widget
+        value change.""")
+
+    show_labels = param.Boolean(default=True)
+
+    display_threshold = param.Number(default=0,precedence=-10,doc="""
+        Parameters with precedence below this value are not displayed.""")
+
+    default_precedence = param.Number(default=1e-8,precedence=-10,doc="""
+        Precedence value to use for parameters with no declared precedence.
+        By default, zero predecence is available for forcing some parameters
+        to the top of the list, and other values above the default_precedence
+        values can be used to sort or group parameters arbitrarily.""")
+
+    initializer = param.Callable(default=None, doc="""
+        User-supplied function that will be called on initialization,
+        usually to update the default Parameter values of the
+        underlying parameterized object.""")
+
+    layout = param.ObjectSelector(default='column',
+                                  objects=['row','column'],doc="""
+        Whether to lay out the buttons as a row or a column.""")
+
+    continuous_update = param.Boolean(default=False, doc="""
+        If true, will continuously update the next_n and/or callback,
+        if any, as a slider widget is dragged.""")
+
+    def __call__(self, parameterized, **params):
+        self.p = param.ParamOverrides(self, params)
+        if self.p.initializer:
+            self.p.initializer(parameterized)
+
+        self._widgets = {}
+        self.parameterized = parameterized
+
+        widgets, views = self.widgets()
+        container = widgetbox(widgets)
+        if views:
+            view_box = column(views)
+            layout = self.p.view_position
+            if layout in ['below', 'right']:
+                children = [container, view_box]
+            else:
+                children = [view_box, container]
+            container_type = column if layout in ['below', 'above'] else row
+            container = container_type(children=children)
+        for view in views:
+            p_obj = self.parameterized.params(view.name)
+            value = getattr(self.parameterized, view.name)
+            if value is not None:
+                self._update_trait(view.name, p_obj.renderer(value))
+
+        # Keeps track of changes between button presses
+        self._changed = {}
+
+        if self.p.on_init:
+            self.execute()
+            
+        return container
+
+
+    def _update_trait(self, p_name, p_value, widget=None):
+        p_obj = self.parameterized.params(p_name)
+        widget = self._widgets[p_name] if widget is None else widget
+        if isinstance(p_value, tuple):
+            p_value, size = p_value
+        if isinstance(widget, Div):
+            widget.text = p_value
+        else:
+            widget.children[:] = [p_value]
+
+
+    def _make_widget(self, p_name):
+        p_obj = self.parameterized.params(p_name)
+        widget_class = wtype(p_obj)
+
+        value = getattr(self.parameterized, p_name)
+
+        kw = dict(value=value)
+        if isinstance(p_obj, param.Action):
+            def action_cb(button):
+                getattr(self.parameterized, p_name)(self.parameterized)
+            kw['value'] = action_cb
+
+        kw['title'] = p_name
+
+        #if hasattr(p_obj, 'callbacks'):
+        #    kw.pop('value', None)
+
+        if hasattr(p_obj, 'get_range'):
+            kw['options'] = named_objs(p_obj.get_range().items())
+
+        if hasattr(p_obj, 'get_soft_bounds'):
+            kw['start'], kw['end'] = p_obj.get_soft_bounds()
+
+        w = widget_class(**kw)
+
+        if hasattr(p_obj, 'callbacks') and value is not None:
+            self._update_trait(p_name, p_obj.renderer(value), w)
+
+        def change_event(attr, old, new_values):
+            error = False
+            # Apply literal evaluation to values
+            if (isinstance(w, TextInput) and isinstance(p_obj, literal_params)):
+                try:
+                    new_values = ast.literal_eval(new_values)
+                except:
+                    error = 'eval'
+
+            # If no error during evaluation try to set parameter
+            if not error:
+                try:
+                    setattr(self.parameterized, p_name, new_values)
+                except ValueError:
+                    error = 'validation'
+
+            # Style widget to denote error state
+            # apply_error_style(w, error)
+
+            if not error and not self.p.button:
+                self.execute({p_name: new_values})
+            else:
+                self._changed[p_name] = new_values
+
+        if hasattr(p_obj, 'callbacks'):
+            p_obj.callbacks[id(self.parameterized)] = functools.partial(self._update_trait, p_name)
+        elif isinstance(w, (Button, Toggle)):
+            w.on_click(change_event)
+        elif not p_obj.constant:
+            w.on_change('value', change_event)
+
+        return w
+
+
+    def widget(self, param_name):
+        """Get widget for param_name"""
+        if param_name not in self._widgets:
+            self._widgets[param_name] = self._make_widget(param_name)
+        return self._widgets[param_name]
+
+
+    def execute(self, changed={}):
+        if self.p.callback is not None:
+            if get_method_owner(self.p.callback) is self.parameterized:
+                self.p.callback(**changed)
+            else:
+                self.p.callback(self.parameterized, **changed)
+
+    def widgets(self):
+        """Return name,widget boxes for all parameters (i.e., a property sheet)"""
+
+        params = self.parameterized.params().items()
+        key_fn = lambda x: x[1].precedence if x[1].precedence is not None else self.p.default_precedence
+        sorted_precedence = sorted(params, key=key_fn)
+        outputs = [k for k, p in sorted_precedence if isinstance(p, _View)]
+        filtered = [(k,p) for (k,p) in sorted_precedence
+                    if ((p.precedence is None) or (p.precedence >= self.p.display_threshold))
+                    and k not in outputs]
+        groups = itertools.groupby(filtered, key=key_fn)
+        sorted_groups = [sorted(grp) for (k,grp) in groups]
+        ordered_params = [el[0] for group in sorted_groups for el in group]
+
+        # Format name specially
+        name = ordered_params.pop(ordered_params.index('name'))
+        widgets = [Div(text='<b>{0}</b>'.format(self.parameterized.name))]
+
+        def format_name(pname):
+            p = self.parameterized.params(pname)
+            # omit name for buttons, which already show the name on the button
+            name = "" if issubclass(type(p),param.Action) else pname
+            return Div(text=name)
+
+        if self.p.show_labels:
+            widgets += [self.widget(pname) for pname in ordered_params]
+        else:
+            widgets += [self.widget(pname) for pname in ordered_params]
+
+        if self.p.button and not (self.p.callback is None and self.p.next_n==0):
+            display_button = Button(label="Run")
+            def click_cb(button):
+                # Execute and clear changes since last button press
+                try:
+                    self.execute(self._changed)
+                except Exception as e:
+                    self._changed.clear()
+                    raise e
+                self._changed.clear()
+            display_button.on_click(click_cb)
+            widgets.append(display_button)
+
+        outputs = [self.widget(pname) for pname in outputs]
+        return widgets, outputs

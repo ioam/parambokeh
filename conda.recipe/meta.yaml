@@ -1,0 +1,30 @@
+package:
+  name: parambk
+  version: 0.0.1
+
+source:
+  path: .
+
+extra:
+  channels:
+    - ioam
+    - conda-forge
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - param >=1.5.1
+  run:
+    - python
+    - bokeh >=0.12.5
+    - param >=1.5.1
+
+test:
+  imports:
+    - parambk
+
+about:
+  home: http://github.com/ioam/parambk
+  summary: Generate bokeh widgets from Parameterized objects on bokeh server
+  license: BSD
