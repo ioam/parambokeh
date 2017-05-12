@@ -107,8 +107,7 @@ class Widgets(param.ParameterizedFunction):
 
         if self.p.on_init:
             self.execute()
-            
-        return container
+        self.document.add_root(container)
 
 
     def on_change(self, w, p_obj, p_name, attr, old, new):
