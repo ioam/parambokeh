@@ -2,7 +2,7 @@
 
 - Ensure all tests pass.
 
-- Update version number in `conda.recipe/meta.yaml`, `parambk/__init__.py`,
+- Update version number in `conda.recipe/meta.yaml`, `parambokeh/__init__.py`,
   and `setup.py`. Commit.
 
 - Tag commit and push to github
@@ -24,7 +24,7 @@ CONDA_DIR=~/miniconda/
 # Platform code. For me it's `osx-64`
 PLATFORM=osx-64
 
-# Version number of parambk being released (e.g. 2.0.2)
+# Version number of parambokeh being released (e.g. 2.0.2)
 VERSION=2.0.2
 ```
 
@@ -46,11 +46,11 @@ Use `conda convert` to convert over the missing platforms (skipping the one for
 the platform you're currently on):
 
 ```bash
-conda convert --platform osx-64 parambk-$VERSION*.tar.bz2 -o ../
-conda convert --platform linux-32 parambk-$VERSION*.tar.bz2 -o ../
-conda convert --platform linux-64 parambk-$VERSION*.tar.bz2 -o ../
-conda convert --platform win-32 parambk-$VERSION*.tar.bz2 -o ../
-conda convert --platform win-64 parambk-$VERSION*.tar.bz2 -o ../
+conda convert --platform osx-64 parambokeh-$VERSION*.tar.bz2 -o ../
+conda convert --platform linux-32 parambokeh-$VERSION*.tar.bz2 -o ../
+conda convert --platform linux-64 parambokeh-$VERSION*.tar.bz2 -o ../
+conda convert --platform win-32 parambokeh-$VERSION*.tar.bz2 -o ../
+conda convert --platform win-64 parambokeh-$VERSION*.tar.bz2 -o ../
 ```
 
 Use `anaconda upload` to upload the build to the `ioam` channel. This requires
@@ -59,5 +59,5 @@ the bokeh channel.
 
 ```bash
 anaconda login
-anaconda upload $CONDA_DIR/conda-bld/*/parambk-$VERSION*.tar.bz2 -u ioam
+anaconda upload $CONDA_DIR/conda-bld/*/parambokeh-$VERSION*.tar.bz2 -u ioam
 ```

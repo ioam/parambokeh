@@ -20,7 +20,7 @@ from .view import _View
 
 try:
     __version__ = param.Version(release=(0,0,1), fpath=__file__,
-                                commit="$Format:%h$", reponame='parambk')
+                                commit="$Format:%h$", reponame='parambokeh')
 except:
     __version__ = '0.0.1-unknown'
 

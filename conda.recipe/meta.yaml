@@ -1,5 +1,5 @@
 package:
-  name: parambk
+  name: parambokeh
   version: 0.0.1
 
 source:
@@ -22,9 +22,9 @@ requirements:
 
 test:
   imports:
-    - parambk
+    - parambokeh
 
 about:
-  home: http://github.com/ioam/parambk
+  home: http://github.com/ioam/parambokeh
   summary: Generate bokeh widgets from Parameterized objects on bokeh server
   license: BSD
