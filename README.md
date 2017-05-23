@@ -1,3 +1,3 @@
-# ParamBK
+# ParamBokeh
 
-Generate bokeh widgets from [Parameterized](https://github.com/ioam/param) objects on a bokeh server.
+Generate [Bokeh](http://bokeh.pydata.org) widgets from [Parameterized](https://github.com/ioam/param) objects on a Bokeh server.
