@@ -4,7 +4,7 @@ from param.parameterized import classlist
 from bokeh.layouts import widgetbox, row, column
 from bokeh.models.widgets import (
     Button, TextInput, Div, Slider, Bool, CheckboxGroup, Toggle,
-    DatePicker, MultiSelect, Select, PreText
+    DatePicker, MultiSelect, Select, PreText, RangeSlider
 )
 
 from .util import as_unicode
@@ -42,6 +42,9 @@ def DateWidget(*args, **kw):
     kw['max_date'] = kw.pop('end')
     return DatePicker(*args,**kw)
 
+def RangeWidget(*args, **kw):
+    kw['range'] = kw.pop('value')
+    return RangeSlider(*args, **kw)
 
 def PlotWidget(*args, **kw):
     return column(name=kw['title'])
@@ -57,6 +60,7 @@ ptype2wtype = {
     param.Boolean:       ToggleWidget,
     param.Number:        Slider,
     param.Integer:       IntSlider,
+    param.Range:         RangeWidget,
     param.ListSelector:  MultiSelect,
     param.Action:        ButtonWidget,
     param.Date:          DateWidget,

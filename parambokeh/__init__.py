@@ -188,7 +188,11 @@ class Widgets(param.ParameterizedFunction):
         elif isinstance(w, (Button, Toggle)):
             w.on_change('active', functools.partial(self.on_change, w, p_obj, p_name))
         elif not p_obj.constant:
-            w.on_change('value', functools.partial(self.on_change, w, p_obj, p_name))
+            cb = functools.partial(self.on_change, w, p_obj, p_name)
+            if 'value' in w.properties():
+                w.on_change('value', cb)
+            elif 'range' in w.properties():
+                w.on_change('range', cb)
 
         return w
 
