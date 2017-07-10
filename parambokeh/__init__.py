@@ -97,6 +97,7 @@ class Widgets(param.ParameterizedFunction):
         self._widgets = {}
         self.parameterized = parameterized
         self.document = None
+        self.comm_target = None
         if self.p.mode == 'notebook':
             self.comm = JupyterCommJS(on_msg=self.on_msg)
             self.comm_target = uuid.uuid4().hex
@@ -104,6 +105,7 @@ class Widgets(param.ParameterizedFunction):
             self.document = doc or Document()
         self._queue = []
         self._widget_options = {}
+        self.shown = False
 
         widgets, views = self.widgets()
         container = widgetbox(widgets)
@@ -120,7 +122,8 @@ class Widgets(param.ParameterizedFunction):
             p_obj = self.parameterized.params(view.name)
             value = getattr(self.parameterized, view.name)
             if value is not None:
-                self._update_trait(view.name, p_obj.renderer(value))
+                rendered = p_obj.renderer(value, self.document, self.comm_target)
+                self._update_trait(view.name, rendered)
 
         # Keeps track of changes between button presses
         self._changed = {}
@@ -135,6 +138,7 @@ class Widgets(param.ParameterizedFunction):
         if self.p.mode == 'notebook':
             self.notebook_handle = notebook_show(container, self.document,
                                                  self.comm_target)
+        self.shown = True
 
 
     def on_msg(self, msg):
@@ -190,6 +194,8 @@ class Widgets(param.ParameterizedFunction):
             p_value, size = p_value
         if isinstance(widget, Div):
             widget.text = p_value
+        elif self.p.mode == 'notebook' and self.shown:
+            return
         else:
             if widget.children:
                 widget.children.remove(widget.children[0])
@@ -224,7 +230,8 @@ class Widgets(param.ParameterizedFunction):
         w = widget_class(**kw)
 
         if hasattr(p_obj, 'callbacks') and value is not None:
-            self._update_trait(p_name, p_obj.renderer(value), w)
+            rendered = p_obj.renderer(value, self.document, self.comm_target)
+            self._update_trait(p_name, rendered, w)
 
         if hasattr(p_obj, 'callbacks'):
             p_obj.callbacks[id(self.parameterized)] = functools.partial(self._update_trait, p_name)
