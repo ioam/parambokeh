@@ -103,6 +103,7 @@ class Widgets(param.ParameterizedFunction):
         if self.p.mode != 'raw':
             self.document = doc or Document()
         self._queue = []
+        self._widget_options = {}
 
         widgets, views = self.widgets()
         container = widgetbox(widgets)
@@ -160,6 +161,9 @@ class Widgets(param.ParameterizedFunction):
             except:
                 error = 'eval'
 
+        if p_name in self._widget_options:
+            new_values = self._widget_options[p_name].get(new_values, new_values)
+
         # If no error during evaluation try to set parameter
         if not error:
             try:
@@ -206,11 +210,13 @@ class Widgets(param.ParameterizedFunction):
 
         kw['title'] = p_name
 
-        #if hasattr(p_obj, 'callbacks'):
-        #    kw.pop('value', None)
-
         if hasattr(p_obj, 'get_range'):
-            kw['options'] = named_objs(p_obj.get_range().items())
+            options = named_objs(p_obj.get_range().items())
+            kw['value'] = {v: k for k, v in options}[kw['value']]
+            opt_lookup = {k: v for k, v in options}
+            self._widget_options[p_name] = opt_lookup
+            options = [(k, k) for k, v in options]
+            kw['options'] = options
 
         if hasattr(p_obj, 'get_soft_bounds'):
             kw['start'], kw['end'] = p_obj.get_soft_bounds()
