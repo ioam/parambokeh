@@ -1,19 +1,19 @@
 from __future__ import absolute_import
 
-import sys
-import os
 import ast
-import types
+import uuid
 import itertools
-import json
 import functools
 
 import param
 
-from bokeh.io import curdoc
+from bokeh.document import Document
+from bokeh.io import push_notebook
 from bokeh.layouts import row, column, widgetbox
 from bokeh.models.widgets import Div, Button, Toggle, TextInput
+from bokeh.models import CustomJS
 
+from .comms import JupyterCommJS, JS_CALLBACK, notebook_show
 from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
 from .view import _View
@@ -75,14 +75,33 @@ class Widgets(param.ParameterizedFunction):
         If true, will continuously update the next_n and/or callback,
         if any, as a slider widget is dragged.""")
 
-    def __call__(self, parameterized, doc=None, **params):
+    mode = param.ObjectSelector(default='notebook', objects=['server', 'raw', 'notebook'], doc="""
+        Whether to use the widgets in server or notebook mode. In raw mode
+        the widgets container will simply be returned.""")
+
+    push = param.Boolean(default=True, doc="""
+        Whether to push data in notebook mode. Allows disabling pushing
+        of data if the callback handles this itself.""")
+
+    # Timeout if a notebook comm message is swallowed
+    timeout = 20000
+
+    # Timeout before the first event is processed
+    debounce = 20
+
+    def __call__(self, parameterized, doc=None, server=True, **params):
         self.p = param.ParamOverrides(self, params)
         if self.p.initializer:
             self.p.initializer(parameterized)
 
         self._widgets = {}
         self.parameterized = parameterized
-        self.document = curdoc() if doc is None else doc
+        self.document = None
+        if self.p.mode == 'notebook':
+            self.comm = JupyterCommJS(on_msg=self.on_msg)
+            self.comm_target = uuid.uuid4().hex
+        if self.p.mode != 'raw':
+            self.document = doc or Document()
         self._queue = []
 
         widgets, views = self.widgets()
@@ -107,7 +126,22 @@ class Widgets(param.ParameterizedFunction):
 
         if self.p.on_init:
             self.execute()
+
+        if self.p.mode == 'raw':
+            return container
+
         self.document.add_root(container)
+        if self.p.mode == 'notebook':
+            self.notebook_handle = notebook_show(container, self.document,
+                                                 self.comm_target)
+
+
+    def on_msg(self, msg):
+        p_name = msg['p_name']
+        p_obj = self.parameterized.params(p_name)
+        w = self._widgets[p_name]
+        self._queue.append((w, p_obj, p_name, None, None, msg['value']))
+        self.change_event()
 
 
     def on_change(self, w, p_obj, p_name, attr, old, new):
@@ -140,6 +174,9 @@ class Widgets(param.ParameterizedFunction):
             self.execute({p_name: new_values})
         else:
             self._changed[p_name] = new_values
+
+        if self.p.mode == 'notebook' and self.p.push:
+            push_notebook(handle=self.notebook_handle, document=self.document)
 
 
     def _update_trait(self, p_name, p_value, widget=None):
@@ -186,15 +223,45 @@ class Widgets(param.ParameterizedFunction):
         if hasattr(p_obj, 'callbacks'):
             p_obj.callbacks[id(self.parameterized)] = functools.partial(self._update_trait, p_name)
         elif isinstance(w, (Button, Toggle)):
-            w.on_change('active', functools.partial(self.on_change, w, p_obj, p_name))
+            if self.p.mode == 'server':
+                w.on_change('active', functools.partial(self.on_change, w, p_obj, p_name))
+            else:
+                customjs = self._get_customjs('active', p_name)
+                w.js_on_change('active', js_callback)
         elif not p_obj.constant:
-            cb = functools.partial(self.on_change, w, p_obj, p_name)
-            if 'value' in w.properties():
-                w.on_change('value', cb)
-            elif 'range' in w.properties():
-                w.on_change('range', cb)
+            if self.p.mode == 'server':
+                cb = functools.partial(self.on_change, w, p_obj, p_name)
+                if 'value' in w.properties():
+                    w.on_change('value', cb)
+                elif 'range' in w.properties():
+                    w.on_change('range', cb)
+            else:
+                if 'value' in w.properties():
+                    change = 'value'
+                elif 'range' in w.properties():
+                    change = 'range'
+                customjs = self._get_customjs(change, p_name)
+                w.js_on_change(change, customjs)
+
+        if isinstance(p_obj, _View):
+            p_obj._comm_target = self.comm_target
+            p_obj._document = self.document
 
         return w
+
+
+    def _get_customjs(self, change, p_name):
+        """
+        Returns a CustomJS callback that can be attached to send the
+        widget state across the notebook comms.
+        """
+        data_template = "data = {{p_name: '{p_name}', value: cb_obj['{change}']}};"
+        fetch_data = data_template.format(change=change, p_name=p_name)
+        self_callback = JS_CALLBACK.format(comm_id=self.comm.id,
+                                           timeout=self.timeout,
+                                           debounce=self.debounce)
+        js_callback = CustomJS(code=fetch_data+self_callback)
+        return js_callback
 
 
     def widget(self, param_name):
