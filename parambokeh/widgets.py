@@ -14,6 +14,7 @@ from .view import Plot, HTML
 def TextWidget(*args, **kw):
     """Forces a parameter value to be text"""
     kw['value'] = str(kw['value'])
+    kw.pop('options', None)
     return TextInput(*args,**kw)
 
 def StaticText(*args, **kw):

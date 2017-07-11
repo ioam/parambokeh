@@ -168,6 +168,9 @@ class Widgets(param.ParameterizedFunction):
         if p_name in self._widget_options:
             new_values = self._widget_options[p_name].get(new_values, new_values)
 
+        if isinstance(p_obj, param.Range):
+            new_values = tuple(new_values)
+
         # If no error during evaluation try to set parameter
         if not error:
             try:
@@ -216,9 +219,14 @@ class Widgets(param.ParameterizedFunction):
 
         kw['title'] = p_name
 
-        if hasattr(p_obj, 'get_range'):
+        if hasattr(p_obj, 'get_range') and not isinstance(kw['value'], dict):
             options = named_objs(p_obj.get_range().items())
-            kw['value'] = {v: k for k, v in options}[kw['value']]
+            value = kw['value']
+            lookup = {v: k for k, v in options}
+            if isinstance(value, list):
+                kw['value'] = [lookup[v] for v in value]
+            else:
+                kw['value'] = lookup[value]
             opt_lookup = {k: v for k, v in options}
             self._widget_options[p_name] = opt_lookup
             options = [(k, k) for k, v in options]
@@ -239,7 +247,7 @@ class Widgets(param.ParameterizedFunction):
             if self.p.mode == 'server':
                 w.on_change('active', functools.partial(self.on_change, w, p_obj, p_name))
             else:
-                customjs = self._get_customjs('active', p_name)
+                js_callback = self._get_customjs('active', p_name)
                 w.js_on_change('active', js_callback)
         elif not p_obj.constant:
             if self.p.mode == 'server':
