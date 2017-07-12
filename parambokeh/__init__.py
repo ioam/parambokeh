@@ -138,7 +138,9 @@ class Widgets(param.ParameterizedFunction):
         if self.p.mode == 'notebook':
             self.notebook_handle = notebook_show(container, self.document,
                                                  self.comm_target)
-        self.shown = True
+            self.shown = True
+            return
+        return self.document
 
 
     def on_msg(self, msg):
@@ -267,6 +269,7 @@ class Widgets(param.ParameterizedFunction):
         if isinstance(p_obj, _View):
             p_obj._comm_target = self.comm_target
             p_obj._document = self.document
+            p_obj._notebook = self.p.mode == 'notebook'
 
         return w
 

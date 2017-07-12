@@ -1,6 +1,6 @@
 import param
 
-def render_function(obj, document, target):
+def render_function(obj, view):
     """
     The default Renderer function which handles HoloViews objects.
     """
@@ -10,12 +10,15 @@ def render_function(obj, document, target):
         hv = None
 
     if hv and isinstance(obj, hv.Dimensioned):
-        from holoviews.plotting.comms import JupyterComm
         renderer = hv.renderer('bokeh')
-        plot = renderer.get_plot(obj)
-        comm = JupyterComm(plot, target)
-        plot.document = document
-        plot.comm = comm
+        if not view._notebook:
+            renderer = renderer.instance(mode='server')
+        plot = renderer.get_plot(obj, doc=view._document)
+        if view._notebook:
+            from holoviews.plotting.comms import JupyterComm
+            comm = JupyterComm(plot, view._comm_target)
+            plot.comm = comm
+        plot.document = view._document
         return plot.state
     return obj
 
@@ -30,7 +33,7 @@ class _View(param.Parameter):
     and may optionally supply the desired size of the viewport.
     """
 
-    __slots__ = ['callbacks', 'renderer', '_comm_target', '_document']
+    __slots__ = ['callbacks', 'renderer', '_comm_target', '_document', '_notebook']
 
     def __init__(self, default=None, callback=None, renderer=None, **kwargs):
         self.callbacks = {}
@@ -38,12 +41,13 @@ class _View(param.Parameter):
         super(_View, self).__init__(default, **kwargs)
         self._comm_target = None
         self._document = None
+        self._notebook = False
 
     def __set__(self, obj, val):
         super(_View, self).__set__(obj, val)
         obj_id = id(obj)
         if obj_id in self.callbacks:
-            self.callbacks[obj_id](self.renderer(val, self._document, self._comm_target))
+            self.callbacks[obj_id](self.renderer(val, self))
 
 
 class Plot(_View):
