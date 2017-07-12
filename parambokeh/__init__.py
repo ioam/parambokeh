@@ -122,7 +122,7 @@ class Widgets(param.ParameterizedFunction):
             p_obj = self.parameterized.params(view.name)
             value = getattr(self.parameterized, view.name)
             if value is not None:
-                rendered = p_obj.renderer(value, self.document, self.comm_target)
+                rendered = p_obj.renderer(value, p_obj)
                 self._update_trait(view.name, rendered)
 
         # Keeps track of changes between button presses
@@ -240,7 +240,7 @@ class Widgets(param.ParameterizedFunction):
         w = widget_class(**kw)
 
         if hasattr(p_obj, 'callbacks') and value is not None:
-            rendered = p_obj.renderer(value, self.document, self.comm_target)
+            rendered = p_obj.renderer(value, p_obj)
             self._update_trait(p_name, rendered, w)
 
         if hasattr(p_obj, 'callbacks'):
