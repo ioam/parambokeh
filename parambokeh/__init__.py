@@ -8,7 +8,7 @@ import functools
 import param
 
 from bokeh.document import Document
-from bokeh.io import push_notebook
+from bokeh.io import push_notebook, curdoc
 from bokeh.layouts import row, column, widgetbox
 from bokeh.models.widgets import Div, Button, Toggle, TextInput
 from bokeh.models import CustomJS
@@ -101,8 +101,11 @@ class Widgets(param.ParameterizedFunction):
         if self.p.mode == 'notebook':
             self.comm = JupyterCommJS(on_msg=self.on_msg)
             self.comm_target = uuid.uuid4().hex
-        if self.p.mode != 'raw':
+        if self.p.mode == 'notebook':
             self.document = doc or Document()
+        elif self.p.mode == 'server':
+            self.document = doc or curdoc()
+
         self._queue = []
         self._widget_options = {}
         self.shown = False
