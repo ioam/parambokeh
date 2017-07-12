@@ -45,6 +45,8 @@ def DateWidget(*args, **kw):
 
 def RangeWidget(*args, **kw):
     kw['range'] = kw.pop('value')
+    if all(isinstance(v, int) for v in kw['range']):
+        kw['step'] = 1
     return RangeSlider(*args, **kw)
 
 def PlotWidget(*args, **kw):
