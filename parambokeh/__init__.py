@@ -19,10 +19,10 @@ from .util import named_objs, get_method_owner
 from .view import _View
 
 try:
-    __version__ = param.Version(release=(0,0,1), fpath=__file__,
+    __version__ = param.Version(release=(0,1,0), fpath=__file__,
                                 commit="$Format:%h$", reponame='parambokeh')
 except:
-    __version__ = '0.0.1-unknown'
+    __version__ = '0.1.0-unknown'
 
 
 class Widgets(param.ParameterizedFunction):

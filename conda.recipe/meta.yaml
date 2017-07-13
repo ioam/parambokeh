@@ -1,30 +1,23 @@
 package:
   name: parambokeh
-  version: 0.0.1
+  version: 0.1.0
 
 source:
   path: .
 
-extra:
-  channels:
-    - ioam
-    - conda-forge
-
 requirements:
   build:
     - python
-    - setuptools
-    - param >=1.5.1
   run:
     - python
-    - bokeh >=0.12.5
-    - param >=1.5.1
+    - param
+    - bokeh
 
 test:
   imports:
     - parambokeh
 
 about:
-  home: http://github.com/ioam/parambokeh
-  summary: Generate bokeh widgets from Parameterized objects on bokeh server
-  license: BSD
+  home: https://github.com/ioam/parambokeh
+  summary: ParamBokeh provides an easy way to generate a UI for param based classes in the notebook or on bokeh server.
+  license: BSD 3-Clause

@@ -24,8 +24,8 @@ CONDA_DIR=~/miniconda/
 # Platform code. For me it's `osx-64`
 PLATFORM=osx-64
 
-# Version number of parambokeh being released (e.g. 2.0.2)
-VERSION=2.0.2
+# Version number of parambokeh being released (e.g. 0.1.0)
+VERSION=0.1.0
 ```
 
 This assumes `conda`, `conda-build`, and `anaconda-client` are installed (if

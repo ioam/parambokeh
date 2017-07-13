@@ -8,14 +8,14 @@ except ImportError:
     from distutils.core import setup
 
 setup_args = {}
-install_requires = ['param>=1.5.1', 'bokeh>=0.12.5']
+install_requires = ['param>=1.5.1', 'bokeh>=0.12.6']
 
 setup_args.update(dict(
     name='parambokeh',
-    version="0.0.1",
+    version="0.1.0",
     install_requires = install_requires,
     url = 'https://github.com/ioam/parambokeh',
-    description='Generate bokeh widgets from Parameterized objects on bokeh server',
+    description='ParamBokeh provides an easy way to generate a UI for param based classes in the notebook or on bokeh server.',
     long_description=open('README.rst').read() if os.path.isfile('README.rst') else 'Consult README.rst',
     author= "IOAM",
     author_email= "holoviews@gmail.com",
