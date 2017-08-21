@@ -83,13 +83,16 @@ class Widgets(param.ParameterizedFunction):
         Whether to push data in notebook mode. Allows disabling pushing
         of data if the callback handles this itself.""")
 
+    width = param.Integer(default=300, bounds=(0, None), doc="""
+        Width of widgetbox the parameter widgets are displayed in.""")
+
     # Timeout if a notebook comm message is swallowed
     timeout = 20000
 
     # Timeout before the first event is processed
     debounce = 20
 
-    def __call__(self, parameterized, doc=None, server=True, **params):
+    def __call__(self, parameterized, doc=None, plots=[], **params):
         self.p = param.ParamOverrides(self, params)
         if self.p.initializer:
             self.p.initializer(parameterized)
@@ -111,9 +114,10 @@ class Widgets(param.ParameterizedFunction):
         self.shown = False
 
         widgets, views = self.widgets()
-        container = widgetbox(widgets)
-        if views:
-            view_box = column(views)
+        plots = views + plots
+        container = widgetbox(widgets, width=self.width)
+        if plots:
+            view_box = column(plots)
             layout = self.p.view_position
             if layout in ['below', 'right']:
                 children = [container, view_box]
