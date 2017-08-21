@@ -212,8 +212,13 @@ class Widgets(param.ParameterizedFunction):
 
     def _make_widget(self, p_name):
         p_obj = self.parameterized.params(p_name)
-        widget_class = wtype(p_obj)
 
+        if isinstance(p_obj, _View):
+            p_obj._comm_target = self.comm_target
+            p_obj._document = self.document
+            p_obj._notebook = self.p.mode == 'notebook'
+
+        widget_class = wtype(p_obj)
         value = getattr(self.parameterized, p_name)
 
         kw = dict(value=value)
@@ -268,11 +273,6 @@ class Widgets(param.ParameterizedFunction):
                     change = 'range'
                 customjs = self._get_customjs(change, p_name)
                 w.js_on_change(change, customjs)
-
-        if isinstance(p_obj, _View):
-            p_obj._comm_target = self.comm_target
-            p_obj._document = self.document
-            p_obj._notebook = self.p.mode == 'notebook'
 
         return w
 
