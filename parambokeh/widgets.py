@@ -44,8 +44,8 @@ def DateWidget(*args, **kw):
     return DatePicker(*args,**kw)
 
 def RangeWidget(*args, **kw):
-    kw['range'] = kw.pop('value')
-    if all(isinstance(v, int) for v in kw['range']):
+    kw['start'], kw['end'] = kw.pop('value')
+    if isinstance(kw['start'], int) and isinstance(kw['end'], int):
         kw['step'] = 1
     return RangeSlider(*args, **kw)
 
