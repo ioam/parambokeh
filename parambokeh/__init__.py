@@ -340,7 +340,7 @@ class Widgets(param.ParameterizedFunction):
 
         if self.p.button and not (self.p.callback is None and self.p.next_n==0):
             display_button = Button(label="Run")
-            def click_cb(button):
+            def click_cb():
                 # Execute and clear changes since last button press
                 try:
                     self.execute(self._changed)
