@@ -106,7 +106,7 @@ class Widgets(param.ParameterizedFunction):
             self.comm_target = uuid.uuid4().hex
         if self.p.mode == 'notebook':
             self.document = doc or Document()
-        elif self.p.mode == 'server':
+        else:
             self.document = doc or curdoc()
 
         self._queue = []
@@ -258,13 +258,13 @@ class Widgets(param.ParameterizedFunction):
         if hasattr(p_obj, 'callbacks'):
             p_obj.callbacks[id(self.parameterized)] = functools.partial(self._update_trait, p_name)
         elif isinstance(w, (Button, Toggle)):
-            if self.p.mode == 'server':
+            if self.p.mode in ['server', 'raw']:
                 w.on_change('active', functools.partial(self.on_change, w, p_obj, p_name))
             else:
                 js_callback = self._get_customjs('active', p_name)
                 w.js_on_change('active', js_callback)
         elif not p_obj.constant:
-            if self.p.mode == 'server':
+            if self.p.mode in ['server', 'raw']:
                 cb = functools.partial(self.on_change, w, p_obj, p_name)
                 if 'value' in w.properties():
                     w.on_change('value', cb)
