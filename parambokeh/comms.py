@@ -5,7 +5,9 @@ import traceback
 
 from bokeh.embed import notebook_div
 from bokeh.io import _CommsHandle
-from bokeh.util.notebook import publish_display_data, get_comms
+from bokeh.util.notebook import get_comms
+
+from IPython.display import publish_display_data
 
 try:
     from StringIO import StringIO
