@@ -175,7 +175,11 @@ class Widgets(param.ParameterizedFunction):
                 error = 'eval'
 
         if p_name in self._widget_options:
-            new_values = self._widget_options[p_name].get(new_values, new_values)
+            mapping = self._widget_options[p_name]
+            if isinstance(new_values, list):
+                new_values = [mapping[el] for el in new_values]
+            else:
+                new_values = mapping.get(new_values, new_values)
 
         if isinstance(p_obj, param.Range):
             new_values = tuple(new_values)
