@@ -36,6 +36,8 @@ def ButtonWidget(*args, **kw):
 
 def IntSlider(*args, **kw):
     kw['step'] = 1
+    if kw.get('value', False) is None:
+        kw['value'] = kw['start']
     return Slider(*args, **kw)
 
 def DateWidget(*args, **kw):
@@ -44,7 +46,10 @@ def DateWidget(*args, **kw):
     return DatePicker(*args,**kw)
 
 def RangeWidget(*args, **kw):
-    kw['start'], kw['end'] = kw.pop('value')
+    if not 'start' in kw and 'end' in kw:
+        kw['start'], kw['end'] = kw['value']
+    elif 'value' not in kw:
+        kw['value'] = (kw['start'], kw['end'])
     if isinstance(kw['start'], int) and isinstance(kw['end'], int):
         kw['step'] = 1
     return RangeSlider(*args, **kw)
