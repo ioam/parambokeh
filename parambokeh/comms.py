@@ -4,8 +4,6 @@ import sys
 import traceback
 
 from bokeh.embed import notebook_div
-from bokeh.io import _CommsHandle
-from bokeh.util.notebook import get_comms
 
 from IPython.display import publish_display_data
 
@@ -13,6 +11,12 @@ try:
     from StringIO import StringIO
 except:
     from io import StringIO
+
+try:
+    from bokeh.io import _CommsHandle as CommsHandle
+    from bokeh.util.notebook import get_comms
+except:
+    from bokeh.io.notebook import CommsHandle, get_comms
 
 
 JS_CALLBACK = """
@@ -110,7 +114,7 @@ def notebook_show(obj, doc, target):
     Displays bokeh output inside a notebook and returns a CommsHandle.
     """
     publish_display_data({'text/html': notebook_div(obj, target)})
-    handle = _CommsHandle(get_comms(target), doc, doc.to_json())
+    handle = CommsHandle(get_comms(target), doc, doc.to_json())
     return handle
 
 
