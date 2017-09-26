@@ -12,7 +12,7 @@ install_requires = ['param>=1.5.1', 'bokeh>=0.12.6']
 
 setup_args.update(dict(
     name='parambokeh',
-    version="0.2.0",
+    version="0.2.1",
     install_requires = install_requires,
     url = 'https://github.com/ioam/parambokeh',
     description='ParamBokeh provides an easy way to generate a UI for param based classes in the notebook or on bokeh server.',

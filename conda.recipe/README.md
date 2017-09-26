@@ -8,7 +8,7 @@
 - Tag commit and push to github
 
 ```bash
-git tag -a x.x.x -m 'Version x.x.x'
+git tag -a vx.x.x -m 'Version x.x.x'
 git push upstream master --tags
 ```
 
