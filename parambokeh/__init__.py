@@ -13,7 +13,11 @@ from bokeh.layouts import row, column, widgetbox
 from bokeh.models.widgets import Div, Button, Toggle, TextInput
 from bokeh.models import CustomJS
 
-from .comms import JupyterCommJS, JS_CALLBACK, notebook_show
+try:
+    from .comms import JupyterCommJS, JS_CALLBACK, notebook_show
+    IPYTHON_AVAILABLE = True
+except:
+    IPYTHON_AVAILABLE = False
 from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
 from .view import _View
@@ -102,6 +106,9 @@ class Widgets(param.ParameterizedFunction):
         self.document = None
         self.comm_target = None
         if self.p.mode == 'notebook':
+            if not IPYTHON_AVAILABLE:
+                raise ImportError('IPython is not available, cannot use '
+                                  'Widgets in notebook mode.')
             self.comm = JupyterCommJS(on_msg=self.on_msg)
             self.comm_target = uuid.uuid4().hex
         if self.p.mode == 'notebook':
