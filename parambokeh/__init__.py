@@ -122,7 +122,7 @@ class Widgets(param.ParameterizedFunction):
 
         widgets, views = self.widgets()
         plots = views + plots
-        container = widgetbox(widgets, width=self.width)
+        container = widgetbox(widgets, width=self.p.width)
         if plots:
             view_box = column(plots)
             layout = self.p.view_position
