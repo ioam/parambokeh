@@ -55,6 +55,9 @@ class Widgets(param.ParameterizedFunction):
         If false, will execute `next` cells on any widget
         value change.""")
 
+    button_text = param.String(default="Run", doc="""
+        Text to show on the 'next_n'/run button.""")
+    
     show_labels = param.Boolean(default=True)
 
     display_threshold = param.Number(default=0,precedence=-10,doc="""
@@ -350,7 +353,7 @@ class Widgets(param.ParameterizedFunction):
             widgets += [self.widget(pname) for pname in ordered_params]
 
         if self.p.button and not (self.p.callback is None and self.p.next_n==0):
-            display_button = Button(label="Run")
+            display_button = Button(label=self.p.button_text)            
             def click_cb():
                 # Execute and clear changes since last button press
                 try:
