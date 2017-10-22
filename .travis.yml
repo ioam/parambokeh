@@ -19,11 +19,11 @@ stages:
 
 jobs:
   include:
-    - &tests
-      stage: test
+    - &test
+      stage: testpy27
       env: PYTHON_VERSION="2.7"
       install:
-      - etc/travis-miniconda.sh
+      - source ./etc/travis-miniconda.sh
       - conda create -n test-environment python=$PYTHON_VERSION
       - source activate test-environment
       - conda install param
@@ -39,15 +39,14 @@ jobs:
         - python doc/test_notebooks.py lint
         - python doc/test_notebooks.py
 
-    ##############
-
-    - <<: *tests
+    - <<: *test
+      stage: testpy36
       env: PYTHON_VERSION="3.6"
 
     - stage: deploy
       env: PYTHON_VERSION="3.6"
       install:
-      - etc/travis-miniconda.sh
+      - source ./etc/travis-miniconda.sh
       # for building and uploading packages
       - conda install conda-build=3.0.25
       - conda install anaconda-client
