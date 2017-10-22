@@ -24,8 +24,8 @@ jobs:
     - stage: test
       env:
       - PYTHON_VERSION=3.6
-
       install:
+      ##
       - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
           wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
         else
@@ -35,40 +35,39 @@ jobs:
       - export PATH="$HOME/miniconda/bin:$PATH"
       - conda config --set always_yes yes --set changeps1 no
       - conda update conda
-
-      # Install dependencies
+      ##
       - conda create -n test-environment python=$PYTHON_VERSION
       - source activate test-environment
       - conda install param
-      - conda install -c bokeh "bokeh>=0.12.10"
-      # for testing
+      - conda install -c bokeh "bokeh==0.12.9"
+      # dependencies for testing
       - conda install pandas notebook flake8
       - python setup.py develop --no-deps
       - conda env export
       - conda list
-      ##############
-
       script:
         - flake8 --ignore E,W parambokeh
         - python doc/test_notebooks.py lint
         - python doc/test_notebooks.py
 
+    ##############
+
     - stage: deploy
       install:
-        - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-            wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
-          else
-            wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-          fi
-        - bash miniconda.sh -b -p $HOME/miniconda
-        - export PATH="$HOME/miniconda/bin:$PATH"
-        - conda config --set always_yes yes --set changeps1 no
-        - conda update conda
-
-        # for building and uploading packages
-        - conda install conda-build=3.0.25
-        - conda install anaconda-client
+      ##
+      - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+          wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+        else
+          wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+        fi
+      - bash miniconda.sh -b -p $HOME/miniconda
+      - export PATH="$HOME/miniconda/bin:$PATH"
+      - conda config --set always_yes yes --set changeps1 no
+      - conda update conda
+      ##
+      # for building and uploading packages
+      - conda install conda-build=3.0.25
+      - conda install anaconda-client
       script:
-        - conda build conda.recipe
-        - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
-      
+      - conda build conda.recipe
+      - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
