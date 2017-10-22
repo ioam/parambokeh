@@ -42,6 +42,7 @@ script:
 - python doc/test_notebooks.py
 
 stages:
+  - test
   - deploy
 #  - name: deploy
 #    if: branch = master
