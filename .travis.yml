@@ -41,7 +41,7 @@ jobs:
       - conda install param
       - conda install -c bokeh "bokeh==0.12.9"
       # dependencies for testing
-      - conda install pandas notebook flake8
+      - conda install pandas holoviews notebook flake8
       - python setup.py develop --no-deps
       - conda env export
       - conda list
