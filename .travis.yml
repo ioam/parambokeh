@@ -17,7 +17,8 @@ env:
 stages:
   - test
   - name: deploy
-    if: branch = master
+
+#if: branch = master
 
 jobs:
   include:
@@ -52,7 +53,7 @@ jobs:
     ##############
 
     - stage: deploy
-      env: PYTHON_VERSION=3.6
+      env: PYTHON_VERSION="3.6"
       install:
       ##
       - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
