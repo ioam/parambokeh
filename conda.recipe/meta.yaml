@@ -1,6 +1,6 @@
 package:
   name: parambokeh
-  version: {{ GIT_DESCRIBE_TAG }}
+  version: {{ environ['GIT_DESCRIBE_TAG'].lstrip('v') }}
 
 source:
   path: ..
