@@ -42,8 +42,9 @@ script:
 - python doc/test_notebooks.py
 
 stages:
-  - name: deploy
-    if: branch = master
+  - deploy
+#  - name: deploy
+#    if: branch = master
 
 jobs:
   include:
