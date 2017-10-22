@@ -1,5 +1,3 @@
-# TODO: reduce duplication with yaml refs
-
 language: generic
 
 os:
@@ -14,8 +12,7 @@ env:
 stages:
   - test
   - name: deploy
-
-#if: branch = master
+    if: branch = master
 
 jobs:
   include:
