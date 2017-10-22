@@ -23,6 +23,9 @@ stages:
 jobs:
   include:
     - stage: test
+      env:
+      - PYTHON_VERSION="2.7"
+      - PYTHON_VERSION="3.6"
       install:
       ##
       - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
