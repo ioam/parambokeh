@@ -16,7 +16,7 @@ requirements:
   run:
     - python
     - param
-    - bokeh =0.12.9
+    - bokeh >=0.12.9,<0.12.10
 
 test:
   imports:
