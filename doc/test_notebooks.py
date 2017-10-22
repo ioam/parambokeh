@@ -24,7 +24,7 @@ import pprint
 
 nbdir = "doc"
 
-run_skip = ["doc/ViewParameters.ipynb"]
+run_skip = []
 
 run_allow_error = []
 
