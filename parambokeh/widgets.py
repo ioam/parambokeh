@@ -1,10 +1,10 @@
 import param
 from param.parameterized import classlist
 
-from bokeh.layouts import widgetbox, row, column
+from bokeh.layouts import column
 from bokeh.models.widgets import (
-    Button, TextInput, Div, Slider, Bool, CheckboxGroup, Toggle,
-    DatePicker, MultiSelect, Select, PreText, RangeSlider
+    Button, TextInput, Div, Slider, Toggle,
+    DatePicker, MultiSelect, Select, RangeSlider
 )
 
 from .util import as_unicode

@@ -214,7 +214,6 @@ class Widgets(param.ParameterizedFunction):
 
 
     def _update_trait(self, p_name, p_value, widget=None):
-        p_obj = self.parameterized.params(p_name)
         widget = self._widgets[p_name] if widget is None else widget
         if isinstance(p_value, tuple):
             p_value, size = p_value
@@ -338,7 +337,7 @@ class Widgets(param.ParameterizedFunction):
         ordered_params = [el[0] for group in sorted_groups for el in group]
 
         # Format name specially
-        name = ordered_params.pop(ordered_params.index('name'))
+        ordered_params.pop(ordered_params.index('name'))
         widgets = [Div(text='<b>{0}</b>'.format(self.parameterized.name))]
 
         def format_name(pname):

@@ -1,9 +1,14 @@
 package:
   name: parambokeh
-  version: 0.2.1
+  version: {{ environ['GIT_DESCRIBE_TAG'].lstrip('v') }}
 
 source:
-  path: .
+  path: ..
+
+build:
+  noarch: python
+  number: {{ GIT_DESCRIBE_NUMBER|int }}
+  script: python setup.py install --single-version-externally-managed --record=record.txt
 
 requirements:
   build:
@@ -11,7 +16,7 @@ requirements:
   run:
     - python
     - param
-    - bokeh
+    - bokeh >=0.12.9,<0.12.10
 
 test:
   imports:
