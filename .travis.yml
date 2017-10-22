@@ -19,8 +19,8 @@ stages:
 
 jobs:
   include:
-    - &test
-      stage: testpy27
+    - &tests
+      stage: test
       env: PYTHON_VERSION="2.7"
       install:
       - source ./etc/travis-miniconda.sh
@@ -39,8 +39,8 @@ jobs:
         - python doc/test_notebooks.py lint
         - python doc/test_notebooks.py
 
-    - <<: *test
-      stage: testpy36
+    - <<: *tests
+      stage: test
       env: PYTHON_VERSION="3.6"
 
     - stage: deploy
