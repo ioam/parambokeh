@@ -26,7 +26,7 @@ jobs:
       - conda install param
       - conda install -c bokeh "bokeh==0.12.9"
       # dependencies for testing
-      - pip install pytest pytest-nbsane
+      - pip install pytest "pytest-nbsane>=0.0.5"
       - conda install -c conda-forge "holoviews>=1.8.4"
       - conda install pandas notebook flake8 pyparsing
       - python setup.py develop --no-deps
