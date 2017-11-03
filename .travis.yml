@@ -34,8 +34,8 @@ jobs:
       - conda list
       script:
         - flake8 --ignore E,W parambokeh
-        - pytest -v --nbsmoke-lint doc/
-        - pytest -v --nbsmoke-run doc/
+        - pytest --nbsmoke-lint doc/
+        - pytest --nbsmoke-run doc/
 
     - <<: *tests
       stage: test
