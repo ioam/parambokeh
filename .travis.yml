@@ -24,10 +24,10 @@ jobs:
       - conda create -n test-environment python=$PYTHON_VERSION
       - source activate test-environment
       - conda install param
-      - conda install -c bokeh "bokeh==0.12.9"
+      - conda install -c bokeh "bokeh>=0.12.10"
       # dependencies for testing
       - pip install pytest pytest-nbsmoke
-      - conda install -c conda-forge "holoviews>=1.8.4"
+      - conda install -c conda-forge "holoviews>=1.9.0"
       - conda install pandas notebook flake8 pyparsing
       - python setup.py develop --no-deps
       - conda env export
