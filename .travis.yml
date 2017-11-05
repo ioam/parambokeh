@@ -27,7 +27,7 @@ jobs:
       - conda install -c bokeh "bokeh>=0.12.10"
       # dependencies for testing
       - pip install pytest pytest-nbsmoke
-      - conda install -c conda-forge "holoviews>=1.9.0"
+      - conda install -c ioam "holoviews>=1.9.0"
       - conda install pandas notebook flake8 pyparsing
       - python setup.py develop --no-deps
       - conda env export
