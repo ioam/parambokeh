@@ -8,7 +8,7 @@ except ImportError:
     from distutils.core import setup
 
 setup_args = {}
-install_requires = ['param>=1.5.1', 'bokeh>=0.12.6']
+install_requires = ['param>=1.5.1', 'bokeh>=0.12.10']
 
 setup_args.update(dict(
     name='parambokeh',
