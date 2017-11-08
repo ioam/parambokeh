@@ -1,3 +1,5 @@
+import decimal
+
 import param
 from param.parameterized import classlist
 
@@ -34,11 +36,43 @@ def ButtonWidget(*args, **kw):
     button.on_click(cb)
     return button
 
+# TODO: make a composite box/slider widget; slider only appears if
+# there's a range.
+
+# TODO: There's confusion about the thing being represented and the
+# thing doing the representing. I will rework the widgets more
+# comprehensively once we have things working as-is in bokeh 0.12.10.
+
+def FloatSlider(*args,**kw):
+    if kw.get('start') is None or kw.get('end') is None:
+        kw.pop('start',None)
+        kw.pop('end',None)
+        kw.pop('step',None)
+        kw['value'] = str(kw['value'])
+        return TextInput(*args,**kw)
+    else:
+        ###
+        # TODO: some improvement will come from composite box/optional
+        # slider widget - will be able to get appropriate step from
+        # user-entered value.
+        p = decimal.Decimal(str(kw['value'])).as_tuple()[2]
+        kw['step'] = 10**p
+        #kw['format'] = "0[.]" + "0".zfill(-p)
+        kw['format'] = "0[.]" + "".rjust(-p,'0')
+        ###
+        return Slider(*args, **kw)
+
+
 def IntSlider(*args, **kw):
-    kw['step'] = 1
-    if kw.get('value', False) is None:
-        kw['value'] = kw['start']
-    return Slider(*args, **kw)
+    if kw.get('start') is None or kw.get('end') is None:
+        kw.pop('start',None)
+        kw.pop('end',None)
+        kw.pop('step',None)
+        kw['value'] = str(kw['value'])
+        return TextInput(*args,**kw)
+    else:
+        kw['step'] = 1
+        return Slider(*args, **kw)
 
 def DateWidget(*args, **kw):
     kw['min_date'] = kw.pop('start')
@@ -50,6 +84,8 @@ def RangeWidget(*args, **kw):
         kw['start'], kw['end'] = kw['value']
     elif 'value' not in kw:
         kw['value'] = (kw['start'], kw['end'])
+    # TODO: should use param definition of integer (when that is
+    # itself fixed...).
     if isinstance(kw['start'], int) and isinstance(kw['end'], int):
         kw['step'] = 1
     return RangeSlider(*args, **kw)
@@ -66,7 +102,7 @@ ptype2wtype = {
     param.Dict:          TextWidget,
     param.Selector:      Select,
     param.Boolean:       ToggleWidget,
-    param.Number:        Slider,
+    param.Number:        FloatSlider,
     param.Integer:       IntSlider,
     param.Range:         RangeWidget,
     param.ListSelector:  MultiSelect,
@@ -86,4 +122,4 @@ def wtype(pobj):
 
 
 # Define parameters which should be evaluated using ast.literal_eval
-literal_params = (param.Dict, param.List, param.Tuple)
+literal_params = (param.Dict, param.List, param.Tuple, param.Number)

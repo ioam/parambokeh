@@ -2,21 +2,18 @@ import json
 import uuid
 import sys
 import traceback
-
-from bokeh.embed import notebook_div
-
-from IPython.display import publish_display_data
-
 try:
     from StringIO import StringIO
 except:
     from io import StringIO
 
-try:
-    from bokeh.io import _CommsHandle as CommsHandle
-    from bokeh.util.notebook import get_comms
-except:
-    from bokeh.io.notebook import CommsHandle, get_comms
+import bokeh.embed.notebook
+import bokeh.io.notebook
+from bokeh.util.string import encode_utf8
+
+from IPython.display import publish_display_data
+
+
 
 
 JS_CALLBACK = """
@@ -113,9 +110,15 @@ def notebook_show(obj, doc, target):
     """
     Displays bokeh output inside a notebook and returns a CommsHandle.
     """
-    publish_display_data({'text/html': notebook_div(obj, target)})
-    handle = CommsHandle(get_comms(target), doc, doc.to_json())
-    return handle
+    bokeh_script, bokeh_div, doc = bokeh.embed.notebook.notebook_content(obj, target)
+
+    bokeh_output = """
+    {bokeh_div}
+    <script type="application/javascript">{bokeh_script}</script>
+    """.format(bokeh_div=bokeh_div, bokeh_script=bokeh_script)
+
+    publish_display_data({'text/html': encode_utf8(bokeh_output)})
+    return bokeh.io.notebook.CommsHandle(bokeh.io.notebook.get_comms(target), doc)
 
 
 class StandardOutput(list):

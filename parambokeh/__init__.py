@@ -209,7 +209,8 @@ class Widgets(param.ParameterizedFunction):
         else:
             self._changed[p_name] = new_values
 
-        if self.p.mode == 'notebook' and self.p.push:
+        # document.hold() must have been done already? because this seems to work
+        if self.p.mode == 'notebook' and self.p.push and self.document._held_events:
             push_notebook(handle=self.notebook_handle, document=self.document)
 
 
