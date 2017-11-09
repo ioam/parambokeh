@@ -60,6 +60,8 @@ def FloatSlider(*args,**kw):
         #kw['format'] = "0[.]" + "0".zfill(-p)
         kw['format'] = "0[.]" + "".rjust(-p,'0')
         ###
+        if kw.get('value', None) is None:
+            kw['value'] = kw['start']
         return Slider(*args, **kw)
 
 
@@ -72,6 +74,8 @@ def IntSlider(*args, **kw):
         return TextInput(*args,**kw)
     else:
         kw['step'] = 1
+        if kw.get('value', None) is None:
+            kw['value'] = kw['start']
         return Slider(*args, **kw)
 
 def DateWidget(*args, **kw):
