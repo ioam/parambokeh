@@ -120,6 +120,8 @@ class Widgets(param.ParameterizedFunction):
             self.document = doc or curdoc()
 
         self._queue = []
+        self._active = False
+
         self._widget_options = {}
         self.shown = False
 
@@ -170,12 +172,18 @@ class Widgets(param.ParameterizedFunction):
 
     def on_change(self, w, p_obj, p_name, attr, old, new):
         self._queue.append((w, p_obj, p_name, attr, old, new))
-        if self.change_event not in self.document._session_callbacks:
+        if not self._active:
             self.document.add_timeout_callback(self.change_event, 50)
+            self._active = True
 
 
     def change_event(self):
+        if not self._queue:
+            self._active = False
+            return
         w, p_obj, p_name, attr, old, new_values = self._queue[-1]
+        self._queue = []
+
         error = False
         # Apply literal evaluation to values
         if (isinstance(w, TextInput) and isinstance(p_obj, literal_params)):
@@ -212,6 +220,7 @@ class Widgets(param.ParameterizedFunction):
         # document.hold() must have been done already? because this seems to work
         if self.p.mode == 'notebook' and self.p.push and self.document._held_events:
             push_notebook(handle=self.notebook_handle, document=self.document)
+        self._active = False
 
 
     def _update_trait(self, p_name, p_value, widget=None):
