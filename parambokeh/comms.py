@@ -110,7 +110,7 @@ def notebook_show(obj, doc, target):
     """
     Displays bokeh output inside a notebook and returns a CommsHandle.
     """
-    bokeh_script, bokeh_div, doc = bokeh.embed.notebook.notebook_content(obj, target)
+    bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, target)
 
     bokeh_output = """
     {bokeh_div}

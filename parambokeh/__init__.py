@@ -113,9 +113,16 @@ class Widgets(param.ParameterizedFunction):
                 raise ImportError('IPython is not available, cannot use '
                                   'Widgets in notebook mode.')
             self.comm = JupyterCommJS(on_msg=self.on_msg)
-            self.comm_target = uuid.uuid4().hex
-        if self.p.mode == 'notebook':
-            self.document = doc or Document()
+            # HACK: Detects HoloViews plots and lets them handle the comms
+            hv_plots = [plot for plot in plots if hasattr(plot, 'comm')]
+            if hv_plots:
+                self.comm_target = [p.comm.id for p in hv_plots][0]
+                self.document = [p.document for p in hv_plots][0]
+                plots = [p.state for p in plots]
+                self.p.push = False
+            else:
+                self.comm_target = uuid.uuid4().hex
+                self.document = doc or Document()
         else:
             self.document = doc or curdoc()
 
@@ -157,6 +164,8 @@ class Widgets(param.ParameterizedFunction):
         if self.p.mode == 'notebook':
             self.notebook_handle = notebook_show(container, self.document,
                                                  self.comm_target)
+            if self.document._hold is None:
+                self.document.hold()
             self.shown = True
             return
         return self.document
