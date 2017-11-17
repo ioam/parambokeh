@@ -1,0 +1,4 @@
+[submodule "doc/builder"]
+	path = doc/builder
+	url = git@github.com:ioam/ioam-builder
+	branch = tmphvdocs
