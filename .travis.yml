@@ -11,7 +11,7 @@ env:
 
 stages:
   - test
-    if: branch = doesnotexist
+    if: branch = master
   - name: deploy
     if: branch = master AND type != pull_request
   - name: docs
