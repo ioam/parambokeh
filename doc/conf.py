@@ -6,13 +6,13 @@ from builder.shared_conf import * # noqa
 ##############################################################
 # start of things to edit
 
-project = u'parambokeh'
-authors = u'parambokeh contributors'
+project = u'ParamBokeh'
+authors = u'ParamBokeh contributors'
 copyright = u'2017 ' + authors
 
 # TODO: rename
 ioam_module = 'parabokeh'
-description = 'Construct bokeh widgets automatically something something'
+description = 'Generate bokeh widgets for parameterized objects'
 
 # TODO: gah, version
 version = '0.0.1'
@@ -50,7 +50,7 @@ html_context = {
     'DESCRIPTION': description,
     'AUTHOR': authors,
     # will work without this - for canonical
-    'WEBSITE_SERVER': 'ceball.github.io',
+    'WEBSITE_SERVER': 'ioam.github.io/parambokeh',
     'VERSION': version,
     'NAV': _NAV,
     'LINKS': _LINKS,

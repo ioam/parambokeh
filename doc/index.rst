@@ -1,34 +1,29 @@
-*******
-Project
-*******
+**********
+ParamBokeh
+**********
 
 .. raw:: html
 
    <div style="width: 65%; float:left">
 
 	 
-**Short description of the point of this project**
+**Generate bokeh widgets for parameterized objects**
 
-Project is an `open-source
+ParamBokeh is an `open-source
 <https://github.com/ioam/holoviews/blob/master/LICENSE.txt>`_ Python
-library for something something something something and something
-more.
+library that allows you to easily create GUIs from existing objects
+(in Jupyter notebooks, Bokeh apps, and potentially more)
 
-For examples of what you can do with Project, check out the thumbnails
-below, or see the `Gallery <gallery>`_ of demos and apps.
+For examples of what you can do with ParamBokeh, check out the
+thumbnails below, or see the `Gallery <gallery>`_ of demos and apps.
 
 We recommend the `Getting Started Guide <getting_started>`_ to learn
-the basic concepts and start using Project as quickly as possible.
+the basic concepts and start using ParamBokeh as quickly as possible.
 
-The `User Guide <user_guide>`_ goes into key concepts more deeply when
-you are ready for further study.
-
-The `API <Reference_Manual>`_ is the definitive guide to each Project
-object, but the same information is available more conveniently via
-the `hv.help()` command and tab completion in the Jupyter notebook.
+The `User Guide <user_guide>`_ covers all topics in detail.
 
 Please feel free to report `issues
-<https://github.com/ioam/holoviews/issues>`_ or `contribute code
+<https://github.com/ioam/parambokeh/issues>`_ or `contribute code
 <https://help.github.com/articles/about-pull-requests>`_. You are also
 welcome to chat with the developers on `gitter
 <https://gitter.im/ioam/holoviews>`_.
