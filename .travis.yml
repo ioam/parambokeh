@@ -12,7 +12,11 @@ env:
 stages:
   - test
   - name: deploy
-    if: branch = master AND type != pull_request  
+    if: branch = master AND type != pull_request
+  - name: docs
+    if: branch = docs
+
+# TODO: docs only on tag once initial version is up
 
 jobs:
   include:
@@ -51,6 +55,23 @@ jobs:
       script:
       - conda build conda.recipe
       - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
+
+    - stage: docs
+      env: PYTHON_VERSION="3.6"
+      install:
+      - source ./etc/travis-miniconda.sh
+      - conda env create -f doc/builder/ioamdocenv.yml
+      - source activate ioamdocenv
+      - cd doc/builder/ioam_theme && python setup.py install && cd ../../..
+      script:
+      - export PYTHONPATH=$PWD/doc
+      - cd doc
+      #- make gallery
+      #- make refmanual
+      - make ipynb-rst
+      - make html
+      - make fix-links
+      - touch ./_build/html/.nojekyll
 
 
 deploy:
