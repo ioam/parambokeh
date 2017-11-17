@@ -51,3 +51,12 @@ jobs:
       script:
       - conda build conda.recipe
       - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
+
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: ./_build/html
+  on:
+    branch: docs
