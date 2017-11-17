@@ -11,12 +11,14 @@ env:
 
 stages:
   - test
+    if: branch = doesnotexist
   - name: deploy
     if: branch = master AND type != pull_request
   - name: docs
     if: branch = docs
 
-# TODO: docs only on tag once initial version is up
+# TODO: docs only on tag once initial version is up, and
+# restore tests
 
 jobs:
   include:
