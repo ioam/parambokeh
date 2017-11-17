@@ -44,7 +44,6 @@ jobs:
         - pytest --nbsmoke-run doc/
 
     - <<: *tests
-      stage: test
       env: PYTHON_VERSION="3.6"
 
     - stage: deploy
