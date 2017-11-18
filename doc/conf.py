@@ -31,26 +31,27 @@ html_theme_options = {
 
 
 _NAV =  (
-        ('Getting Started', '/getting_started/index'),
-        ('User Guide', '/user_guide/index'),
-#        ('Gallery', '/gallery/index'),
-#        ('API', '/Reference_Manual/index'),
-#        ('FAQ', '/FAQ'),
-        ('About', '/about'))
+        ('Getting Started', 'getting_started/index'),
+        ('User Guide', 'user_guide/index'),
+#        ('Gallery', 'gallery/index'),
+#        ('API', 'Reference_Manual/index'),
+#        ('FAQ', 'FAQ'),
+        ('About', 'about'))
 
 _LINKS = (
-        ('Getting Started', '/getting_started/index'),
-        ('User Guide', '/user_guide/index'),
-#        ('Gallery', '/gallery/index'),
-#        ('API', '/Reference_Manual/index'),
-#        ('FAQ', '/FAQ'),
-        ('About', '/about'))
+        ('Getting Started', 'getting_started/index'),
+        ('User Guide', 'user_guide/index'),
+#        ('Gallery', 'gallery/index'),
+#        ('API', 'Reference_Manual/index'),
+#        ('FAQ', 'FAQ'),
+        ('About', 'about'))
 
 html_context = {
+    'PROJECT': project,
     'DESCRIPTION': description,
     'AUTHOR': authors,
-    # will work without this - for canonical
-    'WEBSITE_SERVER': 'ioam.github.io/parambokeh',
+    # will work without this - for canonical (so can ignore when building locally or test deploying)
+    'WEBSITE_URL': 'https://ioam.github.io/parambokeh',
     'VERSION': version,
     'NAV': _NAV,
     'LINKS': _LINKS,
