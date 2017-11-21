@@ -61,18 +61,21 @@ jobs:
       env: PYTHON_VERSION="3.6"
       install:
       - source ./etc/travis-miniconda.sh
-      - conda env create -f doc/builder/ioamdocenv.yml
+      - conda create --name ioamdocenv
       - source activate ioamdocenv
+      - conda install -c ioam -c bokeh -c conda-forge -c defaults python=3.6* paramnb numpy scipy notebook matplotlib pandas bokeh=0.12.10 nose networkx xarray datashader scikit-image selenium phantomjs streamz=0.2.0 dask=0.15.4 sphinx runipy beautifulsoup4 graphviz plotly holoviews
+      - pip install nbsite sphinx_ioam_theme
       - pip install -e .
-      - cd doc/builder/ioam_theme && python setup.py install && cd ../../..
       script:
-      - export PYTHONPATH=$PWD/doc
       - cd doc
       #- make gallery
       #- make refmanual
-      - make ipynb-rst
-      - make html
-      - make fix-links
+      - nbsite_nbpagebuild.py parambokeh ../examples .
+      - sphinx-build -b html . ./_build/html
+      # TODO deal with these find cmds later!
+      - find . -type f -name '*.json' -path "./_build" -prune -exec mv {} ./_build/html/json/ ";"
+      - find ../examples -type f -name '*.json' -exec mv {} ./_build/html/json/ ";"
+      - nbsite_fix_links.py _build/html
       - touch ./_build/html/.nojekyll
 
 

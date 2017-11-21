@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from builder.shared_conf import * # noqa
+from nbsite.shared_conf import * # noqa
 
 ##############################################################
 # start of things to edit
@@ -20,7 +20,7 @@ release = '0.0.1'
 
 html_static_path = ['_static']
 
-html_theme = 'ioam_theme'
+html_theme = 'sphinx_ioam_theme'
 html_theme_options = {
 #    'logo':'images/amazinglogo.png'
 #    'favicon':'images/amazingfavicon.ico'
@@ -38,14 +38,6 @@ _NAV =  (
 #        ('FAQ', 'FAQ'),
         ('About', 'about'))
 
-_LINKS = (
-        ('Getting Started', 'getting_started/index'),
-        ('User Guide', 'user_guide/index'),
-#        ('Gallery', 'gallery/index'),
-#        ('API', 'Reference_Manual/index'),
-#        ('FAQ', 'FAQ'),
-        ('About', 'about'))
-
 html_context = {
     'PROJECT': project,
     'DESCRIPTION': description,
@@ -54,7 +46,7 @@ html_context = {
     'WEBSITE_URL': 'https://ioam.github.io/parambokeh',
     'VERSION': version,
     'NAV': _NAV,
-    'LINKS': _LINKS,
+    'LINKS': _NAV,
     'SOCIAL': (
         ('Gitter', '//gitter.im/ioam/holoviews'),
         ('Twitter', '//twitter.com/holoviews'),
@@ -73,7 +65,7 @@ paths = ['.', '..']
 
 add_paths(paths)
 
-from builder.shared_conf2 import hack
+from nbsite.shared_conf2 import hack
 setup, intersphinx_mapping, texinfo_documents, man_pages, latex_documents, htmlhelp_basename, html_static_path, html_title, exclude_patterns = hack(project,ioam_module,authors,description,html_static_path)
 
 intersphinx_mapping = {}
