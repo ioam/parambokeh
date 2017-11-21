@@ -68,8 +68,6 @@ jobs:
       - pip install -e .
       script:
       - cd doc
-      #- make gallery
-      #- make refmanual
       - nbsite_nbpagebuild.py parambokeh ../examples .
       - sphinx-build -b html . ./_build/html
       # TODO deal with these find cmds later!

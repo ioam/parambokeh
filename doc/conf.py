@@ -55,15 +55,9 @@ html_context = {
     'js_includes': ['custom.js', 'require.js'],
 }
 
-# If extensions (or modules to document with autodoc) are in another
-# directory, add these directories to sys.path here.
-paths = ['.', '..']
-
 # end of things to edit
 ##############################################################
 
-
-add_paths(paths)
 
 from nbsite.shared_conf2 import hack
 setup, intersphinx_mapping, texinfo_documents, man_pages, latex_documents, htmlhelp_basename, html_static_path, html_title, exclude_patterns = hack(project,ioam_module,authors,description,html_static_path)
