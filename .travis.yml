@@ -17,8 +17,8 @@ stages:
   - name: docs
     if: branch = docs
 
-# TODO: docs only on tag once initial version is up, and
-# restore tests
+# TODO: stage=docs (above) only on tag once initial version is
+# up. Same for gh pages deploy section (at the bottom).
 
 jobs:
   include:
@@ -40,8 +40,8 @@ jobs:
       - conda list
       script:
         - flake8 --ignore E,W parambokeh
-        - pytest --nbsmoke-lint doc/
-        - pytest --nbsmoke-run doc/
+        - pytest --nbsmoke-lint examples/
+        - pytest --nbsmoke-run examples/
 
     - <<: *tests
       env: PYTHON_VERSION="3.6"
