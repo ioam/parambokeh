@@ -10,9 +10,9 @@ env:
     secure: qDzvmjcR6eLAmHx0ziN3Y5M8h65+OM+eBNERQsC3WSkeaD45rEE6a8w59dBdUzZBTLKO2RP8pKlgzxBZGOBlnLbTyN4RD/q2dA+gm5c0SDWWT4kVCiogJVsrzyRHVgMDmqDu56HPbQzhsW+5Qh2JKjVkkI7GwvGZRFB9WKQC8yjW/RfLvQ7bzX6jXbaHDYg9dywjI5u7da7HZKXyt/6nhebdaI19RdQHuESUqTADFEgdCKdzrNC+NqbJ8SUnNBBmkb1ZqoQ3/p1/Z/+uDi/2ThozE7Lz6gl8HtxVRnBiwNCDvZRE8uTB79+FlW0FJCVZ7qGO8jVWlVqy+WEEFh/6s9RP2PLd73CmItfF7BzSdxdurOYfnizboqCideSasDQK7XdeDiX4fPrgqbeesn8+XJ9vhxRAmpsNdZIU+2pivgviJwUZUwKwgzt3hf23ld9GpJg60wCfQRT8hiZc3/XsUPrzDjci7hwrRESqobPcuWk6xsFPTvJsTeOSLejP1wDOGAhufLTQIys26BSwHiaj6aI4RPK3Y4sy644m4IOfVvi3d+YfyN2Q5NO7QIwk5PjQBUEdwcIi3lAk2eAIjJamlDYFCRrnwuEoFinuFlUjtqpkuVTLgonTbk9KkIYnXeP3wYERrt4uOJtxDRCojBC0FI5rDbkhC3wP8Wef4EToQ+s=
 
 stages:
-  - name: test
-  - name: deploy
-    if: branch = master AND type != pull_request
+#  - name: test
+#  - name: deploy
+#    if: branch = master AND type != pull_request
   - name: docs
     if: branch = docs
 
@@ -60,9 +60,12 @@ jobs:
       env: PYTHON_VERSION="3.6"
       install:
       - source ./etc/travis-miniconda.sh
-      - conda create --name ioamdocenv
-      - source activate ioamdocenv
-      - conda install -c ioam -c bokeh -c conda-forge -c defaults python=3.6* paramnb numpy scipy notebook matplotlib pandas bokeh=0.12.10 nose networkx xarray datashader scikit-image selenium phantomjs streamz=0.2.0 dask=0.15.4 sphinx runipy beautifulsoup4 graphviz plotly holoviews
+      - conda create -n test-environment python=$PYTHON_VERSION
+      - source activate test-environment
+      - conda install param
+      - conda install -c bokeh "bokeh>=0.12.10"
+      - conda install -c ioam "holoviews>=1.9.0"
+      - conda install -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs
       - pip install nbsite sphinx_ioam_theme
       - pip install -e .
       script:
@@ -74,7 +77,6 @@ jobs:
       - find ../examples -type f -name '*.json' -exec mv {} ./_build/html/json/ ";"
       - nbsite_fix_links.py _build/html
       - touch ./_build/html/.nojekyll
-
 
 deploy:
   provider: pages
