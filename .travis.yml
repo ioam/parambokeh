@@ -72,13 +72,14 @@ jobs:
       - pip install -e .
       script:
       - cd doc
-      - nbsite_nbpagebuild.py parambokeh ../examples .
+      - nbsite_nbpagebuild.py ioam parambokeh ../examples .
       - sphinx-build -b html . ./_build/html
       # TODO deal with these find cmds later!
       - find . -type f -name '*.json' -path "./_build" -prune -exec mv {} ./_build/html/json/ ";"
       - find ../examples -type f -name '*.json' -exec mv {} ./_build/html/json/ ";"
       - nbsite_fix_links.py _build/html
       - touch ./_build/html/.nojekyll
+      - nbsite_cleandisthtml.py ./_build/html take_a_chance
 
 deploy:
   provider: pages
