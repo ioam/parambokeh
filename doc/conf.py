@@ -23,7 +23,7 @@ html_theme_options = {
 _NAV =  (
     ('Getting Started', 'getting_started/index'),
     ('User Guide', 'user_guide/index'),
-    ('FAQ', 'FAQ')
+    ('FAQ', 'FAQ'),
     ('About', 'about')
 )
 
