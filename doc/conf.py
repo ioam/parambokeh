@@ -14,10 +14,8 @@ html_static_path += ['_static']
 html_theme = 'sphinx_ioam_theme'
 html_theme_options = {
     'logo':'param-logo.png',
-    'favicon':'favicon.ico'
-# ...
-# ? css
-# ? js
+    'favicon':'favicon.ico',
+#    'css':'parambokeh.css'
 }
 
 _NAV =  (
@@ -27,7 +25,7 @@ _NAV =  (
     ('About', 'about')
 )
 
-html_context = {
+html_context.update({
     'PROJECT': project,
     'DESCRIPTION': description,
     'AUTHOR': authors,
@@ -39,6 +37,5 @@ html_context = {
         ('Gitter', '//gitter.im/ioam/holoviews'),
         ('Twitter', '//twitter.com/holoviews'),
         ('Github', '//github.com/ioam/parambokeh'),
-    ),
-    'js_includes': ['custom.js', 'require.js'],
+    )
 }
