@@ -38,4 +38,4 @@ html_context.update({
         ('Twitter', '//twitter.com/holoviews'),
         ('Github', '//github.com/ioam/parambokeh'),
     )
-}
+})
