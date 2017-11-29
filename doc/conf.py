@@ -5,7 +5,7 @@ from nbsite.shared_conf import *
 project = u'ParamBokeh'
 authors = u'ParamBokeh contributors'
 copyright = u'2017 ' + authors
-description = 'Generate bokeh widgets for parameterized objects'
+description = 'Generate Bokeh widgets for Parameterized objects'
 
 import parambokeh
 version = release = str(parambokeh.__version__)
@@ -35,7 +35,6 @@ html_context.update({
     'LINKS': _NAV,
     'SOCIAL': (
         ('Gitter', '//gitter.im/ioam/holoviews'),
-        ('Twitter', '//twitter.com/holoviews'),
         ('Github', '//github.com/ioam/parambokeh'),
     )
 })
