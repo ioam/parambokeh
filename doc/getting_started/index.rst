@@ -9,12 +9,6 @@ Detailed documentation is contained in the `User Guide
 <../user_guide/index.html>`_; we link to the user guide from the
 appropriate sections of this guide.
 
-To see what can be done with parambokeh, see our `Gallery
-<../gallery/index.html>`_ of interesting examples.
-
-We recommend you proceed through the following in order; it should
-take around 1 hour in total.
-
 * `Introduction <Introduction.html>`_
    What is parambokeh?
 
