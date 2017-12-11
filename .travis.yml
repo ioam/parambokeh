@@ -48,7 +48,7 @@ jobs:
       env: PYTHON_VERSION="3.6"
       install:
       # TODO: could (build and) use conda package; to be cleaned up
-        once auto versioning/package building is finalized
+      # once auto versioning/package building is finalized
       - source ./etc/travis-miniconda.sh
       - conda create -n test-environment python=$PYTHON_VERSION
       - source activate test-environment
