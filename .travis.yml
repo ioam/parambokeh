@@ -1,3 +1,6 @@
+git:
+  depth: 100
+
 language: generic
 
 os:
@@ -11,8 +14,9 @@ env:
 
 stages:
   - test
-  - name: deploy
-    if: branch = master AND type != pull_request  
+  - docs  
+  - name: anaconda_deploy
+    if: branch = master AND type != pull_request
 
 jobs:
   include:
@@ -34,14 +38,46 @@ jobs:
       - conda list
       script:
         - flake8 --ignore E,W parambokeh
-        - pytest --nbsmoke-lint doc/
-        - pytest --nbsmoke-run doc/
+        - pytest --nbsmoke-lint examples/
+        - pytest --nbsmoke-run examples/
 
     - <<: *tests
-      stage: test
       env: PYTHON_VERSION="3.6"
 
-    - stage: deploy
+    - stage: docs
+      env: PYTHON_VERSION="3.6"
+      install:
+      # TODO: could (build and) use conda package; to be cleaned up
+      # once auto versioning/package building is finalized
+      - source ./etc/travis-miniconda.sh
+      - conda create -n test-environment python=$PYTHON_VERSION
+      - source activate test-environment
+      - conda install param
+      - conda install pandas      
+      - conda install -c bokeh "bokeh>=0.12.10"
+      - conda install -c ioam "holoviews>=1.9.0"
+      - conda install -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs
+      - pip install nbsite sphinx_ioam_theme
+      - pip install -e .
+      script:
+      - cd doc
+      - nbsite_nbpagebuild.py ioam parambokeh ../examples .
+      - sphinx-build -b html . ./_build/html
+      - nbsite_fix_links.py _build/html
+      - touch ./_build/html/.nojekyll
+      - nbsite_cleandisthtml.py ./_build/html take_a_chance
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        local_dir: ./_build/html
+        on:
+          # TODO: depending on what we do for auto versioning/packaging,
+          # should make this deploy somewhere for PRs etc, and only to the
+          # main site on specific tag format.
+          tags: true
+
+    - stage: anaconda_deploy
       env: PYTHON_VERSION="3.6"
       install:
       - source ./etc/travis-miniconda.sh
@@ -51,3 +87,6 @@ jobs:
       script:
       - conda build conda.recipe
       - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
+
+
+
