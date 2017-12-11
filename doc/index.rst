@@ -2,11 +2,6 @@
 ParamBokeh
 **********
 
-.. raw:: html
-
-   <div style="width: 65%; float:left">
-
-	 
 **Generate bokeh widgets for parameterized objects**
 
 ParamBokeh is an `open-source
@@ -22,15 +17,6 @@ Please feel free to report `issues
 <https://help.github.com/articles/about-pull-requests>`_. You are also
 welcome to chat with the developers on `gitter
 <https://gitter.im/ioam/holoviews>`_.
-
-
-.. raw:: html
-  
-   </div>
-
-
-.. raw:: html
-  :file: latest_news.html
 
 
 .. toctree::
