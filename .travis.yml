@@ -15,7 +15,7 @@ env:
 stages:
   - name: test
   - name: docs  
-  - name: deploy
+  - name: anaconda_deploy
     if: branch = master AND type != pull_request
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
     - <<: *tests
       env: PYTHON_VERSION="3.6"
 
-    - stage: deploy
+    - stage: anaconda_deploy
       env: PYTHON_VERSION="3.6"
       install:
       - source ./etc/travis-miniconda.sh
