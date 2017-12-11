@@ -66,6 +66,16 @@ jobs:
       - nbsite_fix_links.py _build/html
       - touch ./_build/html/.nojekyll
       - nbsite_cleandisthtml.py ./_build/html take_a_chance
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        local_dir: ./_build/html
+        on:
+          # TODO: depending on what we do for auto versioning/packaging,
+          # should make this deploy somewhere for PRs etc, and only to the
+          # main site on specific tag format.
+          tags: true
 
     - stage: anaconda_deploy
       env: PYTHON_VERSION="3.6"
@@ -79,13 +89,4 @@ jobs:
       - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
 
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  local_dir: ./_build/html
-  on:
-    # TODO: depending on what we do for auto versioning/packaging,
-    # should make this deploy somewhere for PRs etc, and only to the
-    # main site on specific tag format.
-    tags: true
+
