@@ -7,7 +7,7 @@ Contents:
 * `Introduction <Introduction.html>`_
    What is ParamBokeh, and how to use it?
 
-* `Usage in Bokeh Apps <Bokeh_Apps.html>`_
+* `Usage in Bokeh Apps <Bokeh_App.html>`_
    How to use ParamBokeh in a Bokeh application.
    
 * `ViewParameters <View_Parameters.html>`_
@@ -19,5 +19,5 @@ Contents:
     :maxdepth: 2
 
     Introduction
-    Bokeh Apps <Bokeh_Apps>
+    Bokeh Apps <Bokeh_App>
     View Parameters <View_Parameters>
