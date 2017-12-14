@@ -37,3 +37,5 @@ html_context.update({
         ('Github', '//github.com/ioam/parambokeh'),
     )
 })
+
+nbbuild_patterns_to_take_along = ["simple.html"]
