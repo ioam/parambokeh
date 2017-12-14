@@ -225,6 +225,10 @@ class JupyterCommJS(object):
                 with StandardOutput() as stdout:
                     self._on_msg(msg)
         except Exception as e:
+            # TODO: isn't this cutting out info needed to understand what's gone wrong?
+            # Since it's only going to the js console, maybe we could just show everything
+            # (error = traceback.format_exc() or something like that)? Separately we do need a mechanism
+            # to report reasonable messages to users, though.
             frame =traceback.extract_tb(sys.exc_info()[2])[-2]
             fname,lineno,fn,text = frame
             error_kwargs = dict(type=type(e).__name__, fn=fn, fname=fname,
