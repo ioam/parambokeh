@@ -6,7 +6,11 @@ language: generic
 os:
   - linux
 
-sudo: false
+#sudo: false
+# test to see if new travis image is a problem for conda...
+sudo: required
+dist: trusty
+group: deprecated-2017Q4
 
 env:
   global:
