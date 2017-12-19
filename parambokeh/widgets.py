@@ -31,10 +31,8 @@ def ToggleWidget(*args, **kw):
 
 def ButtonWidget(*args, **kw):
     kw['label'] = kw.pop('title')
-    cb = kw.pop('value')
-    button = Button(*args, **kw)
-    button.on_click(cb)
-    return button
+    kw.pop('value') # button doesn't have value (value attached as click callback)
+    return Button(*args, **kw)
 
 # TODO: make a composite box/slider widget; slider only appears if
 # there's a range.

@@ -25,14 +25,14 @@ jobs:
       env: PYTHON_VERSION="2.7"
       install:
       - source ./etc/travis-miniconda.sh
-      - conda create -n test-environment python=$PYTHON_VERSION
+      - conda create -q -n test-environment python=$PYTHON_VERSION
       - source activate test-environment
-      - conda install param
-      - conda install -c bokeh "bokeh>=0.12.10"
+      - conda install -q param
+      - conda install -q -c bokeh "bokeh>=0.12.10"
       # dependencies for testing
       - pip install pytest pytest-nbsmoke
-      - conda install -c ioam "holoviews>=1.9.0"
-      - conda install pandas notebook flake8 pyparsing
+      - conda install -q -c ioam "holoviews>=1.9.0"
+      - conda install -q pandas notebook flake8 pyparsing
       - python setup.py develop --no-deps
       - conda env export
       - conda list
@@ -50,13 +50,13 @@ jobs:
       # TODO: could (build and) use conda package; to be cleaned up
       # once auto versioning/package building is finalized
       - source ./etc/travis-miniconda.sh
-      - conda create -n test-environment python=$PYTHON_VERSION
+      - conda create -q -n test-environment python=$PYTHON_VERSION
       - source activate test-environment
-      - conda install param
-      - conda install pandas
-      - conda install -c bokeh "bokeh>=0.12.10"
-      - conda install -c ioam "holoviews>=1.9.0"
-      - conda install -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs
+      - conda install -q param
+      - conda install -q pandas
+      - conda install -q -c bokeh "bokeh>=0.12.10"
+      - conda install -q -c ioam "holoviews>=1.9.0"
+      - conda install -q -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs
       - pip install nbsite sphinx_ioam_theme
       - pip install -e .
       script:
@@ -87,8 +87,8 @@ jobs:
       install:
       - source ./etc/travis-miniconda.sh
       # for building and uploading packages
-      - conda install conda-build=3.0.25
-      - conda install anaconda-client
+      - conda install -q conda-build=3.0.25
+      - conda install -q anaconda-client
       script:
       - conda build conda.recipe
       - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2

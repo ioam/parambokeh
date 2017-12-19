@@ -174,6 +174,9 @@ class Widgets(param.ParameterizedFunction):
     def on_msg(self, msg):
         p_name = msg['p_name']
         p_obj = self.parameterized.params(p_name)
+        if isinstance(p_obj, param.Action):
+            getattr(self.parameterized, p_name)(self.parameterized)
+            return
         w = self._widgets[p_name]
         self._queue.append((w, p_obj, p_name, None, None, msg['value']))
         self.change_event()
@@ -258,10 +261,6 @@ class Widgets(param.ParameterizedFunction):
         value = getattr(self.parameterized, p_name)
 
         kw = dict(value=value)
-        if isinstance(p_obj, param.Action):
-            def action_cb(button):
-                getattr(self.parameterized, p_name)(self.parameterized)
-            kw['value'] = action_cb
 
         kw['title'] = p_name
 
@@ -289,12 +288,17 @@ class Widgets(param.ParameterizedFunction):
 
         if hasattr(p_obj, 'callbacks'):
             p_obj.callbacks[id(self.parameterized)] = functools.partial(self._update_trait, p_name)
-        elif isinstance(w, (Button, Toggle)):
+        elif isinstance(w, Toggle):
             if self.p.mode in ['server', 'raw']:
                 w.on_change('active', functools.partial(self.on_change, w, p_obj, p_name))
             else:
                 js_callback = self._get_customjs('active', p_name)
                 w.js_on_change('active', js_callback)
+        elif isinstance(w, Button):
+            if self.p.mode in ['server', 'raw']:
+                w.on_click(functools.partial(value,self.parameterized))
+            else:
+                w.js_on_click(self._get_customjs('active', p_name))
         elif not p_obj.constant:
             if self.p.mode in ['server', 'raw']:
                 cb = functools.partial(self.on_change, w, p_obj, p_name)
