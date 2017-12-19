@@ -52,11 +52,11 @@ jobs:
       - source ./etc/travis-miniconda.sh
       - conda create -q -n test-environment python=$PYTHON_VERSION
       - source activate test-environment
-      - conda -q install param
-      - conda -q install pandas
-      - conda -q install -c bokeh "bokeh>=0.12.10"
-      - conda -q install -c ioam "holoviews>=1.9.0"
-      - conda -q install -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs
+      - conda install -q param
+      - conda install -q pandas
+      - conda install -q -c bokeh "bokeh>=0.12.10"
+      - conda install -q -c ioam "holoviews>=1.9.0"
+      - conda install -q -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs
       - pip install nbsite sphinx_ioam_theme
       - pip install -e .
       script:
