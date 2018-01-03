@@ -84,7 +84,7 @@ def task_install_required_dependencies():
 def task_install_test_dependencies():
     return {
         'actions': [
-            'conda install -y -q "holoviews>=1.9.0" pandas notebook flake8 pyparsing pytest',
+            'conda install -y -q -c conda-forge "holoviews>=1.9.0" pandas notebook flake8 pyparsing pytest',
             'pip install pytest-nbsmoke'],
         'task_dep': ['install_required_dependencies']
         }
