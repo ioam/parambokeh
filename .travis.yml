@@ -16,7 +16,7 @@ stages:
   - test
   - doc
   - name: anaconda_deploy
-#    if: branch = master AND type != pull_request
+    if: branch = master AND type != pull_request
 
 jobs:
   include:
@@ -81,4 +81,4 @@ jobs:
       - conda install -q -y "conda-build=3.0.25" anaconda-client
       script:
       - conda build conda.recipe
-      #- anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
+      - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
