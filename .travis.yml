@@ -46,7 +46,8 @@ jobs:
     - <<: *tests
       env: PYTHON_VERSION="3.6"
 
-    - stage: doc
+    - <<: *tests
+      stage: doc
       env: PYTHON_VERSION="3.6"
       install:
       # TODO: could (build and) use conda package; to be cleaned up
@@ -72,7 +73,8 @@ jobs:
           local_dir: ./doc/_build/html
           repo: ioam-docs/parambokeh-master
 
-    - stage: anaconda_deploy
+    - <<: *tests 
+      stage: anaconda_deploy
       env: PYTHON_VERSION="3.6"
       install:
       - source deactivate
