@@ -26,9 +26,9 @@ jobs:
       before_install:
       - easy_install --user doit==0.29.0
       - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-          ~/Library/Python/2.7/bin/doit install_ad5;
+          ~/Library/Python/2.7/bin/doit install_miniconda;
         else
-          ~/.local/bin/doit install_ad5;
+          ~/.local/bin/doit install_miniconda;
         fi
       - rm -f .doit.db
       - export PATH="$HOME/miniconda/bin:$PATH"
