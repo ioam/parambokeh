@@ -109,10 +109,11 @@ def task_tests():
 
 
 def task_docs():
+    # TODO: could do better than this, or nbsite could itself use doit
+    # (providing a dodo file for docs, or using doit internally).
     return {'actions': [
         'nbsite_nbpagebuild.py ioam parambokeh ./examples ./doc',
         'sphinx-build -b html ./doc ./doc/_build/html',
         'nbsite_fix_links.py ./doc/_build/html',
         'touch ./doc/_build/html/.nojekyll',
         'nbsite_cleandisthtml.py ./doc/_build/html take_a_chance']}
-
