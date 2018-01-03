@@ -16,30 +16,32 @@ stages:
   - test
   - doc
   - name: anaconda_deploy
-    if: branch = master AND type != pull_request
+#    if: branch = master AND type != pull_request
 
 jobs:
   include:
     - &tests
       stage: test
       env: PYTHON_VERSION="2.7"
-      install:
-      - source ./etc/travis-miniconda.sh
-      - conda create -q -n test-environment python=$PYTHON_VERSION
+      before_install:
+      - easy_install --user doit==0.29.0
+      - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+          ~/Library/Python/2.7/bin/doit install_ad5;
+        else
+          ~/.local/bin/doit install_ad5;
+        fi
+      - rm -f .doit.db
+      - export PATH="$HOME/miniconda/bin:$PATH"
+      - pip install doit
+      - doit create_env --python=$PYTHON_VERSION
       - source activate test-environment
-      - conda install -q param
-      - conda install -q -c bokeh "bokeh>=0.12.10"
-      # dependencies for testing
-      - pip install pytest pytest-nbsmoke
-      - conda install -q -c ioam "holoviews>=1.9.0"
-      - conda install -q pandas notebook flake8 pyparsing
+      install:
+      - doit --verbosity 2 install_test_dependencies
+      - conda list && conda env export
       - python setup.py develop --no-deps
-      - conda env export
-      - conda list
       script:
-        - flake8 --ignore E,W parambokeh
-        - pytest --nbsmoke-lint examples/
-        - pytest --nbsmoke-run examples/
+      - doit --verbosity 2 lint
+      - doit --verbosity 2 tests
 
     - <<: *tests
       env: PYTHON_VERSION="3.6"
@@ -48,29 +50,17 @@ jobs:
       env: PYTHON_VERSION="3.6"
       install:
       # TODO: could (build and) use conda package; to be cleaned up
-      # once auto versioning/package building is finalized
-      - source ./etc/travis-miniconda.sh
-      - conda create -q -n test-environment python=$PYTHON_VERSION
-      - source activate test-environment
-      - conda install -q param
-      - conda install -q pandas
-      - conda install -q -c bokeh "bokeh>=0.12.10"
-      - conda install -q -c ioam "holoviews>=1.9.0"
-      - conda install -q -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs
-      - pip install nbsite sphinx_ioam_theme
-      - pip install -e .
+      # once auto versioning/package building is finalized      
+      - doit --verbosity 2 install_doc_dependencies
+      - conda list && conda env export      
+      - python setup.py develop --no-deps
       script:
-      - cd doc
-      - nbsite_nbpagebuild.py ioam parambokeh ../examples .
-      - sphinx-build -b html . ./_build/html
-      - nbsite_fix_links.py _build/html
-      - touch ./_build/html/.nojekyll
-      - nbsite_cleandisthtml.py ./_build/html take_a_chance
+      - doit docs
       deploy:
         - provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
-          local_dir: ./_build/html
+          local_dir: ./doc/_build/html
           on:
             # TODO: depending on what we do for auto versioning/packaging,
             # should make this deploy somewhere for PRs etc, and only to the
@@ -79,16 +69,14 @@ jobs:
         - provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
-          local_dir: ./_build/html
+          local_dir: ./doc/_build/html
           repo: ioam-docs/parambokeh-master
 
     - stage: anaconda_deploy
       env: PYTHON_VERSION="3.6"
       install:
-      - source ./etc/travis-miniconda.sh
-      # for building and uploading packages
-      - conda install -q conda-build=3.0.25
-      - conda install -q anaconda-client
+      - source deactivate
+      - conda install -q -y "conda-build=3.0.25" anaconda-client
       script:
       - conda build conda.recipe
-      - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
+      #- anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
