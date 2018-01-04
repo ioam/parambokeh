@@ -1,8 +1,12 @@
-# First section is general (could be in e.g. a submodule shared across
-# projects), second section is specific to this project.
+# First section is general, while second section is specific to this
+# project.
 
 ################################################################################
 ## general
+#
+# Could be part of a general library of project management stuff
+# shared across projects, which could be on pypi/anaconda (for
+# pip/conda install), or as a git submodule.
 
 import glob
 import platform
@@ -21,7 +25,11 @@ miniconda_url = {
 }
 
 def task_install_miniconda():
-    # requires python already :S
+    # Requires python already, so it might seem odd to have this. But
+    # many systems (including generic (non-python) travis and appveyor
+    # images) now include at least some system python, in which case
+    # this command could be used. But generally people will have
+    # installed python themselves.
 
     # TODO: location param passing e.g. "doit install_miniconda --location
     # /tmp/123" not working
@@ -76,7 +84,11 @@ def task_create_env():
 
 
 ################################################################################
-## special to this project
+## specific to this project
+#
+# The aim would be to not have anything much here, but right now
+# that's not easy because of awkward installation/specification of
+# dependencies across projects.
 
 def task_install_required_dependencies():
     return {'actions': ['conda install -y -q -c conda-forge param "bokeh>=0.12.10"']}
