@@ -24,6 +24,8 @@ jobs:
       stage: test
       env: PYTHON_VERSION="2.7"
       before_install:
+      #######################
+      ## install miniconda ##
       - easy_install --user doit==0.29.0 ioamdoit
       - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
           ~/Library/Python/2.7/bin/doit install_miniconda;
@@ -32,9 +34,11 @@ jobs:
         fi
       - rm -f .doit.db
       - export PATH="$HOME/miniconda/bin:$PATH"
+      #######################
       - pip install ioamdoit
       - doit create_env --python=$PYTHON_VERSION
       - source activate test-environment
+
       install:
       - doit install_test_dependencies
       - conda list && conda env export
@@ -52,8 +56,8 @@ jobs:
       install:
       # TODO: could (build and) use conda package; to be cleaned up
       # once auto versioning/package building is finalized      
-      - doit --verbosity 2 install_doc_dependencies
-      - conda list && conda env export      
+      - doit install_doc_dependencies
+      - conda list && conda env export
       - python setup.py develop --no-deps
       script:
       - doit docs
