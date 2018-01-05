@@ -36,12 +36,12 @@ jobs:
       - doit create_env --python=$PYTHON_VERSION
       - source activate test-environment
       install:
-      - doit --verbosity 2 install_test_dependencies
+      - doit install_test_dependencies
       - conda list && conda env export
       - python setup.py develop --no-deps
       script:
-      - doit --verbosity 2 lint
-      - doit --verbosity 2 tests
+      - doit lint
+      - doit tests
 
     - <<: *tests
       env: PYTHON_VERSION="3.6"

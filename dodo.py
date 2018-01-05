@@ -6,7 +6,7 @@
 #
 # Could be part of a general library of project management stuff
 # shared across projects, which could be on pypi/anaconda (for
-# pip/conda install), or as a git submodule.
+# pip/conda install), or maybe as a git submodule.
 
 import glob
 import platform
@@ -18,21 +18,35 @@ try:
 except ImportError:
     from urllib import urlretrieve
 
+DOIT_CONFIG = {'verbosity': 2}
+
 miniconda_url = {
     "Windows": "https://repo.continuum.io/archive/Miniconda3-latest-Windows-x86_64.exe",
     "Linux": "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh",
     "Darwin": "https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh"
 }
 
-def task_install_miniconda():
-    # Requires python already, so it might seem odd to have this. But
-    # many systems (including generic (non-python) travis and appveyor
-    # images) now include at least some system python, in which case
-    # this command could be used. But generally people will have
-    # installed python themselves.
 
-    # TODO: location param passing e.g. "doit install_miniconda --location
-    # /tmp/123" not working
+# Download & install miniconda...Requires python already, so it might
+# seem odd to have this. But many systems (including generic
+# (non-python) travis and appveyor images) now include at least some
+# system python, in which case this command can be used. But generally
+# people will have installed python themselves, so the download and
+# install miniconda tasks can be ignored.
+
+def task_download_miniconda():
+    url = miniconda_url[platform.system()]
+    miniconda_installer = url.split('/')[-1]
+
+    def download_miniconda(targets):
+        urlretrieve(url,miniconda_installer)
+
+    return {'targets': [miniconda_installer],
+            'uptodate': [True], # (as has no deps)
+            'actions': [download_miniconda]}
+
+
+def task_install_miniconda():
     location = {
         'name':'location',
         'long':'location',
@@ -40,30 +54,14 @@ def task_install_miniconda():
         'type':str,
         'default':os.path.abspath(os.path.expanduser('~/miniconda'))}
 
-    url = miniconda_url[platform.system()]
-    miniconda_installer = url.split('/')[-1]
-
-    def download_miniconda(targets):
-        urlretrieve(url,miniconda_installer)
-
-    yield {'name': 'download_miniconda',
-           'actions': [download_miniconda]}
-
-    if platform.system() == "Windows":
-        yield {
-            'name': platform.system(),
-            'params':[location],
-            'actions': ['START /WAIT %s'%miniconda_installer + " /S /AddToPath=0 /D=%(location)s"]
+    miniconda_installer = miniconda_url[platform.system()].split('/')[-1]
+    return {
+        'file_dep': [miniconda_installer],
+        'uptodate': [False], # will always run (could instead set target to file at installation location?)
+        'params': [location],
+        'actions': [
+            'START /WAIT %s'%miniconda_installer + " /S /AddToPath=0 /D=%(location)s"] if platform.system() == "Windows" else ["bash %s"%miniconda_installer + " -b -p %(location)s"]
         }
-    elif platform.system() in ("Linux","Darwin"):
-        yield {
-            'name': platform.system(),
-            'params':[location],
-            'actions': ["bash %s"%miniconda_installer + " -b -p %(location)s"]
-        }
-    else:
-        raise Exception("%s not in %s"%(platform.system(),miniconda_url.keys()))
-
 
 def task_create_env():
     python = {
@@ -102,7 +100,7 @@ def task_install_test_dependencies():
         }
 
 def task_install_doc_dependencies():
-    # might not exist if nbsite had conda package
+    # would not need to exist if nbsite had conda package
     return {
         'actions': [
             'conda install -y -q -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs',
