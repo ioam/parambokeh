@@ -24,7 +24,7 @@ jobs:
       stage: test
       env: PYTHON_VERSION="2.7"
       before_install:
-      - easy_install --user doit==0.29.0
+      - easy_install --user doit==0.29.0 ioamdoit
       - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
           ~/Library/Python/2.7/bin/doit install_miniconda;
         else
