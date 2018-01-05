@@ -32,7 +32,7 @@ jobs:
         fi
       - rm -f .doit.db
       - export PATH="$HOME/miniconda/bin:$PATH"
-      - pip install doit
+      - pip install ioamdoit
       - doit create_env --python=$PYTHON_VERSION
       - source activate test-environment
       install:
