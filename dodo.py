@@ -28,13 +28,20 @@ def task_install_doc_dependencies():
         }
 
 def task_lint():
-    return {'actions': [
-        'flake8 --ignore E,W parambokeh',
-        'pytest --nbsmoke-lint examples/']}
+    return {'actions': ['flake8 --ignore E,W parambokeh']}
 
-def task_tests():
-    return {'actions': [
-        'pytest --nbsmoke-run examples/']}
+
+def task_lint_nb():
+    return {'actions': ['pytest --nbsmoke-lint examples/']}
+
+
+def task_test_nb():
+    return {'actions': ['pytest --nbsmoke-run examples/']}
+
+
+def task_all_tests():
+    return {'actions': [],
+            'task_dep': ['lint','lint_nb','test_nb']}
 
 
 def task_docs():
