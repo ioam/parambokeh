@@ -9,6 +9,11 @@ install:
   - "C:\\Python36-x64\\Scripts\\doit.exe install_miniconda"
   - "SET PATH=%HOME%\\miniconda;%HOME%\\miniconda\\Scripts;%PATH%"
   #######################
+  - python --version
+  - where python
+  - pip --version
+  - where pip
+  - echo $PY
   - pip install ioamdoit
   - doit create_env --python=$PY
   - activate test-environment
