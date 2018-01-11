@@ -12,9 +12,9 @@ install:
   - pip install %DOIT% ioamdoit
   - doit create_env --python=%PY%
   - activate test-environment
-  - doit install_dependencies
+  - doit install_test_dependencies
   - doit capture_conda_env
-  - python setup.pt develop --no-deps
+  - doit develop_install
 
 build: off
 

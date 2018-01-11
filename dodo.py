@@ -1,7 +1,6 @@
 DOIT_CONFIG = {'verbosity': 2}
 
-from ioamdoit import (task_download_miniconda, task_install_miniconda,
-                      task_create_env)
+from ioamdoit import *
 
 # The aim would be to not have anything much here, but right now
 # that's not easy because of awkward installation/specification of

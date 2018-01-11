@@ -41,8 +41,8 @@ jobs:
 
       install:
         - doit install_test_dependencies
-        - conda list && conda env export
-        - python setup.py develop --no-deps
+        - doit capture_conda_env
+        - doit develop_install
       script:
         - doit all_tests
 
@@ -56,8 +56,8 @@ jobs:
         # TODO: could (build and) use conda package; to be cleaned up
         # once auto versioning/package building is finalized
         - doit install_doc_dependencies
-        - conda list && conda env export
-        - python setup.py develop --no-deps
+        - doit capture_conda_env
+        - doit develop_install
       script:
         - doit docs
       deploy:
