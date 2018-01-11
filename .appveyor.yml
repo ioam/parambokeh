@@ -1,25 +1,15 @@
 environment:
   matrix:
     - PY: "3.6"
+      CONDA: "C:\\Miniconda3-x64"
+      DOIT: "doit"
     - PY: "2.7"
+      CONDA: "C:\\Miniconda-x64"
+      DOIT: "doit==0.29.0"
 
 install:
-  - where python
-  - echo %HOME%
-  - echo %PATH%
-  #######################
-  ## install miniconda ##
-  - "C:\\Python36-x64\\Scripts\\pip.exe install ioamdoit"
-  - "C:\\Python36-x64\\Scripts\\doit.exe install_miniconda --location=%HOME%\\miniconda"
-  - "SET PATH=%HOME%\\miniconda;%HOME%\\miniconda\\Scripts;%PATH%"
-  #######################
-  - echo %HOME%
-  - python --version
-  - where python
-  - pip --version
-  - where pip
-  - echo %PY%
-  - pip install ioamdoit
+  - "SET PATH=%CONDA%;%CONDA%\\Scripts;%PATH%"
+  - pip install %DOIT%
   - doit create_env --python=%PY%
   - activate test-environment
   - doit install_dependencies
