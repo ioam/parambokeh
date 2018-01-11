@@ -36,7 +36,7 @@ jobs:
         - export PATH="$HOME/miniconda/bin:$PATH"
         #######################
         - pip install ioamdoit
-        - doit create_env --python=$PYTHON_VERSION --name=test-environment
+        - doit create_env --python=$PYTHON_VERSION
         - source activate test-environment
 
       install:
