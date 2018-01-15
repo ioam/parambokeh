@@ -81,7 +81,7 @@ jobs:
       env: PYTHON_VERSION="3.6"
       install:
         - source deactivate
-        - conda update conda
+        - conda update -q -y conda
         - conda install -q -y conda-build anaconda-client
       script:
         - export VERSIONHACK=`python -c "import subprocess;desc=subprocess.check_output(['git','describe','--long']).decode('utf8');v,commits=desc.split('-')[0:2];newv=[int(x) for x in v[1::].split('.')];newv[-1]+=1;print('.'.join(str(x) for x in newv)+'.dev'+commits)"`
