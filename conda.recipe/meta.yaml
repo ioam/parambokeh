@@ -1,6 +1,6 @@
 package:
   name: parambokeh
-  version: {{ environ['GIT_DESCRIBE_TAG'].lstrip('v') }}.{{ GIT_BUILD_STR }}
+  version: {{ os.environ.get("VERSIONHACK") }}
 
 source:
   path: ..

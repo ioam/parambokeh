@@ -81,7 +81,9 @@ jobs:
       env: PYTHON_VERSION="3.6"
       install:
         - source deactivate
-        - conda install -q -y "conda-build=3.0.25" anaconda-client
+        - conda update -q -y conda
+        - conda install -q -y conda-build anaconda-client
       script:
-        - conda build conda.recipe
-        - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/parambokeh*.tar.bz2
+        - export VERSIONHACK=`python -c "import subprocess;desc=subprocess.check_output(['git','describe','--long']).decode('utf8');v,commits=desc.split('-')[0:2];newv=[int(x) for x in v[1::].split('.')];newv[-1]+=1;print('.'.join(str(x) for x in newv)+'.dev'+commits)"`
+        - conda build conda.recipe/
+        - anaconda --token $CONDA_UPLOAD_TOKEN_AGAIN upload --user pyviz --label dev `conda build --output conda.recipe`
