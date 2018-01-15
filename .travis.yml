@@ -16,7 +16,7 @@ stages:
   - test
   - doc
   - name: anaconda_deploy
-#    if: branch = master AND type != pull_request
+    if: branch = master AND type != pull_request
 
 jobs:
   include:
@@ -46,35 +46,35 @@ jobs:
       script:
         - doit all_tests
 
-#    - <<: *default
-#      env: PYTHON_VERSION="3.6"
-#
-#    - <<: *default
-#      stage: doc
-#      env: PYTHON_VERSION="3.6"
-#      install:
-#        # TODO: could (build and) use conda package; to be cleaned up
-#        # once auto versioning/package building is finalized
-#        - doit install_doc_dependencies
-#        - doit capture_conda_env
-#        - doit develop_install
-#      script:
-#        - doit docs
-#      deploy:
-#        - provider: pages
-#          skip_cleanup: true
-#          github_token: $GITHUB_TOKEN
-#          local_dir: ./doc/_build/html
-#          on:
-#            # TODO: depending on what we do for auto versioning/packaging,
-#            # should make this deploy somewhere for PRs etc, and only to the
-#            # main site on specific tag format.
-#            tags: true
-#        - provider: pages
-#          skip_cleanup: true
-#          github_token: $GITHUB_TOKEN
-#          local_dir: ./doc/_build/html
-#          repo: ioam-docs/parambokeh-master
+    - <<: *default
+      env: PYTHON_VERSION="3.6"
+
+    - <<: *default
+      stage: doc
+      env: PYTHON_VERSION="3.6"
+      install:
+        # TODO: could (build and) use conda package; to be cleaned up
+        # once auto versioning/package building is finalized
+        - doit install_doc_dependencies
+        - doit capture_conda_env
+        - doit develop_install
+      script:
+        - doit docs
+      deploy:
+        - provider: pages
+          skip_cleanup: true
+          github_token: $GITHUB_TOKEN
+          local_dir: ./doc/_build/html
+          on:
+            # TODO: depending on what we do for auto versioning/packaging,
+            # should make this deploy somewhere for PRs etc, and only to the
+            # main site on specific tag format.
+            tags: true
+        - provider: pages
+          skip_cleanup: true
+          github_token: $GITHUB_TOKEN
+          local_dir: ./doc/_build/html
+          repo: ioam-docs/parambokeh-master
 
     - <<: *default
       stage: anaconda_deploy
