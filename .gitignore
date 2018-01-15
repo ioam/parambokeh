@@ -63,3 +63,5 @@ target/
 
 # Editor files
 *~
+
+.doit.db.db

@@ -1,0 +1,22 @@
+environment:
+  matrix:
+    - PY: "3.6"
+      CONDA: "C:\\Miniconda3-x64"
+      DOIT: "doit"
+    - PY: "2.7"
+      CONDA: "C:\\Miniconda-x64"
+      DOIT: "doit==0.29.0"
+
+install:
+  - "SET PATH=%CONDA%;%CONDA%\\Scripts;%PATH%"
+  - pip install %DOIT% ioamdoit
+  - doit create_env --python=%PY%
+  - activate test-environment
+  - doit install_test_dependencies
+  - doit capture_conda_env
+  - doit develop_install
+
+build: off
+
+test_script:
+  - doit all_tests
