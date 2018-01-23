@@ -14,8 +14,7 @@ def task_install_doc_dependencies():
     return {
         'actions': [
             'conda install -y -q -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs',
-            'pip install nbsite sphinx_ioam_theme'],
-        'task_dep': ['install_test_dependencies']
+            'pip install nbsite sphinx_ioam_theme']
         }
 
 def task_lint():
