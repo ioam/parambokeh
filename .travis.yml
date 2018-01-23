@@ -34,6 +34,8 @@ jobs:
           fi
         - rm -f .doit.db
         - export PATH="$HOME/miniconda/bin:$PATH"
+        # parambokeh currently requires conda-forge?
+        - conda config --add channels conda-forge
         #######################
         - pip install https://github.com/ioam/ioamdoit/archive/deps_from_conda_recipe.zip
         - doit conda_recipe=conda.recipe/meta.yaml create_env
