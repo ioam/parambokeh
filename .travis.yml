@@ -26,7 +26,7 @@ jobs:
       before_install:
         #######################
         ## install miniconda ##
-        - easy_install --user doit==0.29.0 ioamdoit
+        - easy_install --user doit==0.29.0 https://github.com/ioam/ioamdoit/archive/deps_from_conda_recipe.zip
         - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
             ~/Library/Python/2.7/bin/doit install_miniconda;
           else
