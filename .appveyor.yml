@@ -9,10 +9,10 @@ environment:
 
 install:
   - "SET PATH=%CONDA%;%CONDA%\\Scripts;%PATH%"
-  - pip install %DOIT% ioamdoit
-  - doit create_env --python=%PY%
+  - pip install %DOIT% https://github.com/ioam/ioamdoit/archive/deps_from_conda_recipe.zip
+  - doit conda_recipe=conda.recipe/meta.yaml create_env
   - activate test-environment
-  - doit install_test_dependencies
+  - doit install_pip_dependencies
   - doit capture_conda_env
   - doit develop_install
 

@@ -36,7 +36,7 @@ jobs:
         - export PATH="$HOME/miniconda/bin:$PATH"
         #######################
         - pip install https://github.com/ioam/ioamdoit/archive/deps_from_conda_recipe.zip
-        - doit conda_recipe=conda.recipe/meta.yaml env_name=test-environment create_env
+        - doit conda_recipe=conda.recipe/meta.yaml create_env
         - source activate test-environment
 
       install:
