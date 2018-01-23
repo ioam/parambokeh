@@ -35,12 +35,12 @@ jobs:
         - rm -f .doit.db
         - export PATH="$HOME/miniconda/bin:$PATH"
         #######################
-        - pip install ioamdoit
-        - doit create_env --python=$PYTHON_VERSION
+        - pip install https://github.com/ioam/ioamdoit/archive/deps_from_conda_recipe.zip
+        - doit conda_recipe=conda.recipe/meta.yaml env_name=test-environment create_env
         - source activate test-environment
 
       install:
-        - doit install_test_dependencies
+        - doit install_pip_dependencies
         - doit capture_conda_env
         - doit develop_install
       script:

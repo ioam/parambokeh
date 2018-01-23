@@ -6,16 +6,8 @@ from ioamdoit import *
 # that's not easy because of awkward installation/specification of
 # dependencies across projects.
 
-def task_install_required_dependencies():
-    return {'actions': ['conda install -y -q -c conda-forge param "bokeh>=0.12.10"']}
-
-def task_install_test_dependencies():
-    return {
-        'actions': [
-            'conda install -y -q -c conda-forge "holoviews>=1.9.0" pandas notebook flake8 pyparsing pytest',
-            'pip install pytest-nbsmoke'],
-        'task_dep': ['install_required_dependencies']
-        }
+def task_install_pip_dependencies():
+    return {'actions': ['pip install pytest-nbsmoke']}
 
 def task_install_doc_dependencies():
     # would not need to exist if nbsite had conda package

@@ -18,6 +18,13 @@ requirements:
     - bokeh >=0.12.10
 
 test:
+  requires:
+    - holoviews >=1.9.0
+    - pandas
+    - notebook
+    - flake8
+    - pyparsing
+    - pytest
   imports:
     - parambokeh
 
