@@ -5,7 +5,7 @@ from param.parameterized import classlist
 
 from bokeh.layouts import column
 from bokeh.models.widgets import (
-    Button, TextInput, Div, Slider, Toggle,
+    Button, TextInput, Div, Slider, CheckboxGroup,
     DatePicker, MultiSelect, Select, RangeSlider
 )
 
@@ -24,10 +24,11 @@ def StaticText(*args, **kw):
                                                   value=as_unicode(kw.pop('value')))
     return Div(*args, **kw)
 
-def ToggleWidget(*args, **kw):
-    kw['active'] = kw.pop('value')
-    kw['label'] = kw.pop('title')
-    return Toggle(*args, **kw)
+def Checkbox(*args, **kw):
+    val = kw.pop('value')
+    kw['active'] = [0] if val else []
+    kw['labels'] = [kw.pop('title')]
+    return CheckboxGroup(*args, **kw)
 
 def ButtonWidget(*args, **kw):
     kw['label'] = kw.pop('title')
@@ -103,7 +104,7 @@ ptype2wtype = {
     param.Parameter:     TextWidget,
     param.Dict:          TextWidget,
     param.Selector:      Select,
-    param.Boolean:       ToggleWidget,
+    param.Boolean:       Checkbox,
     param.Number:        FloatSlider,
     param.Integer:       IntSlider,
     param.Range:         RangeWidget,
