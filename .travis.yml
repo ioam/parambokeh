@@ -28,11 +28,11 @@ jobs:
       env:
         - PYTHON_VERSION="3.6"
       before_install:
-        - easy_install --user $DOIT pyct && ~/.local/bin/doit install_miniconda && rm -f .doit.db
+        - easy_install --user "doit<0.30" pyct && ~/.local/bin/doit install_miniconda && rm -f .doit.db
         - export PATH="$HOME/miniconda/bin:$PATH"
         - conda install -y -c pyviz/label/dev -c conda-forge pyct
         - doit ci_configure_conda
-        - doit create_env --name=test-environment
+        - doit create_env --name=test-environment --python=$PYTHON_VERSION
         - source activate test-environment
       install:
         - doit conda_develop_install --channel=conda-forge
