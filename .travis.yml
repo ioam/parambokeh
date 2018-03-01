@@ -10,56 +10,47 @@ sudo: false
 
 env:
   global:
-    secure: qDzvmjcR6eLAmHx0ziN3Y5M8h65+OM+eBNERQsC3WSkeaD45rEE6a8w59dBdUzZBTLKO2RP8pKlgzxBZGOBlnLbTyN4RD/q2dA+gm5c0SDWWT4kVCiogJVsrzyRHVgMDmqDu56HPbQzhsW+5Qh2JKjVkkI7GwvGZRFB9WKQC8yjW/RfLvQ7bzX6jXbaHDYg9dywjI5u7da7HZKXyt/6nhebdaI19RdQHuESUqTADFEgdCKdzrNC+NqbJ8SUnNBBmkb1ZqoQ3/p1/Z/+uDi/2ThozE7Lz6gl8HtxVRnBiwNCDvZRE8uTB79+FlW0FJCVZ7qGO8jVWlVqy+WEEFh/6s9RP2PLd73CmItfF7BzSdxdurOYfnizboqCideSasDQK7XdeDiX4fPrgqbeesn8+XJ9vhxRAmpsNdZIU+2pivgviJwUZUwKwgzt3hf23ld9GpJg60wCfQRT8hiZc3/XsUPrzDjci7hwrRESqobPcuWk6xsFPTvJsTeOSLejP1wDOGAhufLTQIys26BSwHiaj6aI4RPK3Y4sy644m4IOfVvi3d+YfyN2Q5NO7QIwk5PjQBUEdwcIi3lAk2eAIjJamlDYFCRrnwuEoFinuFlUjtqpkuVTLgonTbk9KkIYnXeP3wYERrt4uOJtxDRCojBC0FI5rDbkhC3wP8Wef4EToQ+s=
+    - DOIT=doit
+    - secure: qDzvmjcR6eLAmHx0ziN3Y5M8h65+OM+eBNERQsC3WSkeaD45rEE6a8w59dBdUzZBTLKO2RP8pKlgzxBZGOBlnLbTyN4RD/q2dA+gm5c0SDWWT4kVCiogJVsrzyRHVgMDmqDu56HPbQzhsW+5Qh2JKjVkkI7GwvGZRFB9WKQC8yjW/RfLvQ7bzX6jXbaHDYg9dywjI5u7da7HZKXyt/6nhebdaI19RdQHuESUqTADFEgdCKdzrNC+NqbJ8SUnNBBmkb1ZqoQ3/p1/Z/+uDi/2ThozE7Lz6gl8HtxVRnBiwNCDvZRE8uTB79+FlW0FJCVZ7qGO8jVWlVqy+WEEFh/6s9RP2PLd73CmItfF7BzSdxdurOYfnizboqCideSasDQK7XdeDiX4fPrgqbeesn8+XJ9vhxRAmpsNdZIU+2pivgviJwUZUwKwgzt3hf23ld9GpJg60wCfQRT8hiZc3/XsUPrzDjci7hwrRESqobPcuWk6xsFPTvJsTeOSLejP1wDOGAhufLTQIys26BSwHiaj6aI4RPK3Y4sy644m4IOfVvi3d+YfyN2Q5NO7QIwk5PjQBUEdwcIi3lAk2eAIjJamlDYFCRrnwuEoFinuFlUjtqpkuVTLgonTbk9KkIYnXeP3wYERrt4uOJtxDRCojBC0FI5rDbkhC3wP8Wef4EToQ+s=
 
 stages:
   - test
   - doc
-  - name: anaconda_deploy
-    if: branch = master AND type != pull_request
+  - name: conda_dev_package
+    if: (branch = master AND type != pull_request)
+  - name: conda_package
+    if: tag =~ ^v
 
 jobs:
   include:
     - &default
       stage: test
-      env: PYTHON_VERSION="2.7"
+      env:
+        - PYTHON_VERSION="3.6"
       before_install:
-        #######################
-        ## install miniconda ##
-        - easy_install --user doit==0.29.0 ioamdoit
-        - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-            ~/Library/Python/2.7/bin/doit install_miniconda;
-          else
-            ~/.local/bin/doit install_miniconda;
-          fi
-        - rm -f .doit.db
+        - easy_install --user $DOIT pyct && ~/.local/bin/doit install_miniconda && rm -f .doit.db
         - export PATH="$HOME/miniconda/bin:$PATH"
-        # parambokeh currently requires conda-forge?
-        - conda config --add channels conda-forge
-        #######################
-        - pip install https://github.com/ioam/ioamdoit/archive/deps_from_conda_recipe.zip
-        - doit conda_recipe=conda.recipe/meta.yaml create_env
+        - conda install -y -c pyviz/label/dev -c conda-forge pyct
+        - doit ci_configure_conda
+        - doit create_env --name=test-environment
         - source activate test-environment
-
       install:
-        - doit install_pip_dependencies
+        - doit conda_develop_install --channel=conda-forge
         - doit capture_conda_env
-        - doit develop_install
       script:
         - doit all_tests
 
     - <<: *default
-      env: PYTHON_VERSION="3.6"
+      env:
+        - PYTHON_VERSION="2.7"
+        - DOIT="doit<0.30"
 
     - <<: *default
       stage: doc
-      env: PYTHON_VERSION="3.6"
       install:
-        # TODO: could (build and) use conda package; to be cleaned up
-        # once auto versioning/package building is finalized
+        - doit conda_develop_install --channel=conda-forge
         - doit install_doc_dependencies
-        - doit capture_conda_env
-        - doit develop_install
+        - doit capture_conda_env        
       script:
         - doit docs
       deploy:
@@ -79,14 +70,18 @@ jobs:
           repo: ioam-docs/parambokeh-master
 
     - <<: *default
-      stage: anaconda_deploy
-      env: PYTHON_VERSION="3.6"
+      stage: conda_dev_package
       install:
-        - source deactivate
-        - conda update -q -y conda
-        - conda install -q -y conda-build anaconda-client
+        - export VERSIONHACK=$(python -c "import subprocess;desc=subprocess.check_output(['git','describe','--long']).decode('utf8');v,commits=desc.split('-')[0:2];newv=[int(x) for x in v[1::].split('.')];newv[-1]+=1;print('.'.join(str(x) for x in newv)+'.dev'+commits)")      
+        - doit build_conda_package --channel=conda-forge
       script:
+        # TODO should only upload if package doesn't exist (as e.g. there are cron builds)
+        - doit upload_conda_package --token=$CONDA_UPLOAD_TOKEN --label=dev
+
+    - <<: *default
+      stage: conda_package
+      install:
         - export VERSIONHACK=$(python -c "import subprocess;desc=subprocess.check_output(['git','describe','--long']).decode('utf8');v,commits=desc.split('-')[0:2];newv=[int(x) for x in v[1::].split('.')];newv[-1]+=1;print('.'.join(str(x) for x in newv)+'.dev'+commits)")
-        - conda build conda.recipe/
-        # only upload if package doesn't exist (as e.g. there are cron builds)
-        - anaconda show pyviz/param/$VERSIONHACK || anaconda --token $CONDA_UPLOAD_TOKEN_AGAIN upload --user pyviz --label dev $(conda build --output conda.recipe)
+        - doit build_conda_package --channel=conda-forge
+      script:
+        - doit upload_conda_package --token=$CONDA_UPLOAD_TOKEN --label=main --label=dev

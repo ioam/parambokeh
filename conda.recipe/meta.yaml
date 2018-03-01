@@ -1,5 +1,8 @@
+{% set sdata = load_setup_py_data() %}
+
 package:
   name: parambokeh
+  # TODO: see autover
   version: {{ os.environ.get("VERSIONHACK") }}
 
 source:
@@ -13,22 +16,20 @@ requirements:
   build:
     - python
   run:
-    - python
-    - param
-    - bokeh >=0.12.10
+    - python {{ sdata['python_requires'] }}
+    {% for dep in sdata.get('install_requires',{}) %}
+    - {{ dep }}
+    {% endfor %}
 
 test:
   requires:
-    - holoviews >=1.9.0
-    - pandas
-    - notebook
-    - flake8
-    - pyparsing
-    - pytest
+    {% for dep in sdata.get('tests_require',{}) %}
+    - {{ dep }}
+    {% endfor %}
   imports:
     - parambokeh
 
 about:
-  home: https://github.com/ioam/parambokeh
-  summary: ParamBokeh provides an easy way to generate a UI for param based classes in the notebook or on bokeh server.
-  license: BSD 3-Clause
+  home: {{ sdata['url'] }}
+  summary: {{ sdata['description'] }}
+  license: {{ sdata['license'] }}
