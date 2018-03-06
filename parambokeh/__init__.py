@@ -244,8 +244,6 @@ class Widgets(param.ParameterizedFunction):
             p_value, size = p_value
         if isinstance(widget, Div):
             widget.text = p_value
-        elif self.p.mode == 'notebook' and self.shown:
-            return
         else:
             if widget.children:
                 widget.children.remove(widget.children[0])
