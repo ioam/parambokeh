@@ -216,7 +216,7 @@ class Widgets(param.ParameterizedFunction):
 
         if isinstance(w, CheckboxGroup):
             new_values = True if (len(new_values)>0 and new_values[0]==0) else False
-            
+
         # If no error during evaluation try to set parameter
         if not error:
             try:

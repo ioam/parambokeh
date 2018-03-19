@@ -5,7 +5,7 @@ if sys.version_info.major == 3:
     unicode = str
     basestring = str
 
-    
+
 def as_unicode(obj):
     """
     Safely casts any object to unicode including regular string
