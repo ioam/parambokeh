@@ -94,10 +94,10 @@ def RangeWidget(*args, **kw):
     return RangeSlider(*args, **kw)
 
 def PlotWidget(*args, **kw):
-    return column(name=kw['title'])
+    return column(name=kw['name'])
 
 def HTMLWidget(*args, **kw):
-    return Div(name=kw['title'])
+    return Div(name=kw['name'])
 
 
 ptype2wtype = {

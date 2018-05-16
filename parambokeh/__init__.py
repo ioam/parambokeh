@@ -29,6 +29,31 @@ except:
     __version__ = '0.2.1-unknown'
 
 
+class default_label_formatter(param.ParameterizedFunction):
+    "Default formatter to turn parameter names into appropriate widget labels."
+
+    capitalize = param.Boolean(default=True, doc="""
+        Whether or not the label should be capitalized.""")
+
+    replace_underscores = param.Boolean(default=True, doc="""
+        Whether or not underscores should be replaced with spaces.""")
+
+    overrides = param.Dict(default={}, doc="""
+        Allows custom labels to be specified for specific parameter
+        names using a dictionary where key is the parameter name and the
+        value is the desired label.""")
+
+    def __call__(self, pname):
+
+        if pname in self.overrides:
+            return self.overrides[pname]
+        if self.replace_underscores:
+            pname = pname.replace('_',' ')
+        if self.capitalize:
+            pname = pname.capitalize()
+        return pname
+
+
 class Widgets(param.ParameterizedFunction):
 
     callback = param.Callable(default=None, doc="""
@@ -92,6 +117,9 @@ class Widgets(param.ParameterizedFunction):
 
     width = param.Integer(default=300, bounds=(0, None), doc="""
         Width of widgetbox the parameter widgets are displayed in.""")
+
+    label_formatter = param.Callable(default=default_label_formatter, allow_None=True,
+        doc="Callable used to format the parameter names into widget labels.")
 
     # Timeout if a notebook comm message is swallowed
     timeout = 20000
@@ -265,7 +293,12 @@ class Widgets(param.ParameterizedFunction):
 
         kw = dict(value=value)
 
-        kw['title'] = p_name
+        if self.p.label_formatter is not None:
+            kw['title'] = self.p.label_formatter(p_name)
+        else:
+            kw['title'] = p_name
+
+        kw['name'] = p_name
 
         if hasattr(p_obj, 'get_range') and not isinstance(kw['value'], dict):
             options = named_objs(p_obj.get_range().items())
