@@ -298,6 +298,8 @@ class Widgets(param.ParameterizedFunction):
         else:
             kw['title'] = p_name
 
+        kw['name'] = p_name
+
         if hasattr(p_obj, 'get_range') and not isinstance(kw['value'], dict):
             options = named_objs(p_obj.get_range().items())
             value = kw['value']
