@@ -33,10 +33,10 @@ class default_label_formatter(param.ParameterizedFunction):
     "Default formatter to turn parameter names into appropriate widget labels."
 
     capitalize = param.Boolean(default=True, doc="""
-       Whether or not the label should be capitalized.""")
+        Whether or not the label should be capitalized.""")
 
     replace_underscores = param.Boolean(default=True, doc="""
-      Whether of not underscores should be replaces with spaces.""")
+        Whether or not underscores should be replaced with spaces.""")
 
     def __call__(self, label):
         if self.replace_underscores:
