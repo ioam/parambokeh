@@ -38,12 +38,20 @@ class default_label_formatter(param.ParameterizedFunction):
     replace_underscores = param.Boolean(default=True, doc="""
         Whether or not underscores should be replaced with spaces.""")
 
-    def __call__(self, label):
+    overrides = param.Dict(default={}, doc="""
+        Allows custom labels to be specified for specific parameter
+        names using a dictionary where key is the parameter name and the
+        value is the desired label.""")
+
+    def __call__(self, pname):
+
+        if pname in self.overrides:
+            return self.overrides[pname]
         if self.replace_underscores:
-            label = label.replace('_',' ')
+            pname = pname.replace('_',' ')
         if self.capitalize:
-            label = label.capitalize()
-        return label
+            pname = pname.capitalize()
+        return pname
 
 
 class Widgets(param.ParameterizedFunction):
