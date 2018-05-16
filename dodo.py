@@ -21,8 +21,8 @@ def task_install_doc_dependencies():
     # would not need to exist if nbsite had conda package
     return {
         'actions': [
-            'conda install -y -q -c conda-forge notebook ipython sphinx beautifulsoup4 graphviz selenium phantomjs',
-            'pip install nbsite sphinx_ioam_theme'],
+            'conda install -y -q -c conda-forge notebook ipython sphinx=1.6 beautifulsoup4 graphviz selenium phantomjs',
+            'pip install https://github.com/pyviz/nbsite/archive/master.zip sphinx_ioam_theme'],
         'task_dep': ['install_test_dependencies']
         }
 
