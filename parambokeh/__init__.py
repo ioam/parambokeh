@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 import ast
-import uuid
 import itertools
 import functools
 import json
