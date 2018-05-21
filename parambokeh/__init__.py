@@ -20,9 +20,7 @@ try:
 
     import bokeh.embed.notebook
     from bokeh.util.string import encode_utf8
-    from holoviews.plotting.comms import JupyterCommManager
-    from holoviews.plotting.bokeh.callbacks import CustomJSCallback
-    from holoviews.plotting.bokeh.renderer import bokeh_msg_handler
+    from pyviz_comms import JupyterCommManager, JS_CALLBACK, bokeh_msg_handler
     IPYTHON_AVAILABLE = True
 except:
     IPYTHON_AVAILABLE = False
@@ -44,8 +42,6 @@ if (window.HoloViews === undefined) {
    window.HoloViews = HoloViews;
 }
 """
-
-JS_CALLBACK = CustomJSCallback.js_callback
 
 
 def notebook_show(obj, doc, comm):
