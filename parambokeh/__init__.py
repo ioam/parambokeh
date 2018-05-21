@@ -20,7 +20,7 @@ try:
 
     import bokeh.embed.notebook
     from bokeh.util.string import encode_utf8
-    from pyviz_comms import JupyterCommManager, JS_CALLBACK, bokeh_msg_handler
+    from pyviz_comms import JupyterCommManager, JS_CALLBACK, bokeh_msg_handler, PYVIZ_PROXY
     IPYTHON_AVAILABLE = True
 except:
     IPYTHON_AVAILABLE = False
@@ -36,14 +36,6 @@ except:
     __version__ = '0.2.1-unknown'
 
 
-HOLOVIEWS_PROXY = """
-if (window.HoloViews === undefined) {
-   let HoloViews = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
-   window.HoloViews = HoloViews;
-}
-"""
-
-
 def notebook_show(obj, doc, comm):
     """
     Displays bokeh output inside a notebook.
@@ -57,7 +49,7 @@ def notebook_show(obj, doc, comm):
     publish_display_data(data={'text/html': encode_utf8(bokeh_div)})
 
     # Publish comm manager
-    JS = '\n'.join([HOLOVIEWS_PROXY, JupyterCommManager.js_manager])
+    JS = '\n'.join([PYVIZ_PROXY, JupyterCommManager.js_manager])
     publish_display_data(data={load_mime: JS, 'application/javascript': JS})
 
     # Publish bokeh plot JS
