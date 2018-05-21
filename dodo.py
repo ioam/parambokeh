@@ -7,7 +7,7 @@ from ioamdoit import *
 # dependencies across projects.
 
 def task_install_required_dependencies():
-    return {'actions': ['conda install -y -q -c conda-forge param "bokeh>=0.12.10"']}
+    return {'actions': ['conda install -y -q -c conda-forge -c pyviz param "bokeh>=0.12.10" pyviz_comms']}
 
 def task_install_test_dependencies():
     return {
