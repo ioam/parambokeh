@@ -45,7 +45,7 @@ if (window.HoloViews === undefined) {
 JS_CALLBACK = CustomJSCallback.js_callback
 
 
-def notebook_show(obj, doc, target):
+def notebook_show(obj, doc, target, comm_id):
     """
     Displays bokeh output inside a notebook and returns a CommsHandle.
     """
@@ -54,7 +54,7 @@ def notebook_show(obj, doc, target):
     bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, target)
     publish_display_data(data={'text/html': encode_utf8(bokeh_div)})
     publish_display_data(data={mime: '', 'application/javascript': bokeh_script},
-                         metadata={mime: {'id': target}})
+                         metadata={mime: {'id': comm_id}})
     return bokeh.io.notebook.CommsHandle(bokehcomm, doc)
 
 
@@ -222,7 +222,7 @@ class Widgets(param.ParameterizedFunction):
         self.document.add_root(container)
         if self.p.mode == 'notebook':
             self.notebook_handle = notebook_show(container, self.document,
-                                                 self.comm_target)
+                                                 self.comm_target, self.comm.id)
             if self.document._hold is None:
                 self.document.hold()
             self.shown = True
