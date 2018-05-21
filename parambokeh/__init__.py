@@ -14,10 +14,16 @@ from bokeh.models.widgets import Div, Button, CheckboxGroup, TextInput
 from bokeh.models import CustomJS
 
 try:
-    from .comms import JupyterCommJS, JS_CALLBACK, notebook_show
+    from IPython.display import publish_display_data
+
+    import bokeh.embed.notebook
+    from bokeh.util.string import encode_utf8
+    from holoviews.plotting.comms import JupyterCommManager
+    from holoviews.plotting.bokeh.callbacks import CustomJSCallback
     IPYTHON_AVAILABLE = True
 except:
     IPYTHON_AVAILABLE = False
+
 from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
 from .view import _View
@@ -27,6 +33,24 @@ try:
                                 commit="$Format:%h$", reponame='parambokeh')
 except:
     __version__ = '0.2.1-unknown'
+
+
+HOLOVIEWS_PROXY = """
+let HoloViews = {comms: {}, comm_status:{}}
+window.HoloViews = HoloViews
+"""
+
+JS_CALLBACK = CustomJSCallback.js_callback
+
+def notebook_show(obj, doc, target):
+    """
+    Displays bokeh output inside a notebook and returns a CommsHandle.
+    """
+    bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, target)
+    publish_display_data(data={'text/html': encode_utf8(bokeh_div)})
+    publish_display_data(data={'application/javascript': bokeh_script})
+    return bokeh.io.notebook.CommsHandle(bokeh.io.notebook.get_comms(target), doc)
+
 
 
 class default_label_formatter(param.ParameterizedFunction):
@@ -140,7 +164,7 @@ class Widgets(param.ParameterizedFunction):
             if not IPYTHON_AVAILABLE:
                 raise ImportError('IPython is not available, cannot use '
                                   'Widgets in notebook mode.')
-            self.comm = JupyterCommJS(on_msg=self.on_msg)
+            self.comm = JupyterCommManager.get_client_comm(on_msg=self.on_msg)
             # HACK: Detects HoloViews plots and lets them handle the comms
             hv_plots = [plot for plot in plots if hasattr(plot, 'comm')]
             if hv_plots:
@@ -359,11 +383,16 @@ class Widgets(param.ParameterizedFunction):
         widget state across the notebook comms.
         """
         data_template = "data = {{p_name: '{p_name}', value: cb_obj['{change}']}};"
+        proxy_object = HOLOVIEWS_PROXY
         fetch_data = data_template.format(change=change, p_name=p_name)
         self_callback = JS_CALLBACK.format(comm_id=self.comm.id,
                                            timeout=self.timeout,
-                                           debounce=self.debounce)
-        js_callback = CustomJS(code=fetch_data+self_callback)
+                                           debounce=self.debounce,
+                                           plot_id=self.comm.id)
+        js_callback = CustomJS(code='\n'.join([HOLOVIEWS_PROXY,
+                                               JupyterCommManager.js_manager,
+                                               fetch_data,
+                                               self_callback]))
         return js_callback
 
 
