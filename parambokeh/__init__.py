@@ -36,20 +36,25 @@ except:
 
 
 HOLOVIEWS_PROXY = """
-let HoloViews = {comms: {}, comm_status:{}}
+let HoloViews = {comms: {}, comm_status:{}, kernels:{}}
 window.HoloViews = HoloViews
 """
 
 JS_CALLBACK = CustomJSCallback.js_callback
 
+
 def notebook_show(obj, doc, target):
     """
     Displays bokeh output inside a notebook and returns a CommsHandle.
     """
+    mime = 'application/vnd.holoviews_exec.v0+json'
+    bokehcomm = bokeh.io.notebook.get_comms(target)
     bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, target)
     publish_display_data(data={'text/html': encode_utf8(bokeh_div)})
-    publish_display_data(data={'application/javascript': bokeh_script})
-    return bokeh.io.notebook.CommsHandle(bokeh.io.notebook.get_comms(target), doc)
+    publish_display_data(data={mime: '', 'application/javascript': bokeh_script},
+                         metadata={mime: {'id': target}})
+    return bokeh.io.notebook.CommsHandle(bokehcomm, doc)
+
 
 
 
