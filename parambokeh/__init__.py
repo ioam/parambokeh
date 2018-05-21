@@ -36,8 +36,10 @@ except:
 
 
 HOLOVIEWS_PROXY = """
-let HoloViews = {comms: {}, comm_status:{}, kernels:{}}
-window.HoloViews = HoloViews
+if (window.HoloViews === undefined) {
+   let HoloViews = {comms: {}, comm_status:{}, kernels:{}}
+   window.HoloViews = HoloViews;
+}
 """
 
 JS_CALLBACK = CustomJSCallback.js_callback
