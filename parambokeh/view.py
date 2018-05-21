@@ -15,9 +15,7 @@ def render_function(obj, view):
             renderer = renderer.instance(mode='server')
         plot = renderer.get_plot(obj, doc=view._document)
         if view._notebook:
-            from holoviews.plotting.comms import JupyterComm
-            comm = JupyterComm(plot, view._comm_target)
-            plot.comm = comm
+            plot.comm = view._comm
         plot.document = view._document
         return plot.state
     return obj
@@ -33,13 +31,13 @@ class _View(param.Parameter):
     and may optionally supply the desired size of the viewport.
     """
 
-    __slots__ = ['callbacks', 'renderer', '_comm_target', '_document', '_notebook']
+    __slots__ = ['callbacks', 'renderer', '_comm', '_document', '_notebook']
 
     def __init__(self, default=None, callback=None, renderer=None, **kwargs):
         self.callbacks = {}
         self.renderer = (render_function if renderer is None else renderer)
         super(_View, self).__init__(default, **kwargs)
-        self._comm_target = None
+        self._comm = None
         self._document = None
         self._notebook = False
 

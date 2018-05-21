@@ -4,14 +4,16 @@ import ast
 import uuid
 import itertools
 import functools
+import json
 
 import param
 
 from bokeh.document import Document
-from bokeh.io import push_notebook, curdoc
+from bokeh.io import curdoc
 from bokeh.layouts import row, column, widgetbox
 from bokeh.models.widgets import Div, Button, CheckboxGroup, TextInput
 from bokeh.models import CustomJS
+from bokeh.protocol import Protocol
 
 try:
     from IPython.display import publish_display_data
@@ -20,6 +22,7 @@ try:
     from bokeh.util.string import encode_utf8
     from holoviews.plotting.comms import JupyterCommManager
     from holoviews.plotting.bokeh.callbacks import CustomJSCallback
+    from holoviews.plotting.bokeh.renderer import bokeh_msg_handler
     IPYTHON_AVAILABLE = True
 except:
     IPYTHON_AVAILABLE = False
@@ -37,7 +40,7 @@ except:
 
 HOLOVIEWS_PROXY = """
 if (window.HoloViews === undefined) {
-   let HoloViews = {comms: {}, comm_status:{}, kernels:{}}
+   let HoloViews = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
    window.HoloViews = HoloViews;
 }
 """
@@ -45,19 +48,31 @@ if (window.HoloViews === undefined) {
 JS_CALLBACK = CustomJSCallback.js_callback
 
 
-def notebook_show(obj, doc, target, comm_id):
+def notebook_show(obj, doc, comm):
     """
-    Displays bokeh output inside a notebook and returns a CommsHandle.
+    Displays bokeh output inside a notebook.
     """
-    mime = 'application/vnd.holoviews_exec.v0+json'
-    bokehcomm = bokeh.io.notebook.get_comms(target)
-    bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, target)
+    target = obj.ref['id']
+    load_mime = 'application/vnd.holoviews_load.v0+json'
+    exec_mime = 'application/vnd.holoviews_exec.v0+json'
+
+    # Publish plot HTML
+    bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, comm.id)
     publish_display_data(data={'text/html': encode_utf8(bokeh_div)})
-    publish_display_data(data={mime: '', 'application/javascript': bokeh_script},
-                         metadata={mime: {'id': comm_id}})
-    return bokeh.io.notebook.CommsHandle(bokehcomm, doc)
 
+    # Publish comm manager
+    JS = '\n'.join([HOLOVIEWS_PROXY, JupyterCommManager.js_manager])
+    publish_display_data(data={load_mime: JS, 'application/javascript': JS})
 
+    # Publish bokeh plot JS
+    msg_handler = bokeh_msg_handler.format(plot_id=target)
+    comm_js = comm.js_template.format(plot_id=target, comm_id=comm.id, msg_handler=msg_handler)
+    bokeh_js = '\n'.join([comm_js, bokeh_script])
+
+    # Note: extension should be altered so text/html is not required
+    publish_display_data(data={exec_mime: '', 'text/html': '',
+                               'application/javascript': bokeh_js},
+                         metadata={exec_mime: {'id': target}})
 
 
 class default_label_formatter(param.ParameterizedFunction):
@@ -75,7 +90,6 @@ class default_label_formatter(param.ParameterizedFunction):
         value is the desired label.""")
 
     def __call__(self, pname):
-
         if pname in self.overrides:
             return self.overrides[pname]
         if self.replace_underscores:
@@ -166,7 +180,6 @@ class Widgets(param.ParameterizedFunction):
         self._widgets = {}
         self.parameterized = parameterized
         self.document = None
-        self.comm_target = None
         if self.p.mode == 'notebook':
             if not IPYTHON_AVAILABLE:
                 raise ImportError('IPython is not available, cannot use '
@@ -174,35 +187,42 @@ class Widgets(param.ParameterizedFunction):
             self.comm = JupyterCommManager.get_client_comm(on_msg=self.on_msg)
             # HACK: Detects HoloViews plots and lets them handle the comms
             hv_plots = [plot for plot in plots if hasattr(plot, 'comm')]
+            self.server_comm = JupyterCommManager.get_server_comm()
             if hv_plots:
-                self.comm_target = [p.comm.id for p in hv_plots][0]
                 self.document = [p.document for p in hv_plots][0]
                 plots = [p.state for p in plots]
                 self.p.push = False
             else:
-                self.comm_target = uuid.uuid4().hex
                 self.document = doc or Document()
         else:
             self.document = doc or curdoc()
 
         self._queue = []
         self._active = False
-
         self._widget_options = {}
         self.shown = False
 
+        # Initialize root container
+        widget_box = widgetbox(width=self.p.width)
+        view_params = any(isinstance(p, _View) for p in parameterized.params().values())
+        layout = self.p.view_position
+        container_type = column if layout in ['below', 'above'] else row
+        container = container_type() if plots or view_params else widget_box
+        self.plot_id = container.ref['id']
+
+        # Initialize widgets and populate container
         widgets, views = self.widgets()
         plots = views + plots
-        container = widgetbox(widgets, width=self.p.width)
+        widget_box.children = widgets
         if plots:
             view_box = column(plots)
-            layout = self.p.view_position
             if layout in ['below', 'right']:
-                children = [container, view_box]
+                children = [widget_box, view_box]
             else:
-                children = [view_box, container]
-            container_type = column if layout in ['below', 'above'] else row
-            container = container_type(children=children)
+                children = [view_box, widget_box]
+            container.children = children
+
+        # Initialize view parameters
         for view in views:
             p_obj = self.parameterized.params(view.name)
             value = getattr(self.parameterized, view.name)
@@ -221,8 +241,7 @@ class Widgets(param.ParameterizedFunction):
 
         self.document.add_root(container)
         if self.p.mode == 'notebook':
-            self.notebook_handle = notebook_show(container, self.document,
-                                                 self.comm_target, self.comm.id)
+            notebook_show(container, self.document, self.server_comm)
             if self.document._hold is None:
                 self.document.hold()
             self.shown = True
@@ -293,9 +312,22 @@ class Widgets(param.ParameterizedFunction):
 
         # document.hold() must have been done already? because this seems to work
         if self.p.mode == 'notebook' and self.p.push and self.document._held_events:
-            push_notebook(handle=self.notebook_handle, document=self.document)
+            self._send_notebook_diff()
         self._active = False
 
+
+    def _send_notebook_diff(self):
+        events = list(self.document._held_events)
+        msg = Protocol("1.0").create("PATCH-DOC", events, use_buffers=True)
+        self.document._held_events = []
+        if msg is None:
+            return
+        self.server_comm.send(msg.header_json)
+        self.server_comm.send(msg.metadata_json)
+        self.server_comm.send(msg.content_json)
+        for header, payload in msg.buffers:
+            self.server_comm.send(json.dumps(header))
+            self.server_comm.send(buffers=[payload])
 
     def _update_trait(self, p_name, p_value, widget=None):
         widget = self._widgets[p_name] if widget is None else widget
@@ -303,8 +335,6 @@ class Widgets(param.ParameterizedFunction):
             p_value, size = p_value
         if isinstance(widget, Div):
             widget.text = p_value
-        elif self.p.mode == 'notebook' and self.shown:
-            return
         else:
             if widget.children:
                 widget.children.remove(widget.children[0])
@@ -315,7 +345,7 @@ class Widgets(param.ParameterizedFunction):
         p_obj = self.parameterized.params(p_name)
 
         if isinstance(p_obj, _View):
-            p_obj._comm_target = self.comm_target
+            p_obj._comm = self.server_comm
             p_obj._document = self.document
             p_obj._notebook = self.p.mode == 'notebook'
 
@@ -390,15 +420,12 @@ class Widgets(param.ParameterizedFunction):
         widget state across the notebook comms.
         """
         data_template = "data = {{p_name: '{p_name}', value: cb_obj['{change}']}};"
-        proxy_object = HOLOVIEWS_PROXY
         fetch_data = data_template.format(change=change, p_name=p_name)
         self_callback = JS_CALLBACK.format(comm_id=self.comm.id,
                                            timeout=self.timeout,
                                            debounce=self.debounce,
-                                           plot_id=self.comm.id)
-        js_callback = CustomJS(code='\n'.join([HOLOVIEWS_PROXY,
-                                               JupyterCommManager.js_manager,
-                                               fetch_data,
+                                           plot_id=self.plot_id)
+        js_callback = CustomJS(code='\n'.join([fetch_data,
                                                self_callback]))
         return js_callback
 
