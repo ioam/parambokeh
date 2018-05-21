@@ -111,13 +111,8 @@ def notebook_show(obj, doc, target):
     Displays bokeh output inside a notebook and returns a CommsHandle.
     """
     bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, target)
-
-    bokeh_output = """
-    {bokeh_div}
-    <script type="application/javascript">{bokeh_script}</script>
-    """.format(bokeh_div=bokeh_div, bokeh_script=bokeh_script)
-
-    publish_display_data({'text/html': encode_utf8(bokeh_output)})
+    publish_display_data(data={'text/html': encode_utf8(bokeh_div)})
+    publish_display_data(data={'application/javascript': bokeh_script})
     return bokeh.io.notebook.CommsHandle(bokeh.io.notebook.get_comms(target), doc)
 
 
