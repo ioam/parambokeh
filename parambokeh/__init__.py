@@ -475,3 +475,67 @@ class Widgets(param.ParameterizedFunction):
 
         outputs = [self.widget(pname) for pname in outputs]
         return widgets, outputs
+
+
+class JSONInit(param.Parameterized):
+    """
+    Callable that can be passed to Widgets.initializer to set Parameter
+    values using JSON. There are three approaches that may be used:
+    1. If the json_file argument is specified, this takes precedence.
+    2. The JSON file path can be specified via an environment variable.
+    3. The JSON can be read directly from an environment variable.
+    Here is an easy example of setting such an environment variable on
+    the commandline:
+    PARAMBOKEH_INIT='{"p1":5}' jupyter notebook
+    This addresses any JSONInit instances that are inspecting the
+    default environment variable called PARAMBOKEH_INIT, instructing it to set
+    the 'p1' parameter to 5.
+    """
+
+    varname = param.String(default='PARAMBOKEH_INIT', doc="""
+        The name of the environment variable containing the JSON
+        specification.""")
+
+    target = param.String(default=None, doc="""
+        Optional key in the JSON specification dictionary containing the
+        desired parameter values.""")
+
+    json_file = param.String(default=None, doc="""
+        Optional path to a JSON file containing the parameter settings.""")
+
+
+    def __call__(self, parameterized):
+
+        warnobj = param.main if isinstance(parameterized, type) else parameterized
+        param_class = (parameterized if isinstance(parameterized, type)
+                       else parameterized.__class__)
+
+
+        target = self.target if self.target is not None else param_class.__name__
+
+        env_var = os.environ.get(self.varname, None)
+        if env_var is None and self.json_file is None: return
+
+        if self.json_file or env_var.endswith('.json'):
+            try:
+                fname = self.json_file if self.json_file else env_var
+                spec = json.load(open(os.path.abspath(fname), 'r'))
+            except:
+                warnobj.warning('Could not load JSON file %r' % spec)
+        else:
+            spec = json.loads(env_var)
+
+        if not isinstance(spec, dict):
+            warnobj.warning('JSON parameter specification must be a dictionary.')
+            return
+
+        if target in spec:
+            params = spec[target]
+        else:
+            params = spec
+
+        for name, value in params.items():
+           try:
+               parameterized.set_param(**{name:value})
+           except ValueError as e:
+               warnobj.warning(str(e))
