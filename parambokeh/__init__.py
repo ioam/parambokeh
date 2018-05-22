@@ -487,13 +487,13 @@ class JSONInit(param.Parameterized):
     3. The JSON can be read directly from an environment variable.
     Here is an easy example of setting such an environment variable on
     the commandline:
-    PARAMBOKEH_INIT='{"p1":5}' jupyter notebook
+    PARAM_JSON_INIT='{"p1":5}' jupyter notebook
     This addresses any JSONInit instances that are inspecting the
-    default environment variable called PARAMBOKEH_INIT, instructing it to set
+    default environment variable called PARAM_JSON_INIT, instructing it to set
     the 'p1' parameter to 5.
     """
 
-    varname = param.String(default='PARAMBOKEH_INIT', doc="""
+    varname = param.String(default='PARAM_JSON_INIT', doc="""
         The name of the environment variable containing the JSON
         specification.""")
 
