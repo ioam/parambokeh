@@ -15,6 +15,7 @@ requirements:
   run:
     - python
     - param
+    - pyviz_comms
     - bokeh >=0.12.10
 
 test:
