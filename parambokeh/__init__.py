@@ -342,7 +342,9 @@ class Widgets(param.ParameterizedFunction):
 
         kw = dict(value=value)
 
-        if self.p.label_formatter is not None:
+        if self.p.show_labels is False:
+            kw['title'] = ''
+        elif self.p.label_formatter is not None:
             kw['title'] = self.p.label_formatter(p_name)
         else:
             kw['title'] = p_name
@@ -456,10 +458,7 @@ class Widgets(param.ParameterizedFunction):
             name = "" if issubclass(type(p),param.Action) else pname
             return Div(text=name)
 
-        if self.p.show_labels:
-            widgets += [self.widget(pname) for pname in ordered_params]
-        else:
-            widgets += [self.widget(pname) for pname in ordered_params]
+        widgets += [self.widget(pname) for pname in ordered_params]
 
         if self.p.button and not (self.p.callback is None and self.p.next_n==0):
             display_button = Button(label=self.p.button_text)
