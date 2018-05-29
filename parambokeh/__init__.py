@@ -355,6 +355,8 @@ class Widgets(param.ParameterizedFunction):
             lookup = {v: k for k, v in options}
             if isinstance(value, list):
                 kw['value'] = [lookup[v] for v in value]
+            elif isinstance(p_obj, param.FileSelector) and value is None:
+                kw['value'] = ''
             else:
                 kw['value'] = lookup[value]
             opt_lookup = {k: v for k, v in options}
