@@ -11,13 +11,26 @@ preferred way).
 
 ![screenshot of sliders app](sliders.png)
 
-Based on
-https://github.com/bokeh/bokeh/blob/master/examples/app/sliders.py,
-the sliders app shows how to integrate parambokeh with a django view;
-there's no interaction between param and django models.
+Based on a standard django2 app template, the sliders app shows how to
+integrate parambokeh with a django view; there's no interaction
+between param and django models.
+
+Additions/modifications to django2 app template:
+
+  * `sliders/sinewave.py`: a (pre-existing) parameterized object (to
+    replace with your own)
+
+  * `sliders/bk_sliders.py`: the parambokeh/bokeh app (based on
+    https://github.com/bokeh/bokeh/blob/master/examples/app/sliders.py;
+    to replace with your own)
+
+  * sliders/apps.py: how a django app can import and use bokeh server
+
+  * sliders/views.py and templates/base.html: getting the bokeh app
+    into a django view
 
 To run: `python manage.py runserver`, then visit
-http://localhost:8000/sliders
+http://localhost:8000/sliders in your browser.
 
 
 ## polls
