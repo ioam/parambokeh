@@ -4,12 +4,15 @@ from django.apps import AppConfig
 
 from bokeh.server.server import Server
 
+from tornado.ioloop import IOLoop
+
 from . import bk_sliders
 from . import bk_config
 
 def bk_worker():
     # Note: num_procs must be 1; see e.g. flask_gunicorn_embed.py for num_procs>1
     server = Server({'/bk_sliders_app': bk_sliders.app},
+                    io_loop=IOLoop(),
                     address=bk_config.server['address'],
                     port=bk_config.server['port'],
                     allow_websocket_origin=["localhost:8000"])
