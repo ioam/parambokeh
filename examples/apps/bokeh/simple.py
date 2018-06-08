@@ -6,7 +6,7 @@ import datetime as dt
 class Example(param.Parameterized):
     """Example Parameterized class"""
     log = []
-    x            = param.Parameter(default=1.0,precedence=0,doc="X position")
+    x            = param.Number(default=1.0,bounds=(0,100),precedence=0,doc="X position")
     write_to_log = param.Action(lambda obj: obj.log.append((dt.datetime.now(),obj.x)), 
                                 doc="""Record value of x and timestamp.""",precedence=1)
 
