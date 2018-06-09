@@ -10,81 +10,128 @@ sudo: false
 
 env:
   global:
-    secure: qDzvmjcR6eLAmHx0ziN3Y5M8h65+OM+eBNERQsC3WSkeaD45rEE6a8w59dBdUzZBTLKO2RP8pKlgzxBZGOBlnLbTyN4RD/q2dA+gm5c0SDWWT4kVCiogJVsrzyRHVgMDmqDu56HPbQzhsW+5Qh2JKjVkkI7GwvGZRFB9WKQC8yjW/RfLvQ7bzX6jXbaHDYg9dywjI5u7da7HZKXyt/6nhebdaI19RdQHuESUqTADFEgdCKdzrNC+NqbJ8SUnNBBmkb1ZqoQ3/p1/Z/+uDi/2ThozE7Lz6gl8HtxVRnBiwNCDvZRE8uTB79+FlW0FJCVZ7qGO8jVWlVqy+WEEFh/6s9RP2PLd73CmItfF7BzSdxdurOYfnizboqCideSasDQK7XdeDiX4fPrgqbeesn8+XJ9vhxRAmpsNdZIU+2pivgviJwUZUwKwgzt3hf23ld9GpJg60wCfQRT8hiZc3/XsUPrzDjci7hwrRESqobPcuWk6xsFPTvJsTeOSLejP1wDOGAhufLTQIys26BSwHiaj6aI4RPK3Y4sy644m4IOfVvi3d+YfyN2Q5NO7QIwk5PjQBUEdwcIi3lAk2eAIjJamlDYFCRrnwuEoFinuFlUjtqpkuVTLgonTbk9KkIYnXeP3wYERrt4uOJtxDRCojBC0FI5rDbkhC3wP8Wef4EToQ+s=
+    - PYENV_VERSION=3.6
+    - CHANS_DEV="-c pyviz/label/dev"
+    - CHANS_REL="-c pyviz"
+    - PKG_TEST_PYTHON="--test-python=py27 --test-python=py36"
+    - PYPI="https://upload.pypi.org/legacy/"
+
+cache:
+  directories:
+    - $HOME/miniconda
+
+before_cache:
+  - rm -rf $HOME/miniconda/pkgs
+  - rm -rf $HOME/miniconda/conda-bld/*
+  - rm -rf $HOME/miniconda/envs/*/conda-bld  
+
+# quick hack to determine what tag is (improvements welcomed)
+#     release: ^v(\d+|\.)*[^a-z]\d*$
+# dev release: ^v(\d+|\.)*[a-z]\d*$
 
 stages:
   - test
-  - doc
-  - name: anaconda_deploy
-    if: branch = master AND type != pull_request
+  - name: conda_dev_package
+    if: branch = switch_to_pyctdev
+##    if: tag =~ ^v(\d+|\.)*[a-z]\d*$
+#  - name: pip_dev_package
+##    if: branch = switch_to_pyctdev
+#    if: tag =~ ^v(\d+|\.)*[a-z]\d*$
+#  - name: conda_package
+#    if: tag =~ ^v(\d+|\.)*[^a-z]\d*$
+#  - name: pip_package
+#    if: tag =~ ^v(\d+|\.)*[^a-z]\d*$
+#  - name: docs
+#    if: tag =~ ^v(\d+|\.).*$
+
 
 jobs:
   include:
-    - &default
+
+    ########## DEVELOPER INSTALL ##########
+
+    - &conda_default
       stage: test
-      env: PYTHON_VERSION="2.7"
+      env: DESC="dev test_all"
       before_install:
-        #######################
-        ## install miniconda ##
-        - easy_install --user doit==0.29.0 ioamdoit
-        - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-            ~/Library/Python/2.7/bin/doit install_miniconda;
-          else
-            ~/.local/bin/doit install_miniconda;
-          fi
-        - rm -f .doit.db
-        - export PATH="$HOME/miniconda/bin:$PATH"
-        #######################
-        - pip install ioamdoit
-        - doit create_env --python=$PYTHON_VERSION
+        # install doit/pyctdev and use to install miniconda...
+        - pip install pyctdev && doit miniconda_install && pip uninstall -y doit pyctdev
+        - export PATH="$HOME/miniconda/bin:$PATH" && hash -r
+        - conda config --set always_yes True
+        # ...and now install doit/pyctdev into miniconda
+        - conda install -c pyviz/label/dev pyctdev && doit ecosystem_setup
+      install:
+        - doit env_create $CHANS_DEV --python=$PYENV_VERSION
         - source activate test-environment
+        - doit develop_install -o examples -o tests $CHANS_DEV
+        - doit env_capture
+      script: doit test_all
 
+    # python 2 flake checking typically catches python 2 syntax
+    # errors where python 3's been assumed...
+    - <<: *conda_default
+      env: DESC="py2 flakes" PYENV_VERSION=2.7
+      script: doit test_lint
+
+    ########## END-USER PACKAGES ##########
+
+    ## dev packages
+
+    - &pip_default
+      env: PYPI="https://test.pypi.org/legacy/" TRAVIS_NOCACHE=$TRAVIS_JOB_ID
+      stage: pip_dev_package
+      before_install: pip install pyctdev && doit ecosystem=pip ecosystem_setup
       install:
-        - doit install_test_dependencies
-        - doit capture_conda_env
-        - doit develop_install
-      script:
-        - doit all_tests
+        - unset PYENV_VERSION && pyenv global 3.6 2.7
+        - doit ecosystem=pip package_build $PKG_TEST_PYTHON --test-group=unit
+        - doit ecosystem=pip package_build $PKG_TEST_PYTHON --test-group=all
+      script: doit ecosystem=pip package_upload -u $TPPU -p $TPPP -r ${PYPI}
 
-    - <<: *default
-      env: PYTHON_VERSION="3.6"
-
-    - <<: *default
-      stage: doc
-      env: PYTHON_VERSION="3.6"
+    - <<: *conda_default
+      stage: conda_dev_package
+      env: DESC="" TRAVIS_NOCACHE=$TRAVIS_JOB_ID
       install:
-        # TODO: could (build and) use conda package; to be cleaned up
-        # once auto versioning/package building is finalized
-        - doit install_doc_dependencies
-        - doit capture_conda_env
-        - doit develop_install
+        - doit package_build $CHANS_DEV $PKG_TEST_PYTHON --test-group=unit
+        - doit package_test $CHANS_DEV $PKG_TEST_PYTHON --test-group=examples --test-requires=examples
+      script: doit package_upload --user=ceball --token=$CONDA_UPLOAD_TOKEN_TMP --label=dev
+
+    ## release packages
+
+    - <<: *pip_default
+      env: TRAVIS_NOCACHE=$TRAVIS_JOB_ID
+      stage: pip_package
+      script: doit ecosystem=pip package_upload -u $PPU -p $PPP -r ${PYPI}
+
+    - <<: *conda_default
+      stage: conda_package
+      env: DESC="" TRAVIS_NOCACHE=$TRAVIS_JOB_ID
+      install: doit package_build $CHANS_REL $PKG_TEST_PYTHON --test-group=all
+      script: doit package_upload --token=$CONDA_UPLOAD_TOKEN_AGAIN  --label=dev --label=main
+
+
+    ########## DOCS ##########
+
+    - <<: *conda_default
+      stage: docs
+      env: DESC="docs" CHANS_DEV="-c pyviz/label/dev"
       script:
+        - doit develop_install $CHANS_DEV -o doc
         - doit docs
       deploy:
         - provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
           local_dir: ./doc/_build/html
+          repo: ioam-docs/parambokeh-dev
           on:
-            # TODO: depending on what we do for auto versioning/packaging,
-            # should make this deploy somewhere for PRs etc, and only to the
-            # main site on specific tag format.
             tags: true
+            all_branches: true
+            condition: $TRAVIS_TAG =~ [0-9]+[a-z][0-9]*$
         - provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
           local_dir: ./doc/_build/html
-          repo: ioam-docs/parambokeh-master
-
-    - <<: *default
-      stage: anaconda_deploy
-      env: PYTHON_VERSION="3.6"
-      install:
-        - source deactivate
-        - conda update -q -y conda
-        - conda install -q -y conda-build anaconda-client
-      script:
-        - export VERSIONHACK=$(python -c "import subprocess;desc=subprocess.check_output(['git','describe','--long']).decode('utf8');v,commits=desc.split('-')[0:2];newv=[int(x) for x in v[1::].split('.')];newv[-1]+=1;print('.'.join(str(x) for x in newv)+'.dev'+commits)")
-        - conda build conda.recipe/
-        # only upload if package doesn't exist (as e.g. there are cron builds)
-        - anaconda show pyviz/param/$VERSIONHACK || anaconda --token $CONDA_UPLOAD_TOKEN_AGAIN upload --user pyviz --label dev $(conda build --output conda.recipe)
+          on:
+            tags: true
+            all_branches: true
+            condition: $TRAVIS_TAG =~ [0-9]+[^a-z][0-9]*$
