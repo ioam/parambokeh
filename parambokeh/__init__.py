@@ -29,11 +29,25 @@ from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
 from .view import _View
 
+
+__version__ = str(param.version.Version(fpath=__file__, archive_commit="$Format:%h$",
+                                        reponame="parambokeh"))
+
+##
+# make pyct's example/data commands available if possible
+from functools import partial
 try:
-    __version__ = param.Version(release=(0,2,1), fpath=__file__,
-                                commit="$Format:%h$", reponame='parambokeh')
-except:
-    __version__ = '0.2.1-unknown'
+    from pyct.cmd import copy_examples as _copy, fetch_data as _fetch, examples as _examples
+    copy_examples = partial(_copy, 'parambokeh')
+    fetch_data = partial(_fetch, 'parambokeh')
+    examples = partial(_examples, 'parambokeh')
+except ImportError:
+    def _missing_cmd(*args,**kw): return("install pyct to enable this command (e.g. `conda install pyct` or `pip install pyct`)")
+    _copy = _fetch = _examples = _missing_cmd
+    def _err(): raise ValueError(_missing_cmd())
+    fetch_data = copy_examples = examples = _err
+del partial, _examples, _copy, _fetch
+##
 
 
 def notebook_show(obj, doc, comm):
