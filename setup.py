@@ -2,15 +2,13 @@ from setuptools import setup
 
 # TODO:
 #  - release new nbsite
-#  - replace (param build time dep + _pyct_setup_support) with pyctbuild
-
 
 # Temporary until build requirements as specified in pyproject.toml
 # are widely supported
 try:
     import pyctbuild
-except ImportError as e:
-    raise ImportError("Parambokeh requires pyctbuild to build. Please first install pyctbuild (e.g. pip or conda install pyctbuild), or upgrade to pip>=10 (or conda-build>= ??)")
+except ImportError:
+    raise ImportError("Parambokeh requires pyctbuild to build; please upgrade to pip>=10 and try again (or alternatively, install pyctbuild manually first (e.g. `conda install -c pyviz pyctbuild`)")
 
 
 if __name__=="__main__":
