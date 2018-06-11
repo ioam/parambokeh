@@ -18,11 +18,11 @@ build:
     {% endfor %}  
 
 requirements:
-  build:
+  host:
     # duplicates pyproject.toml (not supported in conda build)
     - python
     - setuptools
-    - param
+    - pyctbuild
   run:
     - python {{ sdata['python_requires'] }}
     {% for dep in sdata.get('install_requires',{}) %}
