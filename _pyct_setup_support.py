@@ -28,11 +28,20 @@ def embed_version(basepath, ref='v0.2.2'):
     except:
         return None
 
-def get_setup_version(reponame):
+def get_setup_version():
     """
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
+    import configparser # py2 also?
+    config = configparser.ConfigParser()
+    config.read("setup.cfg")
+    reponame = config['tool:autover']['reponame']
+    if 'pkgname' in config['tool:autover']:
+        pkgname = config['tool:autover']['pkgname']
+    # etc... (started from an old get_setup_version?)
+        
+    
     import json
     basepath = os.path.split(__file__)[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
@@ -71,53 +80,3 @@ def examples(path, root, verbose=False, force=False):
         shutil.copytree(tree_root, path, ignore=ignore, symlinks=True)
     else:
         print('Cannot find %s' % tree_root)
-
-
-
-def default_setup_args():
-
-    ########## setup.py "best practice" ##########
-    
-    args = {
-        'include_package_data':True,
-        'long_description_content_type':"text/markdown",
-        'license':'BSD-3',
-        'classifiers': [
-            "License :: OSI Approved :: BSD License",
-            "Operating System :: OS Independent"
-        ]
-    }
-
-    from setuptools import find_packages
-    args['packages'] = find_packages()
-    args['long_description']=open('README.md').read()
-
-    # + could check manifest.in entries
-
-
-    
-    ########## common pyviz setup.py metadata ##########
-
-    # would want to make this configurable. And moving it out of individual setup.py
-    # files might annoy people who are trying to read setup.py by eye
-
-    AUTHOR = "pyviz"
-    AUTHOR_EMAIL = "holoviews@gmail.com"
-    PLATFORMS = ["Windows","MacOS","Linux"]
-
-    args.update({
-        'author': AUTHOR,
-        'author_email': AUTHOR_EMAIL,
-        'maintainer': AUTHOR,
-        'maintainer_email': AUTHOR_EMAIL,
-        'platforms': PLATFORMS,
-    })
-
-
-    return args
-
-
-# TODO: seems like setuptools doesn't support all things that can be in PKG-INFO,
-# like multiple URLs, so (for example) can't get link to github and homepage from pypi
-# https://www.python.org/dev/peps/pep-0566/ https://packaging.python.org/specifications/core-metadata/#project-url-multiple-use .
-# Should come with pyproject/switching to different build system e.g. flit
