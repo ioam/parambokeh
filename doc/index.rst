@@ -1,7 +1,3 @@
-*****
-index
-*****
-
 .. notebook:: parambokeh ../examples/index.ipynb
     :offset: 0
 
