@@ -64,6 +64,7 @@ jobs:
         - provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
+          fqdn: parambokeh.pyviz.org
           local_dir: ./doc/_build/html
           on:
             # TODO: depending on what we do for auto versioning/packaging,
