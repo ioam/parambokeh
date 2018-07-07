@@ -29,9 +29,9 @@ from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
 from .view import _View
 
-
-__version__ = str(param.version.Version(fpath=__file__, archive_commit="$Format:%h$",
-                                        reponame="parambokeh"))
+from param.version import Version
+__version__ = str(param.Version(fpath=__file__,archive_commit="$Format:%h$",reponame="parambokeh"))
+del Version
 
 ##
 # make pyct's example/data commands available if possible
