@@ -21,8 +21,9 @@ requirements:
   host:
     # duplicates pyproject.toml (not supported in conda build)
     - python
-    - setuptools
-    - pyctbuild
+    - setuptools >=30.3.0
+    - param >=1.7.0
+    - pyct-core >=0.4.4
   run:
     - python {{ sdata['python_requires'] }}
     {% for dep in sdata.get('install_requires',{}) %}
