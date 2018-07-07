@@ -115,7 +115,6 @@ jobs:
         - provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
-          fqdn: parambokeh.pyviz.org
           local_dir: ./doc/_build/html
           repo: ioam-docs/parambokeh-dev
           on:
@@ -126,6 +125,7 @@ jobs:
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
           local_dir: ./doc/_build/html
+          fqdn: parambokeh.pyviz.org
           on:
             tags: true
             all_branches: true
