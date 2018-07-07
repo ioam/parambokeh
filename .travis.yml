@@ -13,8 +13,7 @@ env:
     - PYENV_VERSION=3.6
     - CHANS_DEV="-c pyviz/label/dev"
     - CHANS_REL="-c pyviz"
-    # TODO: update before merge (along with stage branch checks)
-    - LABELS_DEV="--label devtmp"
+    - LABELS_DEV="--label dev"
     - LABELS_REL="--label dev --label main"
     - PKG_TEST_PYTHON="--test-python=py27 --test-python=py36"
 
@@ -109,7 +108,7 @@ jobs:
       stage: docs
       env: DESC="docs"
       script:
-        - doit develop_install $CHANS_DEV -o doc -c conda-forge # phantomjs still not on defaults
+        - doit develop_install $CHANS_DEV -o doc -o examples -c conda-forge # phantomjs still not on defaults
         - doit docs
       deploy:
         - provider: pages
