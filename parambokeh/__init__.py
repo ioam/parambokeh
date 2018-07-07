@@ -63,6 +63,23 @@ def notebook_show(obj, doc, comm):
                          metadata={exec_mime: {'id': target}})
 
 
+def process_hv_plots(widgets, plots):
+    """
+    Temporary fix to patch HoloViews plot comms
+    """
+    bokeh_plots = []
+    for plot in plots:
+        if hasattr(plot, '_update_callbacks'):
+            for subplot in plot.traverse(lambda x: x):
+                subplot.comm = widgets.server_comm
+                for cb in subplot.callbacks:
+                    for c in cb.callbacks:
+                        c.code = c.code.replace(plot.id, widgets.plot_id)
+            plot = plot.state
+        bokeh_plots.append(plot)
+    return bokeh_plots
+
+
 class default_label_formatter(param.ParameterizedFunction):
     "Default formatter to turn parameter names into appropriate widget labels."
 
@@ -178,12 +195,13 @@ class Widgets(param.ParameterizedFunction):
             self.server_comm = JupyterCommManager.get_server_comm()
             if hv_plots:
                 self.document = [p.document for p in hv_plots][0]
-                plots = [p.state for p in plots]
                 self.p.push = False
             else:
                 self.document = doc or Document()
         else:
             self.document = doc or curdoc()
+            self.server_comm = None
+            self.comm = None
 
         self._queue = []
         self._active = False
@@ -202,6 +220,9 @@ class Widgets(param.ParameterizedFunction):
         widgets, views = self.widgets()
         plots = views + plots
         widget_box.children = widgets
+
+        plots = process_hv_plots(self, plots)
+
         if plots:
             view_box = column(plots)
             if layout in ['below', 'right']:
