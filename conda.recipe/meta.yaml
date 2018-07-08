@@ -1,6 +1,8 @@
+{% set sdata = load_setup_py_data() %}
+
 package:
   name: parambokeh
-  version: {{ os.environ.get("VERSIONHACK") }}
+  version: {{ sdata['version'] }}
 
 source:
   path: ..
@@ -8,21 +10,36 @@ source:
 build:
   noarch: python
   script: python setup.py install --single-version-externally-managed --record=record.txt
+  entry_points:
+    {% for group,epoints in sdata.get("entry_points",{}).items() %}
+    {% for entry_point in epoints %}
+    - {{ entry_point }}
+    {% endfor %}
+    {% endfor %}  
 
 requirements:
-  build:
+  host:
+    # duplicates pyproject.toml (not supported in conda build)
     - python
+    - setuptools >=30.3.0
+    - param >=1.7.0
+    - pyct-core >=0.4.4
   run:
-    - python
-    - param
-    - pyviz_comms
-    - bokeh >=0.12.10
+    - python {{ sdata['python_requires'] }}
+    {% for dep in sdata.get('install_requires',{}) %}
+    - "{{ dep }}"
+    {% endfor %}
 
 test:
   imports:
     - parambokeh
+  requires:
+    {% for dep in sdata['extras_require']['tests'] %}
+    - "{{ dep }}"
+    {% endfor %}
 
 about:
-  home: https://github.com/ioam/parambokeh
-  summary: ParamBokeh provides an easy way to generate a UI for param based classes in the notebook or on bokeh server.
-  license: BSD 3-Clause
+  home: {{ sdata['url'] }}
+  summary: {{ sdata['description'] }}
+  license: {{ sdata['license'] }}
+#  license_file: {{ sdata['license_file'] }}

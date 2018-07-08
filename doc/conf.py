@@ -28,7 +28,7 @@ html_context.update({
     'PROJECT': project,
     'DESCRIPTION': description,
     'AUTHOR': authors,
-    'WEBSITE_URL': 'https://ioam.github.io/parambokeh',
+    'WEBSITE_URL': 'https://parambokeh.pyviz.org',
     'VERSION': version,
     'NAV': _NAV,
     'LINKS': _NAV,

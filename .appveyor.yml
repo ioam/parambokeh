@@ -1,22 +1,21 @@
 environment:
+  global:
+    CHANS_DEV: "-c pyviz/label/dev"
   matrix:
-    - PY: "3.6"
-      CONDA: "C:\\Miniconda3-x64"
-      DOIT: "doit"
     - PY: "2.7"
       CONDA: "C:\\Miniconda-x64"
-      DOIT: "doit==0.29.0"
+    - PY: "3.6"
+      CONDA: "C:\\Miniconda36-x64"
 
 install:
   - "SET PATH=%CONDA%;%CONDA%\\Scripts;%PATH%"
-  - pip install %DOIT% ioamdoit
-  - doit create_env --python=%PY%
-  - activate test-environment
-  - doit install_test_dependencies
-  - doit capture_conda_env
-  - doit develop_install
+  - "conda install -y -c pyviz/label/dev pyctdev && doit ecosystem_setup"
+  - "doit env_create %CHANS_DEV% --name=test --python=%PY%"
+  - "activate test"
+  - "doit develop_install -o examples -o tests %CHANS_DEV%"
+  - "doit env_capture"
 
 build: off
 
 test_script:
-  - doit all_tests
+  - "doit test_all"
