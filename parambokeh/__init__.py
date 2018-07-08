@@ -42,7 +42,7 @@ try:
     fetch_data = partial(_fetch, 'parambokeh')
     examples = partial(_examples, 'parambokeh')
 except ImportError:
-    def _missing_cmd(*args,**kw): return("install pyct to enable this command (e.g. `conda install pyct` or `pip install pyct`)")
+    def _missing_cmd(*args,**kw): return("install pyct to enable this command (e.g. `conda install pyct` or `pip install pyct[cmd]`)")
     _copy = _fetch = _examples = _missing_cmd
     def _err(): raise ValueError(_missing_cmd())
     fetch_data = copy_examples = examples = _err
