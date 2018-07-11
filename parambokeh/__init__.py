@@ -173,7 +173,7 @@ class Widgets(param.ParameterizedFunction):
         else:
             self.document = doc or curdoc()
             self.client_comm = None
-            self.comm = comm or None
+            self.comm = None
 
         self._queue = []
         self._active = False
@@ -214,13 +214,8 @@ class Widgets(param.ParameterizedFunction):
         if self.p.on_init:
             self.execute()
 
-        if self.p.mode in ('raw', 'notebook'):
-            return self.container
+        return self.container
 
-        # Handle server case
-        model = self.container._get_model(doc, self.comm, self.plot_id)
-        document.add_root(model)
-        return self.document
 
 
     def on_msg(self, msg):

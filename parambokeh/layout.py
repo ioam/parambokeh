@@ -5,7 +5,7 @@ from bokeh.io import curdoc
 from bokeh.models import LayoutDOM
 from bokeh.layouts import Column as BkColumn, Row as BkRow 
 
-from .util import render, process_plot
+from .util import render, process_plot, add_to_doc
 
 try:
     from IPython.display import publish_display_data

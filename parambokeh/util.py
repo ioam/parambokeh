@@ -103,8 +103,8 @@ def process_plot(plot, doc, plot_id, comm):
         return plot.container
     elif hasattr(plot, 'kdims') and hasattr(plot, 'vdims'):
         from holoviews import renderer
-        plot = renderer('bokeh').get_plot(plot, doc=doc)
-        print(plot)
+        renderer = renderer('bokeh').instance(mode='server' if comm is None else 'default')
+        plot = renderer.get_plot(plot, doc=doc)
 
     if not hasattr(plot, '_update_callbacks'):
         raise ValueError('Can only render bokeh models or HoloViews objects.')
