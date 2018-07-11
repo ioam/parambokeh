@@ -25,6 +25,7 @@ try:
 except:
     IPYTHON_AVAILABLE = False
 
+from .layout import WidgetBox, Column
 from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
 from .view import _View
@@ -48,50 +49,6 @@ except ImportError:
     fetch_data = copy_examples = examples = _err
 del partial, _examples, _copy, _fetch
 ##
-
-
-def notebook_show(obj, doc, comm):
-    """
-    Displays bokeh output inside a notebook.
-    """
-    target = obj.ref['id']
-    load_mime = 'application/vnd.holoviews_load.v0+json'
-    exec_mime = 'application/vnd.holoviews_exec.v0+json'
-
-    # Publish plot HTML
-    bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, comm.id)
-    publish_display_data(data={'text/html': encode_utf8(bokeh_div)})
-
-    # Publish comm manager
-    JS = '\n'.join([PYVIZ_PROXY, JupyterCommManager.js_manager])
-    publish_display_data(data={load_mime: JS, 'application/javascript': JS})
-
-    # Publish bokeh plot JS
-    msg_handler = bokeh_msg_handler.format(plot_id=target)
-    comm_js = comm.js_template.format(plot_id=target, comm_id=comm.id, msg_handler=msg_handler)
-    bokeh_js = '\n'.join([comm_js, bokeh_script])
-
-    # Note: extension should be altered so text/html is not required
-    publish_display_data(data={exec_mime: '', 'text/html': '',
-                               'application/javascript': bokeh_js},
-                         metadata={exec_mime: {'id': target}})
-
-
-def process_hv_plots(widgets, plots):
-    """
-    Temporary fix to patch HoloViews plot comms
-    """
-    bokeh_plots = []
-    for plot in plots:
-        if hasattr(plot, '_update_callbacks'):
-            for subplot in plot.traverse(lambda x: x):
-                subplot.comm = widgets.server_comm
-                for cb in subplot.callbacks:
-                    for c in cb.callbacks:
-                        c.code = c.code.replace(plot.id, widgets.plot_id)
-            plot = plot.state
-        bokeh_plots.append(plot)
-    return bokeh_plots
 
 
 class default_label_formatter(param.ParameterizedFunction):
@@ -203,10 +160,11 @@ class Widgets(param.ParameterizedFunction):
             if not IPYTHON_AVAILABLE:
                 raise ImportError('IPython is not available, cannot use '
                                   'Widgets in notebook mode.')
-            self.comm = JupyterCommManager.get_client_comm(on_msg=self.on_msg)
+            self.client_comm = JupyterCommManager.get_client_comm(on_msg=self.on_msg)
+            self.comm = JupyterCommManager.get_server_comm()
+
             # HACK: Detects HoloViews plots and lets them handle the comms
             hv_plots = [plot for plot in plots if hasattr(plot, 'comm')]
-            self.server_comm = JupyterCommManager.get_server_comm()
             if hv_plots:
                 self.document = [p.document for p in hv_plots][0]
                 self.p.push = False
@@ -214,36 +172,33 @@ class Widgets(param.ParameterizedFunction):
                 self.document = doc or Document()
         else:
             self.document = doc or curdoc()
-            self.server_comm = None
-            self.comm = None
+            self.client_comm = None
+            self.comm = comm or None
 
         self._queue = []
         self._active = False
         self._widget_options = {}
-        self.shown = False
 
         # Initialize root container
         widget_box = widgetbox(width=self.p.width)
         view_params = any(isinstance(p, _View) for p in parameterized.params().values())
         layout = self.p.view_position
         container_type = column if layout in ['below', 'above'] else row
-        container = container_type() if plots or view_params else widget_box
-        self.plot_id = container.ref['id']
+        self.container = Column() if plots or view_params else WidgetBox(widget_box)
+        self.plot_id = widget_box.ref['id']
 
         # Initialize widgets and populate container
         widgets, views = self.widgets()
         plots = views + plots
         widget_box.children = widgets
 
-        plots = process_hv_plots(self, plots)
-
         if plots:
-            view_box = column(plots)
+            view_box = Column(*plots)
             if layout in ['below', 'right']:
                 children = [widget_box, view_box]
             else:
                 children = [view_box, widget_box]
-            container.children = children
+            self.container.children = children
 
         # Initialize view parameters
         for view in views:
@@ -259,16 +214,12 @@ class Widgets(param.ParameterizedFunction):
         if self.p.on_init:
             self.execute()
 
-        if self.p.mode == 'raw':
-            return container
+        if self.p.mode in ('raw', 'notebook'):
+            return self.container
 
-        self.document.add_root(container)
-        if self.p.mode == 'notebook':
-            notebook_show(container, self.document, self.server_comm)
-            if self.document._hold is None:
-                self.document.hold()
-            self.shown = True
-            return
+        # Handle server case
+        model = self.container._get_model(doc, self.comm, self.plot_id)
+        document.add_root(model)
         return self.document
 
 
@@ -345,12 +296,12 @@ class Widgets(param.ParameterizedFunction):
         self.document._held_events = []
         if msg is None:
             return
-        self.server_comm.send(msg.header_json)
-        self.server_comm.send(msg.metadata_json)
-        self.server_comm.send(msg.content_json)
+        self.comm.send(msg.header_json)
+        self.comm.send(msg.metadata_json)
+        self.comm.send(msg.content_json)
         for header, payload in msg.buffers:
-            self.server_comm.send(json.dumps(header))
-            self.server_comm.send(buffers=[payload])
+            self.comm.send(json.dumps(header))
+            self.comm.send(buffers=[payload])
 
     def _update_trait(self, p_name, p_value, widget=None):
         widget = self._widgets[p_name] if widget is None else widget
@@ -368,7 +319,7 @@ class Widgets(param.ParameterizedFunction):
         p_obj = self.parameterized.params(p_name)
 
         if isinstance(p_obj, _View):
-            p_obj._comm = self.server_comm
+            p_obj._comm = self.comm
             p_obj._document = self.document
             p_obj._notebook = self.p.mode == 'notebook'
 
@@ -446,7 +397,7 @@ class Widgets(param.ParameterizedFunction):
         """
         data_template = "data = {{p_name: '{p_name}', value: cb_obj['{change}']}};"
         fetch_data = data_template.format(change=change, p_name=p_name)
-        self_callback = JS_CALLBACK.format(comm_id=self.comm.id,
+        self_callback = JS_CALLBACK.format(comm_id=self.client_comm.id,
                                            timeout=self.timeout,
                                            debounce=self.debounce,
                                            plot_id=self.plot_id)

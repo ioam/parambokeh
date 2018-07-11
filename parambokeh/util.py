@@ -1,6 +1,18 @@
 import sys
 import inspect
 
+import bokeh
+from bokeh.models import Model, CustomJS, LayoutDOM
+
+try:
+    from IPython.display import publish_display_data
+    import bokeh.embed.notebook
+    from bokeh.util.string import encode_utf8
+    from pyviz_comms import JupyterCommManager, JS_CALLBACK, bokeh_msg_handler, PYVIZ_PROXY
+    IPYTHON_AVAILABLE = True
+except:
+    IPYTHON_AVAILABLE = False
+
 if sys.version_info.major == 3:
     unicode = str
     basestring = str
@@ -41,3 +53,110 @@ def get_method_owner(meth):
             return meth.im_class if meth.im_self is None else meth.im_self
         else:
             return meth.__self__
+
+
+def patch_hv_plot(plot, plot_id, comm):
+    """
+    Update the plot id and comm on a HoloViews plot to allow embedding
+    it in a bokeh layout.
+    """
+    if not hasattr(plot, '_update_callbacks'):
+        return
+
+    for subplot in plot.traverse(lambda x: x):
+        subplot.comm = comm
+        for cb in subplot.callbacks:
+            for c in cb.callbacks:
+                c.code = c.code.replace(plot.id, widgets.plot_id)
+
+
+def patch_bk_plot(plot, plot_id):
+    """
+    Patches bokeh CustomJS models with top-level plot_id
+    """
+    for js in plot.select({'type': CustomJS}):
+        js.code = js.code.replace(plot.ref['id'], plot_id)
+
+
+def patch_widgets(plot, doc, plot_id, comm):
+    """
+    Patches parambokeh Widgets instances with top-level document, comm and plot id
+    """
+    plot.comm = comm
+    plot.document = doc
+    patch_bk_plot(plot.container, plot_id)
+
+
+def process_plot(plot, doc, plot_id, comm):
+    """
+    Converts all acceptable plot and widget objects into displaybel
+    bokeh models. Patches any HoloViews plots or parambokeh Widgets
+    with the top-level comms and plot id.
+    """
+    from . import Widgets
+    if isinstance(plot, LayoutDOM):
+        if plot_id:
+            patch_bk_plot(plot, plot_id)
+        return plot
+    elif isinstance(plot, Widgets):
+        patch_widgets(plot, doc, plot_id, comm)
+        return plot.container
+    elif hasattr(plot, 'kdims') and hasattr(plot, 'vdims'):
+        from holoviews import renderer
+        plot = renderer('bokeh').get_plot(plot, doc=doc)
+        print(plot)
+
+    if not hasattr(plot, '_update_callbacks'):
+        raise ValueError('Can only render bokeh models or HoloViews objects.')
+
+    patch_hv_plot(plot, plot_id, comm)
+    return plot.state
+
+
+def add_to_doc(obj, doc, hold=False):
+    """
+    Adds a model to the supplied Document removing it from any existing Documents.
+    """
+    # Handle previously displayed models
+    for model in obj.select({'type': Model}):
+        prev_doc = model.document
+        model._document = None
+        if prev_doc:
+            prev_doc.remove_root(model)
+
+    # Add new root
+    doc.add_root(obj)
+    if doc._hold is None and hold:
+        doc.hold()
+
+
+def render(obj, doc, comm):
+    """
+    Displays bokeh output inside a notebook using the PyViz display
+    and comms machinery.
+    """
+    if not isinstance(obj, LayoutDOM): 
+        raise ValueError('Can only render bokeh LayoutDOM models')
+
+    add_to_doc(obj, doc, True)
+
+    target = obj.ref['id']
+    load_mime = 'application/vnd.holoviews_load.v0+json'
+    exec_mime = 'application/vnd.holoviews_exec.v0+json'
+
+    # Publish plot HTML
+    bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, comm.id)
+
+    # Publish comm manager
+    JS = '\n'.join([PYVIZ_PROXY, JupyterCommManager.js_manager])
+    publish_display_data(data={load_mime: JS, 'application/javascript': JS})
+
+    # Publish bokeh plot JS
+    msg_handler = bokeh_msg_handler.format(plot_id=target)
+    comm_js = comm.js_template.format(plot_id=target, comm_id=comm.id, msg_handler=msg_handler)
+    bokeh_js = '\n'.join([comm_js, bokeh_script])
+
+    data = {exec_mime: '', 'text/html': encode_utf8(bokeh_div), 'application/javascript': bokeh_js}
+    metadata = {exec_mime: {'id': target}}
+    return data, metadata
+
