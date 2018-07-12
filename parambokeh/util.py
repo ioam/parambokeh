@@ -18,6 +18,19 @@ if sys.version_info.major == 3:
     basestring = str
 
 
+embed_js = """
+// Ugly hack - see HoloViews #2574 for more information
+if (!(document.getElementById('{plot_id}')) && !(document.getElementById('_anim_img{widget_id}'))) {{
+  console.log("Creating DOM nodes dynamically for assumed nbconvert export. To generate clean HTML output set HV_DOC_HTML as an environment variable.")
+  var htmlObject = document.createElement('div');
+  htmlObject.innerHTML = `{html}`;
+  var scriptTags = document.getElementsByTagName('script');
+  var parentTag = scriptTags[scriptTags.length-1].parentNode;
+  parentTag.append(htmlObject)
+}}
+"""
+
+
 def as_unicode(obj):
     """
     Safely casts any object to unicode including regular string
@@ -65,9 +78,9 @@ def patch_hv_plot(plot, plot_id, comm):
 
     for subplot in plot.traverse(lambda x: x):
         subplot.comm = comm
-        for cb in subplot.callbacks:
+        for cb in getattr(subplot, 'callbacks', []):
             for c in cb.callbacks:
-                c.code = c.code.replace(plot.id, widgets.plot_id)
+                c.code = c.code.replace(plot.id, plot_id)
 
 
 def patch_bk_plot(plot, plot_id):
@@ -146,6 +159,7 @@ def render(obj, doc, comm):
 
     # Publish plot HTML
     bokeh_script, bokeh_div, _ = bokeh.embed.notebook.notebook_content(obj, comm.id)
+    html = encode_utf8(bokeh_div)
 
     # Publish comm manager
     JS = '\n'.join([PYVIZ_PROXY, JupyterCommManager.js_manager])
@@ -155,8 +169,9 @@ def render(obj, doc, comm):
     msg_handler = bokeh_msg_handler.format(plot_id=target)
     comm_js = comm.js_template.format(plot_id=target, comm_id=comm.id, msg_handler=msg_handler)
     bokeh_js = '\n'.join([comm_js, bokeh_script])
+    bokeh_js = embed_js.format(widget_id=target, plot_id=target, html=html) + bokeh_js
 
-    data = {exec_mime: '', 'text/html': encode_utf8(bokeh_div), 'application/javascript': bokeh_js}
+    data = {exec_mime: '', 'text/html': html, 'application/javascript': bokeh_js}
     metadata = {exec_mime: {'id': target}}
     return data, metadata
 
