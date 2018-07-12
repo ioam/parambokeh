@@ -8,7 +8,7 @@ try:
     from IPython.display import publish_display_data
     import bokeh.embed.notebook
     from bokeh.util.string import encode_utf8
-    from pyviz_comms import JupyterCommManager, JS_CALLBACK, bokeh_msg_handler, PYVIZ_PROXY
+    from pyviz_comms import JupyterCommManager, bokeh_msg_handler, PYVIZ_PROXY
     IPYTHON_AVAILABLE = True
 except:
     IPYTHON_AVAILABLE = False

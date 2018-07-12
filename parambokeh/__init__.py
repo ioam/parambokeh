@@ -10,22 +10,18 @@ import param
 
 from bokeh.document import Document
 from bokeh.io import curdoc
-from bokeh.layouts import row, column, widgetbox
+from bokeh.layouts import widgetbox
 from bokeh.models.widgets import Div, Button, CheckboxGroup, TextInput
 from bokeh.models import CustomJS
 from bokeh.protocol import Protocol
 
 try:
-    from IPython.display import publish_display_data
-
-    import bokeh.embed.notebook
-    from bokeh.util.string import encode_utf8
-    from pyviz_comms import JupyterCommManager, JS_CALLBACK, bokeh_msg_handler, PYVIZ_PROXY
+    from pyviz_comms import JS_CALLBACK, JupyterCommManager
     IPYTHON_AVAILABLE = True
 except:
     IPYTHON_AVAILABLE = False
 
-from .layout import WidgetBox, Column
+from .layout import WidgetBox, Column, Row
 from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
 from .view import _View
@@ -183,8 +179,8 @@ class Widgets(param.ParameterizedFunction):
         widget_box = widgetbox(width=self.p.width)
         view_params = any(isinstance(p, _View) for p in parameterized.params().values())
         layout = self.p.view_position
-        container_type = column if layout in ['below', 'above'] else row
-        self.container = Column() if plots or view_params else WidgetBox(widget_box)
+        container_type = Column if layout in ['below', 'above'] else Row
+        self.container = container_type() if plots or view_params else WidgetBox(widget_box)
         self.plot_id = widget_box.ref['id']
 
         # Initialize widgets and populate container

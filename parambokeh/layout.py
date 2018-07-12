@@ -2,21 +2,9 @@ import param
 
 from bokeh.document import Document
 from bokeh.io import curdoc
-from bokeh.models import LayoutDOM
 from bokeh.layouts import Column as BkColumn, Row as BkRow 
 
 from .util import render, process_plot, add_to_doc
-
-try:
-    from IPython.display import publish_display_data
-
-    import bokeh.embed.notebook
-    from bokeh.util.string import encode_utf8
-    from pyviz_comms import JupyterCommManager, JS_CALLBACK, bokeh_msg_handler, PYVIZ_PROXY
-    IPYTHON_AVAILABLE = True
-except:
-    IPYTHON_AVAILABLE = False
-
 
 class Viewable(param.Parameterized):
     """
@@ -32,6 +20,7 @@ class Viewable(param.Parameterized):
         """
 
     def _repr_mimebundle_(self, include=None, exclude=None):
+        from pyviz_comms import JupyterCommManager
         doc = Document()
         comm = JupyterCommManager.get_server_comm()
         return render(self._get_model(doc, comm), doc, comm)
