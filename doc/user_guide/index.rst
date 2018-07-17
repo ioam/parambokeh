@@ -10,10 +10,10 @@ Contents:
 * `ViewParameters <View_Parameters.html>`_
    Dynamically control some visual output.
 
-* `Bokeh Apps <Bokeh_App.html>`_
+* `Bokeh Apps <Bokeh_Apps.html>`_
    How to use ParamBokeh in a Bokeh server application.
 
-* `Django Apps <Django_App.html>`_
+* `Django Apps <Django_Apps.html>`_
    How to use ParamBokeh in a Django application.
 
 

@@ -5,7 +5,7 @@ ParamBokeh
 **Generate bokeh widgets for parameterized objects**
 
 ParamBokeh is an `open-source
-<https://github.com/ioam/holoviews/blob/master/LICENSE.txt>`_ Python
+<https://github.com/ioam/parambokeh/blob/master/LICENSE.txt>`_ Python
 library that allows you to easily create GUIs from existing objects
 (in Jupyter notebooks, Bokeh apps, and potentially more)
 

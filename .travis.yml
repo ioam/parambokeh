@@ -108,7 +108,7 @@ jobs:
       stage: docs
       env: DESC="docs"
       script:
-        - doit develop_install $CHANS_DEV -o doc -o examples -c conda-forge # phantomjs still not on defaults
+        - doit develop_install $CHANS_DEV -o doc -o examples -c conda-forge -c defaults # c-f cos phantomjs still not on defaults
         - doit docs
       deploy:
         - provider: pages

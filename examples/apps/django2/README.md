@@ -9,7 +9,7 @@ preferred way).
 
 ## sliders
 
-![screenshot of sliders app](sliders.png)
+![screenshot of sliders app](../../assets/sliders.png)
 
 Based on a standard django2 app template, the sliders app shows how to
 integrate parambokeh with a django view; there's no interaction
