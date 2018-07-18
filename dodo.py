@@ -10,8 +10,7 @@ from pyctdev import *  # noqa: api
 
 def task_docs():
     return {'actions': [
-        'nbsite_nbpagebuild.py ioam parambokeh ./examples ./doc',
-        'sphinx-build -b html ./doc ./doc/_build/html',
-        'nbsite_fix_links.py ./doc/_build/html',
-        'touch ./doc/_build/html/.nojekyll',
-        'nbsite_cleandisthtml.py ./doc/_build/html take_a_chance']}
+        'nbsite generate-rst --org ioam --project parambokeh --repo parambokeh --examples-path examples --doc-path doc',
+        'nbsite build --what=html --examples-path=examples --doc-path=doc --output=./builtdocs',
+        'touch ./builtdocs/.nojekyll',
+        'nbsite_cleandisthtml.py ./builtdocs take_a_chance']}
