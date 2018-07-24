@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8"/>
+  <title>
+   Bokeh Apps — ParamBokeh 0.2.3.post3+g15b88f5 documentation
+  </title>
+  <meta content="Generate Bokeh widgets for Parameterized objects" name="description"/>
+  <meta content="ParamBokeh contributors" name="author"/>
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js">
+  </script>
+  <script>
+   WebFont.load({
+      google: {
+        families: ['Source Sans Pro']
+      }
+    });
+  </script>
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="../_static/css/main.css" rel="stylesheet"/>
+  <link href="../_static/nbsite.css" rel="stylesheet"/>
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+  </script>
+  <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript">
+  </script>
+  <script src="../_static/js/main.js">
+  </script>
+  <script src="../_static/nbsite.js">
+  </script>
+  <script src="../_static/require.js">
+  </script>
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="../_static/favicon.ico" rel="icon" type="image/png"/>
+  <!-- Canonical
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="https://parambokeh.pyviz.org/user_guide/Bokeh_Apps.html" rel="canonical"/>
+ </head>
+ <body class="">
+  <header class="navigation">
+   <div class="wrapper">
+    <a class="logo" href="../index.html">
+     <img alt="Logo" src="../_static/param-logo.png"/>
+    </a>
+    <a class="navigation-menu logo-text" href="../index.html">
+     ParamBokeh
+    </a>
+    <a class="navigation-menu-button" href="javascript:void(0)" id="js-mobile-menu">
+     Menu
+    </a>
+    <nav>
+     <ul class="navigation-menu show" id="js-navigation-menu">
+      <li class="nav-link">
+       <a href="index.html">
+        User Guide
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="../FAQ.html">
+        FAQ
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="../about.html">
+        About
+       </a>
+      </li>
+      <li class="nav-link">
+       <div style="display:inline-block;vertical-align: middle;">
+        <div class="search-bar">
+         <form action="../search.html" method="get" role="search">
+          <input name="q" placeholder="Search" type="search"/>
+          <button type="submit">
+           <img alt="Search Icon" src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon-black.png"/>
+          </button>
+         </form>
+        </div>
+       </div>
+      </li>
+     </ul>
+    </nav>
+   </div>
+  </header>
+  <!-- MAIN BODY OF DOCS –––––––––––––––––– -->
+  <div class="docs section">
+   <div id="hacketyhackhack">
+    <!-- style="width:20%;margin-right: 100px;"> -->
+    <!--style="display: none;"> style="display:none;"> -->
+    <div class="toc" style="width:15%; margin-right:20px;">
+     <ul class="current">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../index.html">
+        Introduction
+       </a>
+      </li>
+      <li class="toctree-l1 current">
+       <a class="reference internal" href="index.html">
+        User Guide
+       </a>
+       <ul class="current">
+        <li class="toctree-l2">
+         <a class="reference internal" href="Introduction.html">
+          Introduction
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="View_Parameters.html">
+          View Parameters
+         </a>
+        </li>
+        <li class="toctree-l2 current">
+         <a class="current reference internal" href="#">
+          Bokeh Apps
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="Django_Apps.html">
+          Django Apps
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../FAQ.html">
+        FAQ
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../about.html">
+        About
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+   <div class="content">
+    <!-- style="max-width:80%;margin-left:auto;margin-right: auto;">-->
+    <div class="section" id="bokeh-apps">
+     <h1>
+      Bokeh Apps
+      <a class="headerlink" href="#bokeh-apps" title="Permalink to this headline">
+       ¶
+      </a>
+     </h1>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         In the
+         <a href="Introduction.html">
+          Introduction
+         </a>
+         , we showed how to use parambokeh, using the Jupyter notebook to host our example. However, parambokeh widgets can also be used in other contexts. Here we show how parambokeh can be used in a bokeh server app.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         We'll create a simple bokeh app that displays a log of every time a button has been pressed:
+        </p>
+        <p>
+         <img alt="screenshot of simple app" src="../assets/simple.png"/>
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         In a python script,
+         <a href="../apps/bokeh/simple.py">
+          examples/app/bokeh/simple.py
+         </a>
+         , we first declare a sample Parameterized class to use as a demonstration object:
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <div class="highlight">
+         <pre><span></span><span class="c1"># existing parameterized class</span>
+
+<span class="kn">import</span> <span class="nn">param</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+
+<span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">Parameterized</span><span class="p">):</span>
+    <span class="sd">"""Example Parameterized class"""</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">x</span>            <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span><span class="n">precedence</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">doc</span><span class="o">=</span><span class="s2">"X position"</span><span class="p">)</span>
+    <span class="n">write_to_log</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span><span class="n">obj</span><span class="o">.</span><span class="n">x</span><span class="p">)),</span> 
+                                <span class="n">doc</span><span class="o">=</span><span class="s2">"""Record value of x and timestamp."""</span><span class="p">,</span><span class="n">precedence</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         Whenever
+         <code>
+          Example.write_to_log
+         </code>
+         is called, the current time and value of
+         <code>
+          x
+         </code>
+         are stored in
+         <code>
+          Example.log
+         </code>
+         .
+        </p>
+        <p>
+         We now create a properties frame, just as in the
+         <a href="Introduction.html">
+          Introduction
+         </a>
+         , but this time specifying
+         <code>
+          mode='server'
+         </code>
+         :
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <div class="highlight">
+         <pre><span></span><span class="c1"># create a properties frame for Example</span>
+
+<span class="kn">import</span> <span class="nn">parambokeh</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">parambokeh</span><span class="o">.</span><span class="n">Widgets</span><span class="p">(</span><span class="n">Example</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'server'</span><span class="p">)</span>
+</pre>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         Finally, we write a simple bokeh app that periodically updates a display showing the value of
+         <code>
+          Example.log
+         </code>
+         :
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <div class="highlight">
+         <pre><span></span><span class="c1"># display value of Example.log in bokeh app</span>
+
+<span class="kn">from</span> <span class="nn">bokeh.io</span> <span class="kn">import</span> <span class="n">curdoc</span>
+<span class="kn">from</span> <span class="nn">bokeh.layouts</span> <span class="kn">import</span> <span class="n">layout</span>
+<span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="kn">import</span> <span class="n">Div</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">Div</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">update_log</span><span class="p">():</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">"&lt;br /&gt;"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> -- </span><span class="si">%s</span><span class="s2">"</span><span class="o">%</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%H:%M:%S.</span><span class="si">%f</span><span class="s1">'</span><span class="p">),</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">Example</span><span class="o">.</span><span class="n">log</span><span class="p">])</span>
+
+<span class="n">curdoc</span><span class="p">()</span><span class="o">.</span><span class="n">add_periodic_callback</span><span class="p">(</span><span class="n">update_log</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="n">layout</span> <span class="o">=</span> <span class="n">layout</span><span class="p">([</span><span class="n">log</span><span class="p">])</span>
+<span class="n">curdoc</span><span class="p">()</span><span class="o">.</span><span class="n">add_root</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+<span class="n">curdoc</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">"simple parambokeh + bokeh server example"</span>
+</pre>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         The app can be launched using
+         <code>
+          bokeh serve simple.py
+         </code>
+         .
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <hr/>
+        <p>
+         The example code used here is in
+         <a href="../apps/bokeh/simple.py">
+          examples/app/bokeh/simple.py
+         </a>
+         . For reference, the entire file is reproduced below:
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <div class="highlight">
+         <pre><span></span><span class="c1">##### existing parameterized class</span>
+
+<span class="kn">import</span> <span class="nn">param</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+
+<span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">Parameterized</span><span class="p">):</span>
+    <span class="sd">"""Example Parameterized class"""</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">x</span>            <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span><span class="n">precedence</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">doc</span><span class="o">=</span><span class="s2">"X position"</span><span class="p">)</span>
+    <span class="n">write_to_log</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span><span class="n">obj</span><span class="o">.</span><span class="n">x</span><span class="p">)),</span> 
+                                <span class="n">doc</span><span class="o">=</span><span class="s2">"""Record value of x and timestamp."""</span><span class="p">,</span><span class="n">precedence</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">##### create a properties frame for Example</span>
+
+<span class="kn">import</span> <span class="nn">parambokeh</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">parambokeh</span><span class="o">.</span><span class="n">Widgets</span><span class="p">(</span><span class="n">Example</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'server'</span><span class="p">)</span>
+
+
+<span class="c1">##### display value of Example.log in bokeh app</span>
+
+<span class="kn">from</span> <span class="nn">bokeh.io</span> <span class="kn">import</span> <span class="n">curdoc</span>
+<span class="kn">from</span> <span class="nn">bokeh.layouts</span> <span class="kn">import</span> <span class="n">layout</span>
+<span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="kn">import</span> <span class="n">Div</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">Div</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">update_log</span><span class="p">():</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">"&lt;br /&gt;"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> -- </span><span class="si">%s</span><span class="s2">"</span><span class="o">%</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%H:%M:%S.</span><span class="si">%f</span><span class="s1">'</span><span class="p">),</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">Example</span><span class="o">.</span><span class="n">log</span><span class="p">])</span>
+
+<span class="n">curdoc</span><span class="p">()</span><span class="o">.</span><span class="n">add_periodic_callback</span><span class="p">(</span><span class="n">update_log</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="n">layout</span> <span class="o">=</span> <span class="n">layout</span><span class="p">([</span><span class="n">log</span><span class="p">])</span>
+<span class="n">curdoc</span><span class="p">()</span><span class="o">.</span><span class="n">add_root</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+<span class="n">curdoc</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">"simple parambokeh + bokeh server example"</span>
+</pre>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <!-- END MAIN BODY OF DOCS ––––––––––––– -->
+  <footer class="footer">
+   <div class="footer-links">
+    <ul>
+     <li>
+      <span class="footer-title">
+       Links
+      </span>
+     </li>
+     <li>
+      <a href="index.html">
+       User Guide
+      </a>
+     </li>
+     <li>
+      <a href="../FAQ.html">
+       FAQ
+      </a>
+     </li>
+     <li>
+      <a href="../about.html">
+       About
+      </a>
+     </li>
+    </ul>
+    <ul>
+     <li>
+      <span class="footer-title">
+       Join Us
+      </span>
+     </li>
+     <li>
+      <a href="//gitter.im/ioam/holoviews">
+       Gitter
+      </a>
+     </li>
+     <li>
+      <a href="//github.com/ioam/parambokeh">
+       Github
+      </a>
+     </li>
+    </ul>
+    <ul class="copyright">
+     <li>
+      2017 ParamBokeh contributors
+     </li>
+    </ul>
+   </div>
+  </footer>
+  <!-- Google Analytics -->
+  <script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61554933-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+  <!-- MathJax Config -->
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+  </script>
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+ </body>
+</html>

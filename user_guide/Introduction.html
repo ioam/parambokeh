@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8"/>
+  <title>
+   Introduction — ParamBokeh 0.2.3.post3+g15b88f5 documentation
+  </title>
+  <meta content="Generate Bokeh widgets for Parameterized objects" name="description"/>
+  <meta content="ParamBokeh contributors" name="author"/>
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js">
+  </script>
+  <script>
+   WebFont.load({
+      google: {
+        families: ['Source Sans Pro']
+      }
+    });
+  </script>
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="../_static/css/main.css" rel="stylesheet"/>
+  <link href="../_static/nbsite.css" rel="stylesheet"/>
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+  </script>
+  <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript">
+  </script>
+  <script src="../_static/js/main.js">
+  </script>
+  <script src="../_static/nbsite.js">
+  </script>
+  <script src="../_static/require.js">
+  </script>
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="../_static/favicon.ico" rel="icon" type="image/png"/>
+  <!-- Canonical
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="https://parambokeh.pyviz.org/user_guide/Introduction.html" rel="canonical"/>
+ </head>
+ <body class="">
+  <header class="navigation">
+   <div class="wrapper">
+    <a class="logo" href="../index.html">
+     <img alt="Logo" src="../_static/param-logo.png"/>
+    </a>
+    <a class="navigation-menu logo-text" href="../index.html">
+     ParamBokeh
+    </a>
+    <a class="navigation-menu-button" href="javascript:void(0)" id="js-mobile-menu">
+     Menu
+    </a>
+    <nav>
+     <ul class="navigation-menu show" id="js-navigation-menu">
+      <li class="nav-link">
+       <a href="index.html">
+        User Guide
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="../FAQ.html">
+        FAQ
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="../about.html">
+        About
+       </a>
+      </li>
+      <li class="nav-link">
+       <div style="display:inline-block;vertical-align: middle;">
+        <div class="search-bar">
+         <form action="../search.html" method="get" role="search">
+          <input name="q" placeholder="Search" type="search"/>
+          <button type="submit">
+           <img alt="Search Icon" src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon-black.png"/>
+          </button>
+         </form>
+        </div>
+       </div>
+      </li>
+     </ul>
+    </nav>
+   </div>
+  </header>
+  <!-- MAIN BODY OF DOCS –––––––––––––––––– -->
+  <div class="docs section">
+   <div id="hacketyhackhack">
+    <!-- style="width:20%;margin-right: 100px;"> -->
+    <!--style="display: none;"> style="display:none;"> -->
+    <div class="toc" style="width:15%; margin-right:20px;">
+     <ul class="current">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../index.html">
+        Introduction
+       </a>
+      </li>
+      <li class="toctree-l1 current">
+       <a class="reference internal" href="index.html">
+        User Guide
+       </a>
+       <ul class="current">
+        <li class="toctree-l2 current">
+         <a class="current reference internal" href="#">
+          Introduction
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="View_Parameters.html">
+          View Parameters
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="Bokeh_Apps.html">
+          Bokeh Apps
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="Django_Apps.html">
+          Django Apps
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../FAQ.html">
+        FAQ
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../about.html">
+        About
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+   <div class="content">
+    <!-- style="max-width:80%;margin-left:auto;margin-right: auto;">-->
+    <div class="section" id="introduction">
+     <h1>
+      Introduction
+      <a class="headerlink" href="#introduction" title="Permalink to this headline">
+       ¶
+      </a>
+     </h1>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         paramBokeh is a small library that represents Parameters graphically in a notebook and on bokeh server. Parameters are Python attributes extended using the
+         <a href="https://github.com/ioam/param">
+          Param library
+         </a>
+         to support types, ranges, and documentation, which turns out to be just the information you need to automatically create widgets for each parameter.  paramBokeh currently uses bokeh to display the widgets, but the design of Param and paramBokeh allows your code to be completely independent of the underlying widgets library, and can also be used with other widget frameworks such as paramNB, which uses ipywidgets.
+        </p>
+        <h1 id="Parameters-and-widgets">
+         Parameters and widgets
+         <a class="anchor-link" href="#Parameters-and-widgets">
+          ¶
+         </a>
+        </h1>
+        <p>
+         To use paramBokeh, first declare some Parameterized classes with various Parameters:
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [1]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="kn">import</span> <span class="nn">param</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+
+<span class="k">class</span> <span class="nc">BaseClass</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">Parameterized</span><span class="p">):</span>
+    <span class="n">x</span>                       <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">3.14</span><span class="p">,</span><span class="n">doc</span><span class="o">=</span><span class="s2">"X position"</span><span class="p">)</span>
+    <span class="n">y</span>                       <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"Not editable"</span><span class="p">,</span><span class="n">constant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">string_value</span>            <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"str"</span><span class="p">,</span><span class="n">doc</span><span class="o">=</span><span class="s2">"A string"</span><span class="p">)</span>
+    <span class="n">num_int</span>                 <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span><span class="mi">100000</span><span class="p">))</span>
+    <span class="n">unbounded_int</span>           <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
+    <span class="n">float_with_hard_bounds</span>  <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="mf">8.2</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">float_with_soft_bounds</span>  <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span><span class="n">softbounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">unbounded_float</span>         <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="mf">30.01</span><span class="p">,</span><span class="n">precedence</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">hidden_parameter</span>        <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="mf">2.718</span><span class="p">,</span><span class="n">precedence</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">integer_range</span>           <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">float_range</span>             <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.57</span><span class="p">),</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">3.145</span><span class="p">))</span>
+    <span class="n">dictionary</span>              <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Dict</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">{</span><span class="s2">"a"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span><span class="mi">9</span><span class="p">})</span>
+    
+<span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">BaseClass</span><span class="p">):</span>
+    <span class="sd">"""An example Parameterized class"""</span>
+    <span class="n">timestamps</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">boolean</span>                 <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Boolean</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">"A sample Boolean parameter"</span><span class="p">)</span>
+    <span class="n">color</span>                   <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">'#FFFFFF'</span><span class="p">)</span>
+    <span class="n">date</span>                    <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                         <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">select_string</span>           <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">ObjectSelector</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"yellow"</span><span class="p">,</span><span class="n">objects</span><span class="o">=</span><span class="p">[</span><span class="s2">"red"</span><span class="p">,</span><span class="s2">"yellow"</span><span class="p">,</span><span class="s2">"green"</span><span class="p">])</span>
+    <span class="n">select_fn</span>               <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">ObjectSelector</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span><span class="n">objects</span><span class="o">=</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span><span class="nb">set</span><span class="p">,</span><span class="nb">dict</span><span class="p">])</span>
+    <span class="n">int_list</span>                <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">ListSelector</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">objects</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span><span class="n">precedence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">single_file</span>             <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">FileSelector</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">'../../*/*.py*'</span><span class="p">,</span><span class="n">precedence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">multiple_files</span>          <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">MultiFileSelector</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">'../../*/*.py?'</span><span class="p">,</span><span class="n">precedence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">record_timestamp</span>        <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Action</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()),</span> 
+                                           <span class="n">doc</span><span class="o">=</span><span class="s2">"""Record timestamp."""</span><span class="p">,</span><span class="n">precedence</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    
+<span class="n">Example</span><span class="o">.</span><span class="n">num_int</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt output_prompt">
+          Out[1]:
+         </div>
+         <div class="output_text output_subarea output_execute_result">
+          <pre>50000</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         As you can see, declaring Parameters depends only on the separate Param library.  Parameters are a simple idea with some properties that are crucial for helping you create clean, usable code:
+        </p>
+        <ul>
+         <li>
+          The Param library is pure Python with no dependencies, which makes it easy to include in any code without tying it to a particular GUI or widgets library, or even to the Jupyter notebook.
+         </li>
+         <li>
+          Parameter declarations focus on semantic information relevant to your domain, allowing you to avoid polluting your domain-specific code with anything that ties it to a particular way of displaying or interacting with it.
+         </li>
+         <li>
+          Parameters can be defined wherever they make sense in your inheritance hierarchy, allowing you to document, type, and range-limit them once, with all of those properties inherited by any base class.  E.g. parameters work the same here whether they were declared in
+          <code>
+           BaseClass
+          </code>
+          or
+          <code>
+           Example
+          </code>
+          , which makes it easy to provide this metadata once, and avoiding duplicating it throughout the code wherever ranges or types need checking or documentation needs to be stored.
+         </li>
+        </ul>
+        <p>
+         If you then decide to use these Parameterized classes in a notebook environment, you can import paramBokeh and easily display and edit the parameter values as an optional additional step:
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [2]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="kn">import</span> <span class="nn">parambokeh</span>
+<span class="kn">from</span> <span class="nn">bokeh.io</span> <span class="k">import</span> <span class="n">output_notebook</span>
+<span class="n">output_notebook</span><span class="p">()</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div class="output_html rendered_html output_subarea ">
+          <div class="bk-root">
+           <a class="bk-logo bk-logo-small bk-logo-notebook" href="https://bokeh.pydata.org" target="_blank">
+           </a>
+           <span id="9f21423e-01f4-4849-a212-09e75d15060b">
+            Loading BokehJS ...
+           </span>
+          </div>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="ede8c196-e865-42dc-8258-05396ec55a78">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#ede8c196-e865-42dc-8258-05396ec55a78');
+
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  var force = true;
+
+  if (typeof (root._bokeh_onload_callbacks) === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+  var JS_MIME_TYPE = 'application/javascript';
+  var HTML_MIME_TYPE = 'text/html';
+  var EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  var CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    var script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    var cell = handle.cell;
+
+    var id = cell.output_area._bokeh_element_id;
+    var server_id = cell.output_area._bokeh_server_id;
+    // Clean up Bokeh references
+    if (id != null && id in Bokeh.index) {
+      Bokeh.index[id].model.document.clear();
+      delete Bokeh.index[id];
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      var cmd = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd, {
+        iopub: {
+          output: function(msg) {
+            var id = msg.content.text.trim();
+            if (id in Bokeh.index) {
+              Bokeh.index[id].model.document.clear();
+              delete Bokeh.index[id];
+            }
+          }
+        }
+      });
+      // Destroy server and session
+      var cmd = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    var output_area = handle.output_area;
+    var output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!output.data.hasOwnProperty(EXEC_MIME_TYPE))) {
+      return
+    }
+
+    var toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      var bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      var script_attrs = bk_div.children[0].attributes;
+      for (var i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      var toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      var props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    var events = require('base/js/events');
+    var OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+
+  
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  var NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded() {
+    var el = document.getElementById("9f21423e-01f4-4849-a212-09e75d15060b");
+    if (el != null) {
+      el.textContent = "BokehJS is loading...";
+    }
+    if (root.Bokeh !== undefined) {
+      if (el != null) {
+        el.textContent = "BokehJS " + root.Bokeh.version + " successfully loaded.";
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(display_loaded, 100)
+    }
+  }
+
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) { callback() });
+    }
+    finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.info("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(js_urls, callback) {
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.log("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.log("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = js_urls.length;
+    for (var i = 0; i < js_urls.length; i++) {
+      var url = js_urls[i];
+      var s = document.createElement('script');
+      s.src = url;
+      s.async = false;
+      s.onreadystatechange = s.onload = function() {
+        root._bokeh_is_loading--;
+        if (root._bokeh_is_loading === 0) {
+          console.log("Bokeh: all BokehJS libraries loaded");
+          run_callbacks()
+        }
+      };
+      s.onerror = function() {
+        console.warn("failed to load library " + url);
+      };
+      console.log("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.getElementsByTagName("head")[0].appendChild(s);
+    }
+  };var element = document.getElementById("9f21423e-01f4-4849-a212-09e75d15060b");
+  if (element == null) {
+    console.log("Bokeh: ERROR: autoload.js configured with elementid '9f21423e-01f4-4849-a212-09e75d15060b' but no matching script tag was found. ")
+    return false;
+  }
+
+  var js_urls = ["https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-gl-0.13.0.min.js"];
+
+  var inline_js = [
+    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+    
+    function(Bokeh) {
+      
+    },
+    function(Bokeh) {
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css");
+    }
+  ];
+
+  function run_inline_js() {
+    
+    if ((root.Bokeh !== undefined) || (force === true)) {
+      for (var i = 0; i < inline_js.length; i++) {
+        inline_js[i].call(root, root.Bokeh);
+      }if (force === true) {
+        display_loaded();
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      var cell = $(document.getElementById("9f21423e-01f4-4849-a212-09e75d15060b")).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.log("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(js_urls, function() {
+      console.log("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));
+          </script>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [3]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="n">widgets</span> <span class="o">=</span> <span class="n">parambokeh</span><span class="o">.</span><span class="n">Widgets</span><span class="p">(</span><span class="n">BaseClass</span><span class="p">)</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div class="output_html rendered_html output_subarea ">
+          <div class="bk-root" id="b8693a55-8bc9-4a62-a887-6837fc636cc9">
+          </div>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="1bfbcbfa-efe3-4e5d-820a-cacd4329eafd">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#1bfbcbfa-efe3-4e5d-820a-cacd4329eafd');
+
+if (window.PyViz === undefined) {
+   if (window.HoloViews === undefined) {
+     var PyViz = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
+   } else {
+     var PyViz = window.HoloViews;
+   }
+   window.PyViz = PyViz;
+   window.HoloViews = PyViz;  // TEMPORARY HACK TILL NEXT NPM RELEASE
+}
+
+
+    function JupyterCommManager() {
+    }
+
+    JupyterCommManager.prototype.register_target = function(plot_id, comm_id, msg_handler) {
+      if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        comm_manager.register_target(comm_id, function(comm) {
+          comm.on_msg(msg_handler);
+        });
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        window.PyViz.kernels[plot_id].registerCommTarget(comm_id, function(comm) {
+          comm.onMsg = msg_handler;
+        });
+      }
+    }
+
+    JupyterCommManager.prototype.get_client_comm = function(plot_id, comm_id, msg_handler) {
+      if (comm_id in window.PyViz.comms) {
+        return window.PyViz.comms[comm_id];
+      } else if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        var comm = comm_manager.new_comm(comm_id, {}, {}, {}, comm_id);
+        if (msg_handler) {
+          comm.on_msg(msg_handler);
+        }
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        var comm = window.PyViz.kernels[plot_id].connectToComm(comm_id);
+        comm.open();
+        if (msg_handler) {
+          comm.onMsg = msg_handler;
+        }
+      }
+
+      window.PyViz.comms[comm_id] = comm;
+      return comm;
+    }
+
+    window.PyViz.comm_manager = new JupyterCommManager();
+          </script>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="03f92fc8-4311-40fa-a940-3d7f580d057d">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#03f92fc8-4311-40fa-a940-3d7f580d057d');
+
+    function msg_handler(msg) {
+      var buffers = msg.buffers;
+      var msg = msg.content.data;
+      
+var plot_id = "660e1027-60c3-4980-98f7-e3a2d2903065";
+if (plot_id in window.PyViz.plot_index) {
+  var plot = window.PyViz.plot_index[plot_id];
+} else {
+  var plot = Bokeh.index[plot_id];
+}
+
+if (plot_id in window.PyViz.receivers) {
+  var receiver = window.PyViz.receivers[plot_id];
+} else if (Bokeh.protocol === undefined) {
+  return;
+} else {
+  var receiver = new Bokeh.protocol.Receiver();
+  window.PyViz.receivers[plot_id] = receiver;
+}
+
+if (buffers.length > 0) {
+  receiver.consume(buffers[0].buffer)
+} else {
+  receiver.consume(msg)
+}
+
+const comm_msg = receiver.message;
+if (comm_msg != null) {
+  plot.model.document.apply_json_patch(comm_msg.content, comm_msg.buffers)
+}
+
+    }
+    window.PyViz.comm_manager.register_target('660e1027-60c3-4980-98f7-e3a2d2903065', '63e367a52b3f41c791193bd61f5bd18e', msg_handler);
+    
+(function(root) {
+  function embed_document(root) {
+    
+  var docs_json = {"12a27775-2686-46dc-93e6-4ce91b019654":{"roots":{"references":[{"attributes":{"code":"data = {p_name: 'float_range', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"18347a20-2859-4cdf-b539-6e24802cf5db","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'string_value', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"67a97b22-b9e0-4d32-bb9a-0be164e123c6","type":"CustomJS"},{"attributes":{"children":[{"id":"57901e4e-d471-469d-97f5-0d1f0a27249b","type":"Div"},{"id":"d3829fbd-0073-4fb9-9465-860a2e732ad3","type":"TextInput"},{"id":"0e8242a9-dc35-41f9-a5ab-a8345c8a3c4d","type":"TextInput"},{"id":"3f0d4536-9f8e-4f24-8bea-04270649e748","type":"RangeSlider"},{"id":"7a4fb4d7-eb7a-4aaa-a0e3-d16988b02b34","type":"Slider"},{"id":"154d5b2e-71b0-40f1-811e-2b8d9acfbab4","type":"Slider"},{"id":"e6c53b21-e474-4e78-bbce-2d60872091c8","type":"RangeSlider"},{"id":"4bda9b95-9090-4b12-ae35-e72036ecf4f0","type":"Slider"},{"id":"bc9663b7-e261-49d0-ade4-72b6ccaba7e5","type":"TextInput"},{"id":"301abb00-8618-4821-a2e7-18452aef64ce","type":"TextInput"},{"id":"aec385f1-6ab6-479d-9d6c-d791c644a3d1","type":"TextInput"},{"id":"bd3bb757-87c1-4f09-ba03-b670c7ca0421","type":"Div"}],"width":300},"id":"660e1027-60c3-4980-98f7-e3a2d2903065","type":"WidgetBox"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"e22ea7a0-11f2-4d69-bc22-6abe9d57d421","type":"CustomJS"}]},"name":"dictionary","title":"Dictionary","value":"{'a': 2, 'b': 9}"},"id":"0e8242a9-dc35-41f9-a5ab-a8345c8a3c4d","type":"TextInput"},{"attributes":{"code":"data = {p_name: 'dictionary', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"e22ea7a0-11f2-4d69-bc22-6abe9d57d421","type":"CustomJS"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"17efaae0-d01a-44a8-9432-11d46f09b008","type":"CustomJS"}]},"name":"unbounded_int","title":"Unbounded int","value":"23"},"id":"301abb00-8618-4821-a2e7-18452aef64ce","type":"TextInput"},{"attributes":{"code":"data = {p_name: 'float_with_soft_bounds', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"bc8fdb14-c2fe-459f-9073-17815506bf20","type":"CustomJS"},{"attributes":{"callback":null,"end":10,"format":"0[.]0","js_property_callbacks":{"change:value":[{"id":"d7d60b6a-1afb-49b1-85b1-3b00acc89cb5","type":"CustomJS"}]},"name":"float_with_hard_bounds","start":7.5,"step":0.1,"title":"Float with hard bounds","value":8.2},"id":"7a4fb4d7-eb7a-4aaa-a0e3-d16988b02b34","type":"Slider"},{"attributes":{"callback":null,"end":10,"js_property_callbacks":{"change:value":[{"id":"f41dcde0-a470-4750-b37b-728e88add2e6","type":"CustomJS"}]},"name":"integer_range","start":0,"title":"Integer range","value":[3,7]},"id":"e6c53b21-e474-4e78-bbce-2d60872091c8","type":"RangeSlider"},{"attributes":{"code":"data = {p_name: 'unbounded_int', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"17efaae0-d01a-44a8-9432-11d46f09b008","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'unbounded_float', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"71c32ce0-eb7f-44ca-b301-ae7448a3c584","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'integer_range', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"f41dcde0-a470-4750-b37b-728e88add2e6","type":"CustomJS"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"71c32ce0-eb7f-44ca-b301-ae7448a3c584","type":"CustomJS"}]},"name":"unbounded_float","title":"Unbounded float","value":"30.01"},"id":"d3829fbd-0073-4fb9-9465-860a2e732ad3","type":"TextInput"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"eacb2c8d-0e21-4030-847b-7ae6bee66530","type":"CustomJS"}]},"name":"x","title":"X","value":"3.14"},"id":"aec385f1-6ab6-479d-9d6c-d791c644a3d1","type":"TextInput"},{"attributes":{"callback":null,"end":2,"format":"0[.]0","js_property_callbacks":{"change:value":[{"id":"bc8fdb14-c2fe-459f-9073-17815506bf20","type":"CustomJS"}]},"name":"float_with_soft_bounds","start":0,"step":0.1,"title":"Float with soft bounds","value":0.5},"id":"154d5b2e-71b0-40f1-811e-2b8d9acfbab4","type":"Slider"},{"attributes":{"code":"data = {p_name: 'x', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"eacb2c8d-0e21-4030-847b-7ae6bee66530","type":"CustomJS"},{"attributes":{"callback":null,"end":100000,"js_property_callbacks":{"change:value":[{"id":"ea03d9cb-90a6-43a0-a419-4876ef8e096d","type":"CustomJS"}]},"name":"num_int","start":-200,"title":"Num int","value":50000},"id":"4bda9b95-9090-4b12-ae35-e72036ecf4f0","type":"Slider"},{"attributes":{"text":"<b>BaseClass</b>"},"id":"57901e4e-d471-469d-97f5-0d1f0a27249b","type":"Div"},{"attributes":{"code":"data = {p_name: 'float_with_hard_bounds', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"d7d60b6a-1afb-49b1-85b1-3b00acc89cb5","type":"CustomJS"},{"attributes":{"name":"y","text":"<b>Y</b>: Not editable"},"id":"bd3bb757-87c1-4f09-ba03-b670c7ca0421","type":"Div"},{"attributes":{"code":"data = {p_name: 'num_int', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"660e1027-60c3-4980-98f7-e3a2d2903065\", \"3f86073b2f4c4cbbb9a1b4e419985e4c\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"3f86073b2f4c4cbbb9a1b4e419985e4c\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"3f86073b2f4c4cbbb9a1b4e419985e4c\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"ea03d9cb-90a6-43a0-a419-4876ef8e096d","type":"CustomJS"},{"attributes":{"callback":null,"end":3.145,"js_property_callbacks":{"change:value":[{"id":"18347a20-2859-4cdf-b539-6e24802cf5db","type":"CustomJS"}]},"name":"float_range","start":0,"title":"Float range","value":[0,1.57]},"id":"3f0d4536-9f8e-4f24-8bea-04270649e748","type":"RangeSlider"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"67a97b22-b9e0-4d32-bb9a-0be164e123c6","type":"CustomJS"}]},"name":"string_value","title":"String value","value":"str"},"id":"bc9663b7-e261-49d0-ade4-72b6ccaba7e5","type":"TextInput"}],"root_ids":["660e1027-60c3-4980-98f7-e3a2d2903065"]},"title":"Bokeh Application","version":"0.13.0"}};
+  var render_items = [{"docid":"12a27775-2686-46dc-93e6-4ce91b019654","notebook_comms_target":"63e367a52b3f41c791193bd61f5bd18e","roots":{"660e1027-60c3-4980-98f7-e3a2d2903065":"b8693a55-8bc9-4a62-a887-6837fc636cc9"}}];
+  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        embed_document(root);
+        clearInterval(timer);
+      }
+      attempts++;
+      if (attempts > 100) {
+        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing")
+        clearInterval(timer);
+      }
+    }, 10, root)
+  }
+})(window);
+          </script>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [4]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="n">parambokeh</span><span class="o">.</span><span class="n">Widgets</span><span class="p">(</span><span class="n">Example</span><span class="p">)</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div class="output_html rendered_html output_subarea ">
+          <div class="bk-root" id="2692d433-09a2-4f05-8b4f-6be62eb38ad0">
+          </div>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="a1904733-c562-4410-9804-7d1b09d301c3">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#a1904733-c562-4410-9804-7d1b09d301c3');
+
+if (window.PyViz === undefined) {
+   if (window.HoloViews === undefined) {
+     var PyViz = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
+   } else {
+     var PyViz = window.HoloViews;
+   }
+   window.PyViz = PyViz;
+   window.HoloViews = PyViz;  // TEMPORARY HACK TILL NEXT NPM RELEASE
+}
+
+
+    function JupyterCommManager() {
+    }
+
+    JupyterCommManager.prototype.register_target = function(plot_id, comm_id, msg_handler) {
+      if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        comm_manager.register_target(comm_id, function(comm) {
+          comm.on_msg(msg_handler);
+        });
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        window.PyViz.kernels[plot_id].registerCommTarget(comm_id, function(comm) {
+          comm.onMsg = msg_handler;
+        });
+      }
+    }
+
+    JupyterCommManager.prototype.get_client_comm = function(plot_id, comm_id, msg_handler) {
+      if (comm_id in window.PyViz.comms) {
+        return window.PyViz.comms[comm_id];
+      } else if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        var comm = comm_manager.new_comm(comm_id, {}, {}, {}, comm_id);
+        if (msg_handler) {
+          comm.on_msg(msg_handler);
+        }
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        var comm = window.PyViz.kernels[plot_id].connectToComm(comm_id);
+        comm.open();
+        if (msg_handler) {
+          comm.onMsg = msg_handler;
+        }
+      }
+
+      window.PyViz.comms[comm_id] = comm;
+      return comm;
+    }
+
+    window.PyViz.comm_manager = new JupyterCommManager();
+          </script>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="967f650d-06d6-40c1-8b29-8514825ecc5e">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#967f650d-06d6-40c1-8b29-8514825ecc5e');
+
+    function msg_handler(msg) {
+      var buffers = msg.buffers;
+      var msg = msg.content.data;
+      
+var plot_id = "247a721c-e1f5-4afd-b131-4723649ce473";
+if (plot_id in window.PyViz.plot_index) {
+  var plot = window.PyViz.plot_index[plot_id];
+} else {
+  var plot = Bokeh.index[plot_id];
+}
+
+if (plot_id in window.PyViz.receivers) {
+  var receiver = window.PyViz.receivers[plot_id];
+} else if (Bokeh.protocol === undefined) {
+  return;
+} else {
+  var receiver = new Bokeh.protocol.Receiver();
+  window.PyViz.receivers[plot_id] = receiver;
+}
+
+if (buffers.length > 0) {
+  receiver.consume(buffers[0].buffer)
+} else {
+  receiver.consume(msg)
+}
+
+const comm_msg = receiver.message;
+if (comm_msg != null) {
+  plot.model.document.apply_json_patch(comm_msg.content, comm_msg.buffers)
+}
+
+    }
+    window.PyViz.comm_manager.register_target('247a721c-e1f5-4afd-b131-4723649ce473', 'd593866e2dac459fb6c27d4722856128', msg_handler);
+    
+(function(root) {
+  function embed_document(root) {
+    
+  var docs_json = {"23ef1d97-42ac-4845-b6d0-7f8dccaa10a0":{"roots":{"references":[{"attributes":{"callback":null,"end":3.145,"js_property_callbacks":{"change:value":[{"id":"deea03b3-2431-4bfd-88c8-da156f081eac","type":"CustomJS"}]},"name":"float_range","start":0,"title":"Float range","value":[0,1.57]},"id":"98bde13f-0f35-44d6-8a44-9a190ba1559d","type":"RangeSlider"},{"attributes":{"code":"data = {p_name: 'float_with_hard_bounds', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"9e66c9af-6af6-432c-b27a-33e064afe455","type":"CustomJS"},{"attributes":{"callback":null,"end":10,"js_property_callbacks":{"change:value":[{"id":"4e3eed88-0662-4abb-a6e5-149d169b8347","type":"CustomJS"}]},"name":"integer_range","start":0,"title":"Integer range","value":[3,7]},"id":"c23c42fd-5ae5-4122-b305-e6b04c697a09","type":"RangeSlider"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"72a82eef-8c0d-48e6-994a-551ba1d1b3c0","type":"CustomJS"}]},"max_date":1485907200000.0,"min_date":1483228800000.0,"name":"date","title":"Date","value":1483228800000.0},"id":"d0e91551-4349-44e6-99e3-e4f47050b5c5","type":"DatePicker"},{"attributes":{"code":"data = {p_name: 'integer_range', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"4e3eed88-0662-4abb-a6e5-149d169b8347","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'date', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"72a82eef-8c0d-48e6-994a-551ba1d1b3c0","type":"CustomJS"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"62fcb28d-3f09-4100-a618-c60cfe73ff36","type":"CustomJS"}]},"name":"dictionary","title":"Dictionary","value":"{'a': 2, 'b': 9}"},"id":"45715102-96ec-4d17-b730-1919489dc013","type":"TextInput"},{"attributes":{"code":"data = {p_name: 'int_list', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"fa48cb9f-0328-44b7-b0c1-a4f665457816","type":"CustomJS"},{"attributes":{"callback":null,"end":100000,"js_property_callbacks":{"change:value":[{"id":"64d31926-fa00-479a-8be2-5e32c211c826","type":"CustomJS"}]},"name":"num_int","start":-200,"title":"Num int","value":50000},"id":"2eb1a8c6-01cd-4bc9-a702-28a64bf1f1d9","type":"Slider"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"513d11f4-0705-457a-9574-9303637f502f","type":"CustomJS"}]},"name":"multiple_files","options":[["__pycache__/dodo.cpython-36.pyc","__pycache__/dodo.cpython-36.pyc"]],"title":"Multiple files","value":["__pycache__/dodo.cpython-36.pyc"]},"id":"ae872bb3-7d74-4e92-854d-7f3df16dffec","type":"MultiSelect"},{"attributes":{"code":"data = {p_name: 'color', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"a5953aec-9331-4586-9223-9215de266511","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'num_int', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"64d31926-fa00-479a-8be2-5e32c211c826","type":"CustomJS"},{"attributes":{"name":"y","text":"<b>Y</b>: Not editable"},"id":"33b1738c-49a6-4e72-81ed-255aaa62629b","type":"Div"},{"attributes":{"code":"data = {p_name: 'multiple_files', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"513d11f4-0705-457a-9574-9303637f502f","type":"CustomJS"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"fa48cb9f-0328-44b7-b0c1-a4f665457816","type":"CustomJS"}]},"name":"int_list","options":[["1","1"],["3","3"],["5","5"],["7","7"],["9","9"]],"title":"Int list","value":["3","5"]},"id":"7eced912-d32a-470c-8e9d-af0dcfde33ad","type":"MultiSelect"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"5eb7b81e-d68e-424e-9ad2-e04c9e1956a7","type":"CustomJS"}]},"name":"select_fn","options":[["list","list"],["set","set"],["dict","dict"]],"title":"Select fn","value":"list"},"id":"ad9e1f92-6141-4bd3-b1dd-3ef0b23ee958","type":"Select"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"50a510cd-eb90-48bd-8cda-8989e7015ac1","type":"CustomJS"}]},"name":"unbounded_float","title":"Unbounded float","value":"30.01"},"id":"8012873b-e06e-4472-aefb-5f733a092f11","type":"TextInput"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"93e85060-9265-407e-8e49-0033601d19bc","type":"CustomJS"}]},"name":"single_file","options":[["__pycache__/dodo.cpython-36.pyc","__pycache__/dodo.cpython-36.pyc"],["doc/conf.py","doc/conf.py"],["parambokeh/__init__.py","parambokeh/__init__.py"],["parambokeh/__main__.py","parambokeh/__main__.py"],["parambokeh/util.py","parambokeh/util.py"],["parambokeh/view.py","parambokeh/view.py"],["parambokeh/widgets.py","parambokeh/widgets.py"]],"title":"Single file","value":"__pycache__/dodo.cpython-36.pyc"},"id":"7b7ef892-5561-42d0-8dec-8fea06ba1f5c","type":"Select"},{"attributes":{"code":"data = {p_name: 'single_file', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"93e85060-9265-407e-8e49-0033601d19bc","type":"CustomJS"},{"attributes":{"text":"<b>Example</b>"},"id":"e12d8adf-de1e-4e77-9223-ffcb1d5f80f5","type":"Div"},{"attributes":{"callback":null,"end":10,"format":"0[.]0","js_property_callbacks":{"change:value":[{"id":"9e66c9af-6af6-432c-b27a-33e064afe455","type":"CustomJS"}]},"name":"float_with_hard_bounds","start":7.5,"step":0.1,"title":"Float with hard bounds","value":8.2},"id":"09a06213-f59e-490b-8809-caa46dd981a9","type":"Slider"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"a5953aec-9331-4586-9223-9215de266511","type":"CustomJS"}]},"name":"color","title":"Color","value":"#FFFFFF"},"id":"c9a9ebbe-092c-45a5-acfb-e679fdacf752","type":"TextInput"},{"attributes":{"children":[{"id":"e12d8adf-de1e-4e77-9223-ffcb1d5f80f5","type":"Div"},{"id":"8012873b-e06e-4472-aefb-5f733a092f11","type":"TextInput"},{"id":"1ae95ec4-3bfd-4f09-8ac0-d6caf5638e30","type":"CheckboxGroup"},{"id":"c9a9ebbe-092c-45a5-acfb-e679fdacf752","type":"TextInput"},{"id":"d0e91551-4349-44e6-99e3-e4f47050b5c5","type":"DatePicker"},{"id":"45715102-96ec-4d17-b730-1919489dc013","type":"TextInput"},{"id":"98bde13f-0f35-44d6-8a44-9a190ba1559d","type":"RangeSlider"},{"id":"09a06213-f59e-490b-8809-caa46dd981a9","type":"Slider"},{"id":"c4d995af-1dc2-49eb-8f89-9338673310f6","type":"Slider"},{"id":"c23c42fd-5ae5-4122-b305-e6b04c697a09","type":"RangeSlider"},{"id":"2eb1a8c6-01cd-4bc9-a702-28a64bf1f1d9","type":"Slider"},{"id":"ad9e1f92-6141-4bd3-b1dd-3ef0b23ee958","type":"Select"},{"id":"643f0929-494c-41bf-bcc0-5a38d7bf9722","type":"Select"},{"id":"906683ef-2504-4847-8557-5fc4287c8aad","type":"TextInput"},{"id":"cd330960-2430-4b52-b2fe-a42f40ebc950","type":"TextInput"},{"id":"12319095-1032-49cc-ab0a-0cfcd9f098db","type":"TextInput"},{"id":"33b1738c-49a6-4e72-81ed-255aaa62629b","type":"Div"},{"id":"7eced912-d32a-470c-8e9d-af0dcfde33ad","type":"MultiSelect"},{"id":"ae872bb3-7d74-4e92-854d-7f3df16dffec","type":"MultiSelect"},{"id":"7b7ef892-5561-42d0-8dec-8fea06ba1f5c","type":"Select"},{"id":"e3804d8b-0da6-4982-8f58-f417a1d9fe1e","type":"Button"}],"width":300},"id":"247a721c-e1f5-4afd-b131-4723649ce473","type":"WidgetBox"},{"attributes":{"code":"data = {p_name: 'select_string', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"65dbf68a-1d21-4728-ade3-38473d5386ee","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'dictionary', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"62fcb28d-3f09-4100-a618-c60cfe73ff36","type":"CustomJS"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"65dbf68a-1d21-4728-ade3-38473d5386ee","type":"CustomJS"}]},"name":"select_string","options":[["red","red"],["yellow","yellow"],["green","green"]],"title":"Select string","value":"yellow"},"id":"643f0929-494c-41bf-bcc0-5a38d7bf9722","type":"Select"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"103496b5-7f20-4327-9bd5-261461bb2b45","type":"CustomJS"}]},"name":"string_value","title":"String value","value":"str"},"id":"906683ef-2504-4847-8557-5fc4287c8aad","type":"TextInput"},{"attributes":{"code":"data = {p_name: 'boolean', value: cb_obj['active']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"30911b46-8ca0-44a1-96b6-a7a94dca8f35","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'string_value', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"103496b5-7f20-4327-9bd5-261461bb2b45","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'select_fn', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"5eb7b81e-d68e-424e-9ad2-e04c9e1956a7","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'x', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"a0c254b5-8174-482e-a4e4-24237f03e627","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'float_with_soft_bounds', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"f10c284b-54e7-4eb5-83c8-d8b8558da252","type":"CustomJS"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"075cdffa-5a01-4eee-9ff1-c869ec2a5e51","type":"CustomJS"}]},"name":"unbounded_int","title":"Unbounded int","value":"23"},"id":"cd330960-2430-4b52-b2fe-a42f40ebc950","type":"TextInput"},{"attributes":{"callback":null,"icon":null,"js_property_callbacks":{"change:clicks":[{"id":"ae49ba8e-8332-4596-9f8a-5d8a46c104d9","type":"CustomJS"}]},"label":"Record timestamp","name":"record_timestamp"},"id":"e3804d8b-0da6-4982-8f58-f417a1d9fe1e","type":"Button"},{"attributes":{"active":[0],"callback":null,"js_property_callbacks":{"change:active":[{"id":"30911b46-8ca0-44a1-96b6-a7a94dca8f35","type":"CustomJS"}]},"labels":["Boolean"],"name":"boolean"},"id":"1ae95ec4-3bfd-4f09-8ac0-d6caf5638e30","type":"CheckboxGroup"},{"attributes":{"code":"data = {p_name: 'float_range', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"deea03b3-2431-4bfd-88c8-da156f081eac","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'record_timestamp', value: cb_obj['active']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"ae49ba8e-8332-4596-9f8a-5d8a46c104d9","type":"CustomJS"},{"attributes":{"code":"data = {p_name: 'unbounded_int', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"075cdffa-5a01-4eee-9ff1-c869ec2a5e51","type":"CustomJS"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"a0c254b5-8174-482e-a4e4-24237f03e627","type":"CustomJS"}]},"name":"x","title":"X","value":"3.14"},"id":"12319095-1032-49cc-ab0a-0cfcd9f098db","type":"TextInput"},{"attributes":{"code":"data = {p_name: 'unbounded_float', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"247a721c-e1f5-4afd-b131-4723649ce473\", \"8a8137c5e88247d6a05ee02d4b8d9b52\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"8a8137c5e88247d6a05ee02d4b8d9b52\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"8a8137c5e88247d6a05ee02d4b8d9b52\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"50a510cd-eb90-48bd-8cda-8989e7015ac1","type":"CustomJS"},{"attributes":{"callback":null,"end":2,"format":"0[.]0","js_property_callbacks":{"change:value":[{"id":"f10c284b-54e7-4eb5-83c8-d8b8558da252","type":"CustomJS"}]},"name":"float_with_soft_bounds","start":0,"step":0.1,"title":"Float with soft bounds","value":0.5},"id":"c4d995af-1dc2-49eb-8f89-9338673310f6","type":"Slider"}],"root_ids":["247a721c-e1f5-4afd-b131-4723649ce473"]},"title":"Bokeh Application","version":"0.13.0"}};
+  var render_items = [{"docid":"23ef1d97-42ac-4845-b6d0-7f8dccaa10a0","notebook_comms_target":"d593866e2dac459fb6c27d4722856128","roots":{"247a721c-e1f5-4afd-b131-4723649ce473":"2692d433-09a2-4f05-8b4f-6be62eb38ad0"}}];
+  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        embed_document(root);
+        clearInterval(timer);
+      }
+      attempts++;
+      if (attempts > 100) {
+        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing")
+        clearInterval(timer);
+      }
+    }, 10, root)
+  }
+})(window);
+          </script>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         As you can see,
+         <code>
+          parambokeh.Widgets()
+         </code>
+         does not need to be provided with any knowledge of your domain-specific application, not even the names of your parameters; it simply displays widgets for whatever Parameters may have been defined on that object.  Using Param with paramBokeh thus achieves a nearly complete separation between your domain-specific code and your display code, making it vastly easier to maintain both of them over time.  Here even the
+         <code>
+          msg
+         </code>
+         button behavior was specified declaratively, as an action that can be invoked (printing "Hello") independently of whether it is used in a GUI or other context.
+        </p>
+        <p>
+         Interacting with the widgets above is only supported on a live Python-backed server, but you can also export static renderings of the widgets to a file or web page.
+        </p>
+        <p>
+         By default, editing values in this way requires you to run the notebook cell by cell -- when you get to the above cell, edit the values as you like, and then move on to execute subsequent cells, where any reference to those parameter values will use your interactively selected setting:
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [5]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="n">Example</span><span class="o">.</span><span class="n">unbounded_int</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt output_prompt">
+          Out[5]:
+         </div>
+         <div class="output_text output_subarea output_execute_result">
+          <pre>23</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [6]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="n">Example</span><span class="o">.</span><span class="n">num_int</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt output_prompt">
+          Out[6]:
+         </div>
+         <div class="output_text output_subarea output_execute_result">
+          <pre>50000</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         Example.timestamps records the times you pressed the "record timestamp" button.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [7]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="n">Example</span><span class="o">.</span><span class="n">timestamps</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt output_prompt">
+          Out[7]:
+         </div>
+         <div class="output_text output_subarea output_execute_result">
+          <pre>[]</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [8]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="c1">#Example.print_param_defaults() # see all parameter values</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         As you can see, you can access the parameter values at the class level from within the notebook to control behavior explicitly, e.g. to select what to show in subsequent cells.  Moreover, any instances of the Parameterized classes in your own code will now use the new parameter values unless specifically overridden in that instance, so you can now import and use your domain-specific library however you like, knowing that it will use your interactive selections wherever those classes appear.  None of the domain-specific code needs to know or care that you used ParamNB; it will simply see new values for whatever attributes were changed interactively.  ParamNB thus allows you to provide notebook-specific, domain-specific interactive functionality without ever tying your domain-specific code to the notebook environment.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         You can install ParamBokeh as described at
+         <a href="https://github.com/ioam/parambokeh">
+          github.com/ioam/parambokeh
+         </a>
+         .  Have fun widgeting!
+        </p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <!-- END MAIN BODY OF DOCS ––––––––––––– -->
+  <footer class="footer">
+   <div class="footer-links">
+    <ul>
+     <li>
+      <span class="footer-title">
+       Links
+      </span>
+     </li>
+     <li>
+      <a href="index.html">
+       User Guide
+      </a>
+     </li>
+     <li>
+      <a href="../FAQ.html">
+       FAQ
+      </a>
+     </li>
+     <li>
+      <a href="../about.html">
+       About
+      </a>
+     </li>
+    </ul>
+    <ul>
+     <li>
+      <span class="footer-title">
+       Join Us
+      </span>
+     </li>
+     <li>
+      <a href="//gitter.im/ioam/holoviews">
+       Gitter
+      </a>
+     </li>
+     <li>
+      <a href="//github.com/ioam/parambokeh">
+       Github
+      </a>
+     </li>
+    </ul>
+    <ul class="copyright">
+     <li>
+      2017 ParamBokeh contributors
+     </li>
+    </ul>
+   </div>
+  </footer>
+  <!-- Google Analytics -->
+  <script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61554933-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+  <!-- MathJax Config -->
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+  </script>
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+ </body>
+</html>

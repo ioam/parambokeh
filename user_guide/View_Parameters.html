@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8"/>
+  <title>
+   View Parameters — ParamBokeh 0.2.3.post3+g15b88f5 documentation
+  </title>
+  <meta content="Generate Bokeh widgets for Parameterized objects" name="description"/>
+  <meta content="ParamBokeh contributors" name="author"/>
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js">
+  </script>
+  <script>
+   WebFont.load({
+      google: {
+        families: ['Source Sans Pro']
+      }
+    });
+  </script>
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="../_static/css/main.css" rel="stylesheet"/>
+  <link href="../_static/nbsite.css" rel="stylesheet"/>
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+  </script>
+  <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript">
+  </script>
+  <script src="../_static/js/main.js">
+  </script>
+  <script src="../_static/nbsite.js">
+  </script>
+  <script src="../_static/require.js">
+  </script>
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="../_static/favicon.ico" rel="icon" type="image/png"/>
+  <!-- Canonical
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="https://parambokeh.pyviz.org/user_guide/View_Parameters.html" rel="canonical"/>
+ </head>
+ <body class="">
+  <header class="navigation">
+   <div class="wrapper">
+    <a class="logo" href="../index.html">
+     <img alt="Logo" src="../_static/param-logo.png"/>
+    </a>
+    <a class="navigation-menu logo-text" href="../index.html">
+     ParamBokeh
+    </a>
+    <a class="navigation-menu-button" href="javascript:void(0)" id="js-mobile-menu">
+     Menu
+    </a>
+    <nav>
+     <ul class="navigation-menu show" id="js-navigation-menu">
+      <li class="nav-link">
+       <a href="index.html">
+        User Guide
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="../FAQ.html">
+        FAQ
+       </a>
+      </li>
+      <li class="nav-link">
+       <a href="../about.html">
+        About
+       </a>
+      </li>
+      <li class="nav-link">
+       <div style="display:inline-block;vertical-align: middle;">
+        <div class="search-bar">
+         <form action="../search.html" method="get" role="search">
+          <input name="q" placeholder="Search" type="search"/>
+          <button type="submit">
+           <img alt="Search Icon" src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon-black.png"/>
+          </button>
+         </form>
+        </div>
+       </div>
+      </li>
+     </ul>
+    </nav>
+   </div>
+  </header>
+  <!-- MAIN BODY OF DOCS –––––––––––––––––– -->
+  <div class="docs section">
+   <div id="hacketyhackhack">
+    <!-- style="width:20%;margin-right: 100px;"> -->
+    <!--style="display: none;"> style="display:none;"> -->
+    <div class="toc" style="width:15%; margin-right:20px;">
+     <ul class="current">
+      <li class="toctree-l1">
+       <a class="reference internal" href="../index.html">
+        Introduction
+       </a>
+      </li>
+      <li class="toctree-l1 current">
+       <a class="reference internal" href="index.html">
+        User Guide
+       </a>
+       <ul class="current">
+        <li class="toctree-l2">
+         <a class="reference internal" href="Introduction.html">
+          Introduction
+         </a>
+        </li>
+        <li class="toctree-l2 current">
+         <a class="current reference internal" href="#">
+          View Parameters
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="Bokeh_Apps.html">
+          Bokeh Apps
+         </a>
+        </li>
+        <li class="toctree-l2">
+         <a class="reference internal" href="Django_Apps.html">
+          Django Apps
+         </a>
+        </li>
+       </ul>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../FAQ.html">
+        FAQ
+       </a>
+      </li>
+      <li class="toctree-l1">
+       <a class="reference internal" href="../about.html">
+        About
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+   <div class="content">
+    <!-- style="max-width:80%;margin-left:auto;margin-right: auto;">-->
+    <div class="section" id="view-parameters">
+     <h1>
+      View Parameters
+      <a class="headerlink" href="#view-parameters" title="Permalink to this headline">
+       ¶
+      </a>
+     </h1>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [1]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="kn">import</span> <span class="nn">param</span>
+<span class="kn">import</span> <span class="nn">parambokeh</span>
+<span class="kn">from</span> <span class="nn">bokeh.io</span> <span class="k">import</span> <span class="n">output_notebook</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">output_notebook</span><span class="p">()</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div class="output_html rendered_html output_subarea ">
+          <div class="bk-root">
+           <a class="bk-logo bk-logo-small bk-logo-notebook" href="https://bokeh.pydata.org" target="_blank">
+           </a>
+           <span id="3e647e2c-e4a8-4216-be8c-85dc99f7d670">
+            Loading BokehJS ...
+           </span>
+          </div>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="16882790-913b-431a-b1e9-345340041ca9">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#16882790-913b-431a-b1e9-345340041ca9');
+
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  var force = true;
+
+  if (typeof (root._bokeh_onload_callbacks) === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+  var JS_MIME_TYPE = 'application/javascript';
+  var HTML_MIME_TYPE = 'text/html';
+  var EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  var CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    var script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    var cell = handle.cell;
+
+    var id = cell.output_area._bokeh_element_id;
+    var server_id = cell.output_area._bokeh_server_id;
+    // Clean up Bokeh references
+    if (id != null && id in Bokeh.index) {
+      Bokeh.index[id].model.document.clear();
+      delete Bokeh.index[id];
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      var cmd = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd, {
+        iopub: {
+          output: function(msg) {
+            var id = msg.content.text.trim();
+            if (id in Bokeh.index) {
+              Bokeh.index[id].model.document.clear();
+              delete Bokeh.index[id];
+            }
+          }
+        }
+      });
+      // Destroy server and session
+      var cmd = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    var output_area = handle.output_area;
+    var output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!output.data.hasOwnProperty(EXEC_MIME_TYPE))) {
+      return
+    }
+
+    var toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      var bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      var script_attrs = bk_div.children[0].attributes;
+      for (var i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      var toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      var props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    var events = require('base/js/events');
+    var OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+
+  
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  var NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded() {
+    var el = document.getElementById("3e647e2c-e4a8-4216-be8c-85dc99f7d670");
+    if (el != null) {
+      el.textContent = "BokehJS is loading...";
+    }
+    if (root.Bokeh !== undefined) {
+      if (el != null) {
+        el.textContent = "BokehJS " + root.Bokeh.version + " successfully loaded.";
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(display_loaded, 100)
+    }
+  }
+
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) { callback() });
+    }
+    finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.info("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(js_urls, callback) {
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.log("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.log("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = js_urls.length;
+    for (var i = 0; i < js_urls.length; i++) {
+      var url = js_urls[i];
+      var s = document.createElement('script');
+      s.src = url;
+      s.async = false;
+      s.onreadystatechange = s.onload = function() {
+        root._bokeh_is_loading--;
+        if (root._bokeh_is_loading === 0) {
+          console.log("Bokeh: all BokehJS libraries loaded");
+          run_callbacks()
+        }
+      };
+      s.onerror = function() {
+        console.warn("failed to load library " + url);
+      };
+      console.log("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.getElementsByTagName("head")[0].appendChild(s);
+    }
+  };var element = document.getElementById("3e647e2c-e4a8-4216-be8c-85dc99f7d670");
+  if (element == null) {
+    console.log("Bokeh: ERROR: autoload.js configured with elementid '3e647e2c-e4a8-4216-be8c-85dc99f7d670' but no matching script tag was found. ")
+    return false;
+  }
+
+  var js_urls = ["https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-gl-0.13.0.min.js"];
+
+  var inline_js = [
+    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+    
+    function(Bokeh) {
+      
+    },
+    function(Bokeh) {
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css");
+    }
+  ];
+
+  function run_inline_js() {
+    
+    if ((root.Bokeh !== undefined) || (force === true)) {
+      for (var i = 0; i < inline_js.length; i++) {
+        inline_js[i].call(root, root.Bokeh);
+      }if (force === true) {
+        display_loaded();
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      var cell = $(document.getElementById("3e647e2c-e4a8-4216-be8c-85dc99f7d670")).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.log("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(js_urls, function() {
+      console.log("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));
+          </script>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         The paramBokeh library provides an easy way to manipulate parameters on
+         <code>
+          Parameterized
+         </code>
+         using the widgets on bokeh server and within the notebook. In addition to controlling input parameters a common usecase for using widgets in the notebook is to dynamically control some visual display output. In addition to all the standard parameters supplied by the
+         <code>
+          param
+         </code>
+         library,
+         <code>
+          paramBokeh
+         </code>
+         also supplies so called
+         <code>
+          View
+         </code>
+         parameters, which render bokeh plot output in a widget area. The output parameters may be updated simply by setting the parameter on the class.
+        </p>
+        <p>
+         In the first simple example we will declare a Parameterized class with a
+         <code>
+          Number
+         </code>
+         parameter called magnitude and an
+         <code>
+          HTML
+         </code>
+         parameter which will let us display some arbitrary HTML. In this case we will simply generate a pandas dataframe with random data within the update method and use the
+         <code>
+          to_html
+         </code>
+         method to convert it to an HTML table. If we define the
+         <code>
+          update
+         </code>
+         method as the callback of the widgets the table will now update whenever the slider is dragged. To ensure that the output is drawn on initialization we set
+         <code>
+          on_init=True
+         </code>
+         .
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [2]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="k">class</span> <span class="nc">HTMLExample</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">Parameterized</span><span class="p">):</span>
+    
+    <span class="n">magnitude</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">parambokeh</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">HTML</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span>
+
+<span class="n">example</span> <span class="o">=</span> <span class="n">HTMLExample</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'HTMLExample'</span><span class="p">)</span>
+<span class="n">layout</span> <span class="o">=</span> <span class="n">parambokeh</span><span class="o">.</span><span class="n">Widgets</span><span class="p">(</span><span class="n">example</span><span class="p">,</span> <span class="n">on_init</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">update</span><span class="p">)</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div class="output_html rendered_html output_subarea ">
+          <div class="bk-root" id="32645f9f-cdc1-4d35-ab83-245f09ae7ce0">
+          </div>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="bc734db3-3bf2-4c4c-ad2a-47c37ca8da36">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#bc734db3-3bf2-4c4c-ad2a-47c37ca8da36');
+
+if (window.PyViz === undefined) {
+   if (window.HoloViews === undefined) {
+     var PyViz = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
+   } else {
+     var PyViz = window.HoloViews;
+   }
+   window.PyViz = PyViz;
+   window.HoloViews = PyViz;  // TEMPORARY HACK TILL NEXT NPM RELEASE
+}
+
+
+    function JupyterCommManager() {
+    }
+
+    JupyterCommManager.prototype.register_target = function(plot_id, comm_id, msg_handler) {
+      if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        comm_manager.register_target(comm_id, function(comm) {
+          comm.on_msg(msg_handler);
+        });
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        window.PyViz.kernels[plot_id].registerCommTarget(comm_id, function(comm) {
+          comm.onMsg = msg_handler;
+        });
+      }
+    }
+
+    JupyterCommManager.prototype.get_client_comm = function(plot_id, comm_id, msg_handler) {
+      if (comm_id in window.PyViz.comms) {
+        return window.PyViz.comms[comm_id];
+      } else if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        var comm = comm_manager.new_comm(comm_id, {}, {}, {}, comm_id);
+        if (msg_handler) {
+          comm.on_msg(msg_handler);
+        }
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        var comm = window.PyViz.kernels[plot_id].connectToComm(comm_id);
+        comm.open();
+        if (msg_handler) {
+          comm.onMsg = msg_handler;
+        }
+      }
+
+      window.PyViz.comms[comm_id] = comm;
+      return comm;
+    }
+
+    window.PyViz.comm_manager = new JupyterCommManager();
+          </script>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="402fcfdb-c266-4533-8e03-438b033272ed">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#402fcfdb-c266-4533-8e03-438b033272ed');
+
+    function msg_handler(msg) {
+      var buffers = msg.buffers;
+      var msg = msg.content.data;
+      
+var plot_id = "517e2e8b-af83-4479-8c36-b5892ff37e44";
+if (plot_id in window.PyViz.plot_index) {
+  var plot = window.PyViz.plot_index[plot_id];
+} else {
+  var plot = Bokeh.index[plot_id];
+}
+
+if (plot_id in window.PyViz.receivers) {
+  var receiver = window.PyViz.receivers[plot_id];
+} else if (Bokeh.protocol === undefined) {
+  return;
+} else {
+  var receiver = new Bokeh.protocol.Receiver();
+  window.PyViz.receivers[plot_id] = receiver;
+}
+
+if (buffers.length > 0) {
+  receiver.consume(buffers[0].buffer)
+} else {
+  receiver.consume(msg)
+}
+
+const comm_msg = receiver.message;
+if (comm_msg != null) {
+  plot.model.document.apply_json_patch(comm_msg.content, comm_msg.buffers)
+}
+
+    }
+    window.PyViz.comm_manager.register_target('517e2e8b-af83-4479-8c36-b5892ff37e44', '3fec1da4e1ca4ec38e5b5716d8b21c2f', msg_handler);
+    
+(function(root) {
+  function embed_document(root) {
+    
+  var docs_json = {"52142deb-be9e-4088-a710-245643726841":{"roots":{"references":[{"attributes":{"code":"data = {p_name: 'magnitude', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"517e2e8b-af83-4479-8c36-b5892ff37e44\", \"b33cfc2cc2824508b7300c62f84df83e\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"b33cfc2cc2824508b7300c62f84df83e\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"b33cfc2cc2824508b7300c62f84df83e\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"b33cfc2cc2824508b7300c62f84df83e\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"beb8ba4e-efda-4063-aa50-5e462fc2019b","type":"CustomJS"},{"attributes":{"text":"<b>HTMLExample</b>"},"id":"62e688d3-c094-445e-9f08-6eef6aa8ed54","type":"Div"},{"attributes":{"children":[{"id":"ded8e1c5-ebe6-4e03-8beb-a26cfff1b898","type":"WidgetBox"},{"id":"8bbd5f42-f917-4259-9ff2-436bc83a6c15","type":"Column"}]},"id":"517e2e8b-af83-4479-8c36-b5892ff37e44","type":"Column"},{"attributes":{"name":"output","text":"<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>0</th>\n      <th>1</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>0.549632</td>\n      <td>0.394366</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>0.694177</td>\n      <td>0.505487</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>0.893060</td>\n      <td>0.865846</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>0.619500</td>\n      <td>0.921147</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>0.754204</td>\n      <td>0.456657</td>\n    </tr>\n    <tr>\n      <th>5</th>\n      <td>0.747888</td>\n      <td>0.965068</td>\n    </tr>\n    <tr>\n      <th>6</th>\n      <td>0.902474</td>\n      <td>0.312467</td>\n    </tr>\n    <tr>\n      <th>7</th>\n      <td>0.285084</td>\n      <td>0.240387</td>\n    </tr>\n    <tr>\n      <th>8</th>\n      <td>0.901481</td>\n      <td>0.009392</td>\n    </tr>\n    <tr>\n      <th>9</th>\n      <td>0.457667</td>\n      <td>0.851828</td>\n    </tr>\n  </tbody>\n</table>"},"id":"5895744f-07f1-4c20-9dfd-914c52707264","type":"Div"},{"attributes":{"children":[{"id":"d19827bd-3482-4830-a63e-6c6c59345231","type":"WidgetBox"}]},"id":"8bbd5f42-f917-4259-9ff2-436bc83a6c15","type":"Column"},{"attributes":{"children":[{"id":"62e688d3-c094-445e-9f08-6eef6aa8ed54","type":"Div"},{"id":"cd15afda-c738-4f61-9aa6-22bd13554fac","type":"Slider"}],"width":300},"id":"ded8e1c5-ebe6-4e03-8beb-a26cfff1b898","type":"WidgetBox"},{"attributes":{"children":[{"id":"5895744f-07f1-4c20-9dfd-914c52707264","type":"Div"}]},"id":"d19827bd-3482-4830-a63e-6c6c59345231","type":"WidgetBox"},{"attributes":{"callback":null,"end":10,"format":"0[.]","js_property_callbacks":{"change:value":[{"id":"beb8ba4e-efda-4063-aa50-5e462fc2019b","type":"CustomJS"}]},"name":"magnitude","start":0,"title":"Magnitude","value":1},"id":"cd15afda-c738-4f61-9aa6-22bd13554fac","type":"Slider"}],"root_ids":["517e2e8b-af83-4479-8c36-b5892ff37e44"]},"title":"Bokeh Application","version":"0.13.0"}};
+  var render_items = [{"docid":"52142deb-be9e-4088-a710-245643726841","notebook_comms_target":"3fec1da4e1ca4ec38e5b5716d8b21c2f","roots":{"517e2e8b-af83-4479-8c36-b5892ff37e44":"32645f9f-cdc1-4d35-ab83-245f09ae7ce0"}}];
+  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        embed_document(root);
+        clearInterval(timer);
+      }
+      attempts++;
+      if (attempts > 100) {
+        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing")
+        clearInterval(timer);
+      }
+    }, 10, root)
+  }
+})(window);
+          </script>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing text_cell rendered">
+      <div class="prompt input_prompt">
+      </div>
+      <div class="inner_cell">
+       <div class="text_cell_render border-box-sizing rendered_html">
+        <p>
+         The
+         <code>
+          HTML
+         </code>
+         parameter accepts any arbitrary HTML string but for convenience paramBokeh also allows rendering bokeh and HoloViews plots using the
+         <code>
+          Plot
+         </code>
+         parameter. Note however that we can only replace a plot when deploying on bokeh server, within the notebook we may only update a plot:
+        </p>
+        <p>
+         Additionally we can declare the
+         <code>
+          view_position
+         </code>
+         , which specifies where the viewing widget will be placed in relation to the input widgets:
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="cell border-box-sizing code_cell rendered">
+      <div class="input">
+       <div class="prompt input_prompt">
+        In [3]:
+       </div>
+       <div class="inner_cell">
+        <div class="input_area">
+         <div class=" highlight hl-ipython3">
+          <pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
+
+<span class="k">class</span> <span class="nc">CurveExample</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">streams</span><span class="o">.</span><span class="n">Stream</span><span class="p">):</span>
+
+    <span class="n">color</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">'#000000'</span><span class="p">,</span> <span class="n">precedence</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">element</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">ObjectSelector</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">,</span>
+                                   <span class="n">objects</span><span class="o">=</span><span class="p">[</span><span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">,</span> <span class="n">hv</span><span class="o">.</span><span class="n">Scatter</span><span class="p">,</span> <span class="n">hv</span><span class="o">.</span><span class="n">Area</span><span class="p">],</span>
+                                  <span class="n">precedence</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">amplitude</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    
+    <span class="n">frequency</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    
+    <span class="n">output</span> <span class="o">=</span> <span class="n">parambokeh</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">frequency</span><span class="p">)),</span>
+                        <span class="n">vdims</span><span class="o">=</span><span class="p">[</span><span class="n">hv</span><span class="o">.</span><span class="n">Dimension</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))])</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'color'</span><span class="p">,</span> <span class="s1">'element'</span><span class="p">]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">DynamicMap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="n">streams</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="p">],</span> <span class="n">cache_size</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">CurveExample</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="n">example</span> <span class="o">=</span> <span class="n">CurveExample</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'HoloViews Example'</span><span class="p">)</span>
+<span class="n">parambokeh</span><span class="o">.</span><span class="n">Widgets</span><span class="p">(</span><span class="n">example</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">event</span><span class="p">,</span> <span class="n">on_init</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">view_position</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+</pre>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="output_wrapper">
+       <div class="output">
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div class="output_html rendered_html output_subarea ">
+          <div class="bk-root" id="584f5303-cc4e-49fd-9bf9-bd7859c2df16">
+          </div>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="f23814cd-27db-4b11-813a-4be1ac597d38">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#f23814cd-27db-4b11-813a-4be1ac597d38');
+
+if (window.PyViz === undefined) {
+   if (window.HoloViews === undefined) {
+     var PyViz = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
+   } else {
+     var PyViz = window.HoloViews;
+   }
+   window.PyViz = PyViz;
+   window.HoloViews = PyViz;  // TEMPORARY HACK TILL NEXT NPM RELEASE
+}
+
+
+    function JupyterCommManager() {
+    }
+
+    JupyterCommManager.prototype.register_target = function(plot_id, comm_id, msg_handler) {
+      if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        comm_manager.register_target(comm_id, function(comm) {
+          comm.on_msg(msg_handler);
+        });
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        window.PyViz.kernels[plot_id].registerCommTarget(comm_id, function(comm) {
+          comm.onMsg = msg_handler;
+        });
+      }
+    }
+
+    JupyterCommManager.prototype.get_client_comm = function(plot_id, comm_id, msg_handler) {
+      if (comm_id in window.PyViz.comms) {
+        return window.PyViz.comms[comm_id];
+      } else if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        var comm = comm_manager.new_comm(comm_id, {}, {}, {}, comm_id);
+        if (msg_handler) {
+          comm.on_msg(msg_handler);
+        }
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        var comm = window.PyViz.kernels[plot_id].connectToComm(comm_id);
+        comm.open();
+        if (msg_handler) {
+          comm.onMsg = msg_handler;
+        }
+      }
+
+      window.PyViz.comms[comm_id] = comm;
+      return comm;
+    }
+
+    window.PyViz.comm_manager = new JupyterCommManager();
+          </script>
+         </div>
+        </div>
+        <div class="output_area">
+         <div class="prompt">
+         </div>
+         <div id="05f90916-ae95-4d62-9a80-7f5d7a152281">
+         </div>
+         <div class="output_subarea output_javascript ">
+          <script type="text/javascript">
+           var element = $('#05f90916-ae95-4d62-9a80-7f5d7a152281');
+
+    function msg_handler(msg) {
+      var buffers = msg.buffers;
+      var msg = msg.content.data;
+      
+var plot_id = "63deaf8f-5fb2-460e-9a75-449b33485c54";
+if (plot_id in window.PyViz.plot_index) {
+  var plot = window.PyViz.plot_index[plot_id];
+} else {
+  var plot = Bokeh.index[plot_id];
+}
+
+if (plot_id in window.PyViz.receivers) {
+  var receiver = window.PyViz.receivers[plot_id];
+} else if (Bokeh.protocol === undefined) {
+  return;
+} else {
+  var receiver = new Bokeh.protocol.Receiver();
+  window.PyViz.receivers[plot_id] = receiver;
+}
+
+if (buffers.length > 0) {
+  receiver.consume(buffers[0].buffer)
+} else {
+  receiver.consume(msg)
+}
+
+const comm_msg = receiver.message;
+if (comm_msg != null) {
+  plot.model.document.apply_json_patch(comm_msg.content, comm_msg.buffers)
+}
+
+    }
+    window.PyViz.comm_manager.register_target('63deaf8f-5fb2-460e-9a75-449b33485c54', '3b12f470786244db966ab10c523b3f5f', msg_handler);
+    
+(function(root) {
+  function embed_document(root) {
+    
+  var docs_json = {"723a69d6-4ace-4b74-89a6-c03330902a31":{"roots":{"references":[{"attributes":{"grid_line_color":{"value":null},"plot":{"id":"60d8879e-7294-4699-aeff-f801b1a1ac65","subtype":"Figure","type":"Plot"},"ticker":{"id":"432d827f-9ea7-4a43-860c-d76ca89f2bd7","type":"BasicTicker"}},"id":"233e492a-0676-4598-8c0a-4de57815f64a","type":"Grid"},{"attributes":{"code":"data = {p_name: 'amplitude', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"63deaf8f-5fb2-460e-9a75-449b33485c54\", \"84ec340c639544c09cb53662349013b8\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"84ec340c639544c09cb53662349013b8\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"84ec340c639544c09cb53662349013b8\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"84ec340c639544c09cb53662349013b8\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"d8a159ab-cf53-4130-9247-122805f103e2","type":"CustomJS"},{"attributes":{"line_color":"#000000","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"d09056b9-ebfd-4af2-9534-afb6a84c401e","type":"Line"},{"attributes":{"below":[{"id":"5b14e79d-5fa3-4872-9727-e4d4330b0dbe","type":"LinearAxis"}],"left":[{"id":"52b11112-6656-43cd-86f7-bcddeb799183","type":"LinearAxis"}],"min_border_bottom":10,"min_border_left":10,"min_border_right":10,"min_border_top":10,"plot_height":300,"plot_width":300,"renderers":[{"id":"5b14e79d-5fa3-4872-9727-e4d4330b0dbe","type":"LinearAxis"},{"id":"233e492a-0676-4598-8c0a-4de57815f64a","type":"Grid"},{"id":"52b11112-6656-43cd-86f7-bcddeb799183","type":"LinearAxis"},{"id":"4d354c51-daad-4ea7-94b5-d2c684f598e7","type":"Grid"},{"id":"8fcf3df7-aac6-4b89-ae97-959f7dd9ff27","type":"BoxAnnotation"},{"id":"482fabc6-d4c3-4d4b-9569-8c9fef41aa1f","type":"GlyphRenderer"}],"title":{"id":"8029a3fa-1b7d-4c89-9a2a-30cefa93af13","type":"Title"},"toolbar":{"id":"3cb685f0-04e9-4146-a8eb-dddcdccf5728","type":"Toolbar"},"x_range":{"id":"a7f61d4a-3a11-4796-8e2e-70c7a00545b5","type":"Range1d"},"x_scale":{"id":"8e5a8802-37f4-4bcf-bdaf-a09ce54e5d57","type":"LinearScale"},"y_range":{"id":"3b2dc208-1152-4704-a6bc-f4b6a693c04f","type":"Range1d"},"y_scale":{"id":"3f0b45d5-076a-42db-8882-545fbfb965d0","type":"LinearScale"}},"id":"60d8879e-7294-4699-aeff-f801b1a1ac65","subtype":"Figure","type":"Plot"},{"attributes":{"callback":null,"end":10,"format":"0[.]","js_property_callbacks":{"change:value":[{"id":"e25bab7c-fdc9-4dd4-a113-9592e9821977","type":"CustomJS"}]},"name":"frequency","start":1,"title":"Frequency","value":2},"id":"6f3f4552-9c55-4f1a-a283-f8894676caf3","type":"Slider"},{"attributes":{"axis_label":"x","bounds":"auto","formatter":{"id":"c193cdb3-84f1-4a46-b6d0-40b7a597b6af","type":"BasicTickFormatter"},"major_label_orientation":"horizontal","plot":{"id":"60d8879e-7294-4699-aeff-f801b1a1ac65","subtype":"Figure","type":"Plot"},"ticker":{"id":"432d827f-9ea7-4a43-860c-d76ca89f2bd7","type":"BasicTicker"}},"id":"5b14e79d-5fa3-4872-9727-e4d4330b0dbe","type":"LinearAxis"},{"attributes":{"line_alpha":0.2,"line_color":"#000000","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"85ec0a1b-dabf-4aad-8a1c-907090896360","type":"Line"},{"attributes":{"plot":null,"text":"","text_color":{"value":"black"},"text_font_size":{"value":"12pt"}},"id":"8029a3fa-1b7d-4c89-9a2a-30cefa93af13","type":"Title"},{"attributes":{"data_source":{"id":"c2465055-a9ca-4b6a-bb72-5c4db9452d15","type":"ColumnDataSource"},"glyph":{"id":"d09056b9-ebfd-4af2-9534-afb6a84c401e","type":"Line"},"hover_glyph":null,"muted_glyph":{"id":"85ec0a1b-dabf-4aad-8a1c-907090896360","type":"Line"},"nonselection_glyph":{"id":"1489c563-5910-4f14-bcdd-44e4a9d49274","type":"Line"},"selection_glyph":null,"view":{"id":"21a99c3c-30b4-4441-aedf-b8a538580e2b","type":"CDSView"}},"id":"482fabc6-d4c3-4d4b-9569-8c9fef41aa1f","type":"GlyphRenderer"},{"attributes":{"code":"data = {p_name: 'frequency', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"63deaf8f-5fb2-460e-9a75-449b33485c54\", \"84ec340c639544c09cb53662349013b8\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"84ec340c639544c09cb53662349013b8\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"84ec340c639544c09cb53662349013b8\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"84ec340c639544c09cb53662349013b8\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"e25bab7c-fdc9-4dd4-a113-9592e9821977","type":"CustomJS"},{"attributes":{"children":[{"id":"1bf33f15-7701-4f86-bd57-967a457a8706","type":"Div"},{"id":"90dceef9-454e-441a-8dfc-6403f58796aa","type":"TextInput"},{"id":"c316b89d-9080-4e65-add0-bbc19395e6e1","type":"Select"},{"id":"94fef8f1-5c1e-4a9a-b36f-1c836ab9d6f5","type":"Slider"},{"id":"6f3f4552-9c55-4f1a-a283-f8894676caf3","type":"Slider"}],"width":300},"id":"89fdf92a-fc17-496a-b0f0-2011ea68b31d","type":"WidgetBox"},{"attributes":{},"id":"3f0b45d5-076a-42db-8882-545fbfb965d0","type":"LinearScale"},{"attributes":{"children":[{"id":"60d8879e-7294-4699-aeff-f801b1a1ac65","subtype":"Figure","type":"Plot"}],"name":"output"},"id":"34591efe-e7af-438d-ba2d-d4a54ad6d7a8","type":"Column"},{"attributes":{},"id":"e403a7f4-f93f-4264-bdea-2e3445e4ced9","type":"ResetTool"},{"attributes":{"children":[{"id":"89fdf92a-fc17-496a-b0f0-2011ea68b31d","type":"WidgetBox"},{"id":"b1ad3900-c2c4-4733-ad01-f01dfbf7bcb6","type":"Column"}]},"id":"63deaf8f-5fb2-460e-9a75-449b33485c54","type":"Row"},{"attributes":{},"id":"5d5a15b1-61b5-4c7c-a65b-94486c8dac81","type":"WheelZoomTool"},{"attributes":{"source":{"id":"c2465055-a9ca-4b6a-bb72-5c4db9452d15","type":"ColumnDataSource"}},"id":"21a99c3c-30b4-4441-aedf-b8a538580e2b","type":"CDSView"},{"attributes":{},"id":"2ccca48f-1dc9-477d-925e-911b8364dbdb","type":"PanTool"},{"attributes":{},"id":"b8d6ebcc-1624-487b-b746-21ad198313d0","type":"UnionRenderers"},{"attributes":{},"id":"9d0afad5-7617-45be-ae51-8c13e8032bb6","type":"BasicTickFormatter"},{"attributes":{"callback":null,"end":49.0,"reset_end":49.0,"reset_start":0.0},"id":"a7f61d4a-3a11-4796-8e2e-70c7a00545b5","type":"Range1d"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"3e6e518c-749b-458a-a9a5-138d424f1298","type":"SaveTool"},{"id":"2ccca48f-1dc9-477d-925e-911b8364dbdb","type":"PanTool"},{"id":"5d5a15b1-61b5-4c7c-a65b-94486c8dac81","type":"WheelZoomTool"},{"id":"0b0474d7-fa50-4818-95eb-0c1d50f35ebf","type":"BoxZoomTool"},{"id":"e403a7f4-f93f-4264-bdea-2e3445e4ced9","type":"ResetTool"}]},"id":"3cb685f0-04e9-4146-a8eb-dddcdccf5728","type":"Toolbar"},{"attributes":{"dimension":1,"grid_line_color":{"value":null},"plot":{"id":"60d8879e-7294-4699-aeff-f801b1a1ac65","subtype":"Figure","type":"Plot"},"ticker":{"id":"a3eba5b8-c31b-49de-b49a-07aac006a6ca","type":"BasicTicker"}},"id":"4d354c51-daad-4ea7-94b5-d2c684f598e7","type":"Grid"},{"attributes":{"line_alpha":0.1,"line_color":"#000000","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"1489c563-5910-4f14-bcdd-44e4a9d49274","type":"Line"},{"attributes":{"overlay":{"id":"8fcf3df7-aac6-4b89-ae97-959f7dd9ff27","type":"BoxAnnotation"}},"id":"0b0474d7-fa50-4818-95eb-0c1d50f35ebf","type":"BoxZoomTool"},{"attributes":{},"id":"8e5a8802-37f4-4bcf-bdaf-a09ce54e5d57","type":"LinearScale"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"ae398107-19a7-4751-95bf-0ad786184046","type":"CustomJS"}]},"name":"color","title":"Color","value":"#000000"},"id":"90dceef9-454e-441a-8dfc-6403f58796aa","type":"TextInput"},{"attributes":{},"id":"c193cdb3-84f1-4a46-b6d0-40b7a597b6af","type":"BasicTickFormatter"},{"attributes":{"code":"data = {p_name: 'color', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"63deaf8f-5fb2-460e-9a75-449b33485c54\", \"84ec340c639544c09cb53662349013b8\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"84ec340c639544c09cb53662349013b8\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"84ec340c639544c09cb53662349013b8\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"84ec340c639544c09cb53662349013b8\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"ae398107-19a7-4751-95bf-0ad786184046","type":"CustomJS"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"8fcf3df7-aac6-4b89-ae97-959f7dd9ff27","type":"BoxAnnotation"},{"attributes":{"children":[{"id":"34591efe-e7af-438d-ba2d-d4a54ad6d7a8","type":"Column"}]},"id":"b1ad3900-c2c4-4733-ad01-f01dfbf7bcb6","type":"Column"},{"attributes":{"text":"<b>HoloViews Example</b>"},"id":"1bf33f15-7701-4f86-bd57-967a457a8706","type":"Div"},{"attributes":{"callback":null,"end":5,"reset_end":5,"reset_start":-5,"start":-5},"id":"3b2dc208-1152-4704-a6bc-f4b6a693c04f","type":"Range1d"},{"attributes":{"callback":null,"js_property_callbacks":{"change:value":[{"id":"5bcec010-582a-4bbe-8c18-84b231a2177c","type":"CustomJS"}]},"name":"element","options":[["Curve","Curve"],["Scatter","Scatter"],["Area","Area"]],"title":"Element","value":"Curve"},"id":"c316b89d-9080-4e65-add0-bbc19395e6e1","type":"Select"},{"attributes":{},"id":"a3eba5b8-c31b-49de-b49a-07aac006a6ca","type":"BasicTicker"},{"attributes":{},"id":"3e6e518c-749b-458a-a9a5-138d424f1298","type":"SaveTool"},{"attributes":{},"id":"a41b474f-3a6b-427a-bd4d-e98ea44ccfc8","type":"Selection"},{"attributes":{"code":"data = {p_name: 'element', value: cb_obj['value']};\n\n    function unique_events(events) {\n        // Processes the event queue ignoring duplicate events\n        // of the same type\n        var unique = [];\n        var unique_events = [];\n        for (var i=0; i<events.length; i++) {\n            var _tmpevent = events[i];\n            event = _tmpevent[0];\n            data = _tmpevent[1];\n            if (unique_events.indexOf(event)===-1) {\n                unique.unshift(data);\n                unique_events.push(event);\n            }\n        }\n        return unique;\n    }\n\n    function process_events(comm_status) {\n        // Iterates over event queue and sends events via Comm\n        var events = unique_events(comm_status.event_buffer);\n        for (var i=0; i<events.length; i++) {\n            var data = events[i];\n            var comm = window.PyViz.comms[data[\"comm_id\"]];\n            comm.send(data);\n        }\n        comm_status.event_buffer = [];\n    }\n\n    function on_msg(msg) {\n      // Receives acknowledgement from Python, processing event\n      // and unblocking Comm if event queue empty\n      msg = JSON.parse(msg.content.data);\n      var comm_id = msg[\"comm_id\"]\n      var comm_status = window.PyViz.comm_status[comm_id];\n      if (comm_status.event_buffer.length) {\n        process_events(comm_status);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n      } else {\n        comm_status.blocked = false;\n      }\n      comm_status.event_buffer = [];\n      if ((msg.msg_type == \"Ready\") && msg.content) {\n        console.log(\"Python callback returned following output:\", msg.content);\n      } else if (msg.msg_type == \"Error\") {\n        console.log(\"Python failed with the following traceback:\", msg['traceback'])\n      }\n    }\n\n    // Initialize Comm\n    comm = window.PyViz.comm_manager.get_client_comm(\"63deaf8f-5fb2-460e-9a75-449b33485c54\", \"84ec340c639544c09cb53662349013b8\", on_msg);\n    if (!comm) {\n      return\n    }\n\n    // Initialize event queue and timeouts for Comm\n    var comm_status = window.PyViz.comm_status[\"84ec340c639544c09cb53662349013b8\"];\n    if (comm_status === undefined) {\n        comm_status = {event_buffer: [], blocked: false, time: Date.now()}\n        window.PyViz.comm_status[\"84ec340c639544c09cb53662349013b8\"] = comm_status\n    }\n\n    // Add current event to queue and process queue if not blocked\n    event_name = cb_obj.event_name\n    data['comm_id'] = \"84ec340c639544c09cb53662349013b8\";\n    timeout = comm_status.time + 20000;\n    if ((comm_status.blocked && (Date.now() < timeout))) {\n        comm_status.event_buffer.unshift([event_name, data]);\n    } else {\n        comm_status.event_buffer.unshift([event_name, data]);\n        setTimeout(function() { process_events(comm_status); }, 20);\n        comm_status.blocked = true;\n        comm_status.time = Date.now()+20;\n    }\n"},"id":"5bcec010-582a-4bbe-8c18-84b231a2177c","type":"CustomJS"},{"attributes":{},"id":"432d827f-9ea7-4a43-860c-d76ca89f2bd7","type":"BasicTicker"},{"attributes":{"axis_label":"y","bounds":"auto","formatter":{"id":"9d0afad5-7617-45be-ae51-8c13e8032bb6","type":"BasicTickFormatter"},"major_label_orientation":"horizontal","plot":{"id":"60d8879e-7294-4699-aeff-f801b1a1ac65","subtype":"Figure","type":"Plot"},"ticker":{"id":"a3eba5b8-c31b-49de-b49a-07aac006a6ca","type":"BasicTicker"}},"id":"52b11112-6656-43cd-86f7-bcddeb799183","type":"LinearAxis"},{"attributes":{"callback":null,"data":{"x":{"__ndarray__":"AAAAAAAAAAAAAAAAAADwPwAAAAAAAABAAAAAAAAACEAAAAAAAAAQQAAAAAAAABRAAAAAAAAAGEAAAAAAAAAcQAAAAAAAACBAAAAAAAAAIkAAAAAAAAAkQAAAAAAAACZAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACxAAAAAAAAALkAAAAAAAAAwQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAzQAAAAAAAADRAAAAAAAAANUAAAAAAAAA2QAAAAAAAADdAAAAAAAAAOEAAAAAAAAA5QAAAAAAAADpAAAAAAAAAO0AAAAAAAAA8QAAAAAAAAD1AAAAAAAAAPkAAAAAAAAA/QAAAAAAAAEBAAAAAAACAQEAAAAAAAABBQAAAAAAAgEFAAAAAAAAAQkAAAAAAAIBCQAAAAAAAAENAAAAAAACAQ0AAAAAAAABEQAAAAAAAgERAAAAAAAAARUAAAAAAAIBFQAAAAAAAAEZAAAAAAACARkAAAAAAAABHQAAAAAAAgEdAAAAAAAAASEAAAAAAAIBIQA==","dtype":"float64","shape":[50]},"y":{"__ndarray__":"AAAAAAAAAACPjathR17QP+7Ll2/gO+A/3WJO5l8E6D+ihluX6mfvP6NL+7G4I/M/w6xnDQhD9j9L3gV1wwT5P/qbEFtUXfs/NeHcQt5C/T+Um5A0aK3+P8caX0D+lv8/yk9shMr7/z8goCdMJdr/P2npWAWcMv8/zQmh7e4H/j//5zCCBV/8P46TUuLZPvo/MmFse1uw9z+478V5Sb70PyrU8JsFdfE/w6txTcDE6z/AL8eouyrkP+NvT83id9g/3fV26+dmwD+s9Xbr52bAv8tvT83id9i/tC/HqLsq5L+/q3FNwMTrvyXU8JsFdfG/s+/FeUm+9L8uYWx7W7D3v4qTUuLZPvq//ucwggVf/L/LCaHt7gf+v2npWAWcMv+/H6AnTCXa/7/KT2yEyvv/v8gaX0D+lv+/lpuQNGit/r854dxC3kL9v/2bEFtUXfu/TN4FdcME+b/IrGcNCEP2v6ZL+7G4I/O/sIZbl+pn77/mYk7mXwTovwDMl2/gO+C/po2rYUde0L8HXBQzJqbBvA==","dtype":"float64","shape":[50]}},"selected":{"id":"a41b474f-3a6b-427a-bd4d-e98ea44ccfc8","type":"Selection"},"selection_policy":{"id":"b8d6ebcc-1624-487b-b746-21ad198313d0","type":"UnionRenderers"}},"id":"c2465055-a9ca-4b6a-bb72-5c4db9452d15","type":"ColumnDataSource"},{"attributes":{"callback":null,"end":5,"format":"0[.]","js_property_callbacks":{"change:value":[{"id":"d8a159ab-cf53-4130-9247-122805f103e2","type":"CustomJS"}]},"name":"amplitude","start":2,"title":"Amplitude","value":2},"id":"94fef8f1-5c1e-4a9a-b36f-1c836ab9d6f5","type":"Slider"}],"root_ids":["63deaf8f-5fb2-460e-9a75-449b33485c54"]},"title":"Bokeh Application","version":"0.13.0"}};
+  var render_items = [{"docid":"723a69d6-4ace-4b74-89a6-c03330902a31","notebook_comms_target":"3b12f470786244db966ab10c523b3f5f","roots":{"63deaf8f-5fb2-460e-9a75-449b33485c54":"584f5303-cc4e-49fd-9bf9-bd7859c2df16"}}];
+  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        embed_document(root);
+        clearInterval(timer);
+      }
+      attempts++;
+      if (attempts > 100) {
+        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing")
+        clearInterval(timer);
+      }
+    }, 10, root)
+  }
+})(window);
+          </script>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <!-- END MAIN BODY OF DOCS ––––––––––––– -->
+  <footer class="footer">
+   <div class="footer-links">
+    <ul>
+     <li>
+      <span class="footer-title">
+       Links
+      </span>
+     </li>
+     <li>
+      <a href="index.html">
+       User Guide
+      </a>
+     </li>
+     <li>
+      <a href="../FAQ.html">
+       FAQ
+      </a>
+     </li>
+     <li>
+      <a href="../about.html">
+       About
+      </a>
+     </li>
+    </ul>
+    <ul>
+     <li>
+      <span class="footer-title">
+       Join Us
+      </span>
+     </li>
+     <li>
+      <a href="//gitter.im/ioam/holoviews">
+       Gitter
+      </a>
+     </li>
+     <li>
+      <a href="//github.com/ioam/parambokeh">
+       Github
+      </a>
+     </li>
+    </ul>
+    <ul class="copyright">
+     <li>
+      2017 ParamBokeh contributors
+     </li>
+    </ul>
+   </div>
+  </footer>
+  <!-- Google Analytics -->
+  <script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61554933-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+  <!-- MathJax Config -->
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+  </script>
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+ </body>
+</html>
