@@ -29,15 +29,17 @@ before_cache:
 stages:
   - test
   - name: conda_dev_package
-    if: tag =~ ^v(\d+|\.)*[a-z]\d*$
+    if: tag =~ ^v(\d+|\.)+[a-z]\d+$
   - name: pip_dev_package
-    if: tag =~ ^v(\d+|\.)*[a-z]\d*$
+    if: tag =~ ^v(\d+|\.)+[a-z]\d+$
+  - name: website_dev
+    if: tag =~ ^v(\d+|\.)+[a-z]\d+$ OR tag = website_dev
   - name: conda_package
-    if: tag =~ ^v(\d+|\.)*[^a-z]\d*$
+    if: tag =~ ^v(\d+|\.)+[^a-z]\d+$
   - name: pip_package
-    if: tag =~ ^v(\d+|\.)*[^a-z]\d*$
-  - name: docs
-    if: tag =~ ^v(\d+|\.).*$
+    if: tag =~ ^v(\d+|\.)+[^a-z]\d+$
+  - name: website_release
+    if: tag =~ ^v(\d+|\.)+[^a-z]\d+$ OR tag = website
 
 
 jobs:
@@ -104,12 +106,26 @@ jobs:
 
     ########## DOCS ##########
 
-    - <<: *conda_default
-      stage: docs
-      env: DESC="docs"
+    - &website
+      <<: *conda_default
+      stage: website_release
+      env: DESC="parambokeh.pyviz.org"
       script:
         - doit develop_install $CHANS_DEV -o doc -o examples -c defaults -c conda-forge # (because phantomjs not on defaults for linux)
         - doit docs
+      deploy:
+        - provider: pages
+          skip_cleanup: true
+          github_token: $GITHUB_TOKEN
+          local_dir: ./doc/_build/html
+          fqdn: parambokeh.pyviz.org
+          on:
+            tags: true
+            all_branches: true
+
+    - <<: *website
+      stage: website_dev
+      env: DESC="ioam-docs.github.io/parambokeh-dev"
       deploy:
         - provider: pages
           skip_cleanup: true
@@ -119,13 +135,3 @@ jobs:
           on:
             tags: true
             all_branches: true
-            condition: $TRAVIS_TAG =~ [0-9]+[a-z][0-9]*$
-        - provider: pages
-          skip_cleanup: true
-          github_token: $GITHUB_TOKEN
-          local_dir: ./doc/_build/html
-          fqdn: parambokeh.pyviz.org
-          on:
-            tags: true
-            all_branches: true
-            condition: $TRAVIS_TAG =~ [0-9]+[^a-z][0-9]*$
