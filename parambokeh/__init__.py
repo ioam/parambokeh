@@ -114,7 +114,7 @@ class default_label_formatter(param.ParameterizedFunction):
         if self.replace_underscores:
             pname = pname.replace('_',' ')
         if self.capitalize:
-            pname = pname.capitalize()
+            pname = pname[:1].upper() + pname[1:]
         return pname
 
 
