@@ -129,6 +129,9 @@ def process_plot(plot, doc, plot_id, comm):
         html = "<img src='{src}'></img>".format(src=src)
         width, height = plot.canvas.get_width_height()
         return Div(text=html, width=width, height=height)
+    elif hasattr(plot, '_repr_html_'):
+        return Div(text=plot._repr_html_())
+
     if not hasattr(plot, '_update_callbacks'):
         raise ValueError('Can only render bokeh models or HoloViews objects.')
 
