@@ -1,8 +1,10 @@
 import sys
 import inspect
+import base64
+from io import BytesIO
 
 import bokeh
-from bokeh.models import Model, CustomJS, LayoutDOM
+from bokeh.models import Model, CustomJS, LayoutDOM, Div
 
 try:
     from IPython.display import publish_display_data
@@ -102,7 +104,7 @@ def patch_widgets(plot, doc, plot_id, comm):
 
 def process_plot(plot, doc, plot_id, comm):
     """
-    Converts all acceptable plot and widget objects into displaybel
+    Converts all acceptable plot and widget objects into displayable
     bokeh models. Patches any HoloViews plots or parambokeh Widgets
     with the top-level comms and plot id.
     """
@@ -118,7 +120,15 @@ def process_plot(plot, doc, plot_id, comm):
         from holoviews import renderer
         renderer = renderer('bokeh').instance(mode='server' if comm is None else 'default')
         plot = renderer.get_plot(plot, doc=doc)
-
+    elif plot.__class__.__name__ == 'Figure' and hasattr(plot, '_cachedRenderer'):
+        bytes_io = BytesIO()
+        plot.canvas.print_figure(bytes_io)
+        data = bytes_io.getvalue()
+        b64 = base64.b64encode(data).decode("utf-8")
+        src = "data:image/png;base64,{b64}".format(b64=b64)
+        html = "<img src='{src}'></img>".format(src=src)
+        width, height = plot.canvas.get_width_height()
+        return Div(text=html, width=width, height=height)
     if not hasattr(plot, '_update_callbacks'):
         raise ValueError('Can only render bokeh models or HoloViews objects.')
 
