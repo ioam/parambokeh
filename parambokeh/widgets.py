@@ -17,6 +17,8 @@ def TextWidget(*args, **kw):
     """Forces a parameter value to be text"""
     kw['value'] = str(kw['value'])
     kw.pop('options', None)
+    kw.pop('start', None)
+    kw.pop('end', None)
     return TextInput(*args,**kw)
 
 def StaticText(*args, **kw):
@@ -108,6 +110,7 @@ ptype2wtype = {
     param.Number:        FloatSlider,
     param.Integer:       IntSlider,
     param.Range:         RangeWidget,
+    param.DateRange:     TextWidget, # Workaround
     param.ListSelector:  MultiSelect,
     param.Action:        ButtonWidget,
     param.Date:          DateWidget,
