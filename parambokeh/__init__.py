@@ -15,13 +15,14 @@ from bokeh.models.widgets import Div, Button, CheckboxGroup, TextInput
 from bokeh.models import CustomJS
 from bokeh.protocol import Protocol
 
+from pyviz_panels import Column, Row, View
+from pyviz_panels.comms import JS_CALLBACK, JupyterCommManager
 try:
-    from pyviz_comms import JS_CALLBACK, JupyterCommManager
+    from ipykernel.comm import Comm as IPyComm
     IPYTHON_AVAILABLE = True
 except:
     IPYTHON_AVAILABLE = False
 
-from .layout import WidgetBox, Column, Row
 from .widgets import wtype, literal_params
 from .util import named_objs, get_method_owner
 from .view import _View
@@ -180,7 +181,7 @@ class Widgets(param.ParameterizedFunction):
         view_params = any(isinstance(p, _View) for p in parameterized.params().values())
         layout = self.p.view_position
         container_type = Column if layout in ['below', 'above'] else Row
-        self.container = container_type() if plots or view_params else WidgetBox(widget_box)
+        self.container = container_type() if plots or view_params else View(widget_box)
         self.plot_id = widget_box.ref['id']
 
         # Initialize widgets and populate container
