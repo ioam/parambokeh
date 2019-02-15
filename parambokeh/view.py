@@ -9,7 +9,7 @@ def render_function(obj, view):
     except:
         hv = None
 
-    if hv and isinstance(obj, hv.Dimensioned):
+    if hv and isinstance(obj, hv.core.Dimensioned):
         renderer = hv.renderer('bokeh')
         if not view._notebook:
             renderer = renderer.instance(mode='server')

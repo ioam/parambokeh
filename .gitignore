@@ -63,3 +63,6 @@ target/
 
 *.doit*
 
+#autover
+*/.version
+
